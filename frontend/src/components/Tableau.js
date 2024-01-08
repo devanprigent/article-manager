@@ -14,7 +14,7 @@ const columns = [
             </a>
         ),
     },
-    { field: 'auteur', headerName: 'Auteur', width: 120 },
+    { field: 'auteur', headerName: 'Auteur', width: 150 },
     {
         field: 'url_site',
         headerName: 'Site',
@@ -25,7 +25,7 @@ const columns = [
             </a>
         ),
     },
-    { field: 'date', headerName: 'Date', width: 100 },
+    { field: 'date', headerName: 'Date', width: 70 },
     {
         field: 'synopsis',
         headerName: 'Synopsis',
@@ -40,7 +40,7 @@ const columns = [
 
 function Tableau() {
     return (
-        <div style={{ height: 300, width: '100%' }}>
+        <div style={{ height: 500, width: '100%' }}>
             <DataGrid rows={data} columns={columns} getRowHeight={() => 'auto'} />
         </div>
     )
