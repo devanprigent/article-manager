@@ -1,12 +1,17 @@
 from django.db import models
+from tag.models import Tag
 
 class Article(models.Model):
    id = models.AutoField(primary_key=True)
    titre = models.TextField()
    auteur = models.TextField()
-   site = models.TextField()
+   url_site = models.TextField()
+   url_article = models.TextField()
    date = models.IntegerField()
    synopsis = models.TextField()
+   tags = models.ManyToManyField(Tag, blank=True)
+   date_creation = models.DateTimeField(auto_now_add=True)
+   date_modification = models.DateTimeField(auto_now=True)
 
    def _str_(self):
      return self.titre

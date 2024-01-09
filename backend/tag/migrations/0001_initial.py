@@ -8,23 +8,16 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('tag', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Article',
+            name='Tag',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('titre', models.TextField()),
-                ('auteur', models.TextField()),
-                ('url_site', models.TextField()),
-                ('url_article', models.TextField()),
-                ('date', models.IntegerField()),
-                ('synopsis', models.TextField()),
+                ('nom', models.TextField()),
                 ('date_creation', models.DateTimeField(auto_now_add=True)),
                 ('date_modification', models.DateTimeField(auto_now=True)),
-                ('tags', models.ManyToManyField(blank=True, to='tag.tag')),
             ],
         ),
     ]
