@@ -5,7 +5,11 @@ import { DataGrid } from '@mui/x-data-grid';
 const COLUMNS = [
     {
         field: 'titre',
-        headerName: 'Titre',
+        renderHeader: () => (
+            <strong className="fs-5">
+                {'Titre'}
+            </strong>
+        ),
         width: 250,
         renderCell: (params) => (
             <a href={params.row.url_article} target="_blank" rel="noopener noreferrer">
@@ -15,12 +19,20 @@ const COLUMNS = [
     },
     {
         field: 'auteur',
-        headerName: 'Auteur',
+        renderHeader: () => (
+            <strong className="fs-5">
+                {'Auteur'}
+            </strong>
+        ),
         width: 150,
     },
     {
         field: 'url_site',
-        headerName: 'Site',
+        renderHeader: () => (
+            <strong className="fs-5">
+                {'Site'}
+            </strong>
+        ),
         width: 250,
         renderCell: (params) => (
             <a href={params.row.url_site} target="_blank" rel="noopener noreferrer">
@@ -30,12 +42,20 @@ const COLUMNS = [
     },
     {
         field: 'date',
-        headerName: 'Date',
+        renderHeader: () => (
+            <strong className="fs-5">
+                {'Date'}
+            </strong>
+        ),
         width: 70,
     },
     {
         field: 'synopsis',
-        headerName: 'Synopsis',
+        renderHeader: () => (
+            <strong className="fs-5">
+                {'Synopsis'}
+            </strong>
+        ),
         width: 400,
         renderCell: (params) => (
             <div style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>
@@ -45,7 +65,11 @@ const COLUMNS = [
     },
     {
         field: 'tags',
-        headerName: 'Tags',
+        renderHeader: () => (
+            <strong className="fs-5">
+                {'Tags'}
+            </strong>
+        ),
         width: 150,
         renderCell: (params) => (
             params.value.map((tag) => (tag.nom)).join(', ')
