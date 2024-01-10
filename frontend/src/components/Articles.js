@@ -3,7 +3,6 @@ import React from "react";
 import Tableau from "./Tableau";
 import Ajout from "./Ajout";
 import FetchData from "./FetchData";
-import Footer from "./Footer";
 import { getArticlesURL } from "./Urls";
 
 function Articles() {
@@ -16,7 +15,6 @@ function Articles() {
             <div className="mx-auto"> {/* Centrage horizontal */}
                 <Tableau data={data} />
             </div>
-            <Footer />
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import BarreNavigation from "./components/BarreNavigation";
 import Articles from "./components/Articles";
 import Tags from "./components/Tags";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/articles" element={<Articles />} />
         <Route path="/tags" element={<Tags />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

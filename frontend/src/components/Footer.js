@@ -1,12 +1,15 @@
 // Bibliothèques
+import React from "react";
 
 function Footer() {
     return (
-        <footer className="bg-light py-3">
+        <div className="bg-dark py-3">
             <div className="container">
-                <p className="text-muted">&copy; 2024 Devan Prigent. All rights reserved.</p>
+                <p className="text-light text-center font-weight-bold display-7">
+                    &copy; 2024 Devan Prigent. All rights reserved.
+                </p>
             </div>
-        </footer>
+        </div>
     );
 }
 
