@@ -1,589 +1,542 @@
 [
     {
-        "id": 1,
         "titre": "What You'll Wish You'd Known",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2005,
-        "tags": [
-            "Scolarité",
-            "Conseil",
-            "Curiosité"
-        ],
         "synopsis": "L'article prodigue des conseils aux lycéens en suggérant qu'ils se concentrent sur la découverte de leurs centres d'intérêt et passions plutôt que de s'inquiéter de plans de carrière spécifiques",
-        "url_article": "https://www.paulgraham.com/hs.html"
+        "url_article": "https://www.paulgraham.com/hs.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 2,
         "titre": "Writing, Briefly",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2005,
-        "tags": [
-            "Ecriture",
-            "Méthode"
-        ],
         "synopsis": "L'article donne des conseils pour comment écrire un texte.",
-        "url_article": "https://www.paulgraham.com/writing44.html"
+        "url_article": "https://www.paulgraham.com/writing44.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 3,
         "titre": "6,631,372",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2006,
-        "tags": [
-            "Temps",
-            "Organisation"
-        ],
         "synopsis": "Cet article explore le concept du temps et de la manière dont il est souvent gaspillé. Le titre fait référence au nombre de secondes dans une journée et souligne l'importance d'utiliser ce temps de manière significative.",
-        "url_article": "https://www.paulgraham.com/numbers.html"
+        "url_article": "https://www.paulgraham.com/numbers.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 4,
         "titre": "Copy What You Like",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2006,
-        "tags": [
-            "Méthode",
-            "Progression",
-            "Créativité"
-        ],
         "synopsis": "Cet article encourage la pratique de l'imitation créative comme moyen d'apprendre et de développer des compétences, en soulignant l'importance de comprendre profondément ce que l'on essaie de reproduire.",
-        "url_article": "https://www.paulgraham.com/gh.html"
+        "url_article": "https://www.paulgraham.com/gh.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 5,
         "titre": "See Randomness",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2006,
-        "tags": [
-            "Hasard",
-            "Décision"
-        ],
         "synopsis": "Cet article aborde le concept de hasard et de probabilités dans le contexte de la prise de décision, soulignant l'importance de comprendre et d'accepter l'élément aléatoire dans la vie.",
-        "url_article": "https://www.paulgraham.com/randomness.html"
+        "url_article": "https://www.paulgraham.com/randomness.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 6,
         "titre": "Stuff",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2007,
-        "tags": [
-            "Objet",
-            "Bonheur"
-        ],
         "synopsis": "Cet article aborde la relation entre les possessions matérielles et le bonheur, explorant la philosophie de la consommation et l'impact des biens matériels sur la vie.",
-        "url_article": "https://www.paulgraham.com/stuff.html"
+        "url_article": "https://www.paulgraham.com/stuff.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 7,
         "titre": "Two Kinds of Judgment",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2007,
-        "tags": [
-            "Jugement",
-            "Critique"
-        ],
         "synopsis": "Cet article explore la dualité des jugements, distinguant entre les jugements de fait et les jugements de goût, et soulignant comment cette distinction peut influencer la pensée critique.",
-        "url_article": "https://www.paulgraham.com/judgment.html"
+        "url_article": "https://www.paulgraham.com/judgment.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 8,
         "titre": "How to Disagree",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2008,
-        "tags": [
-            "Communication",
-            "Désaccord"
-        ],
         "synopsis": "Cet article offre des conseils sur la manière de désaccorder de manière constructive et respectueuse, soulignant l'importance d'une communication efficace.",
-        "url_article": "https://www.paulgraham.com/disagree.html"
+        "url_article": "https://www.paulgraham.com/disagree.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 9,
         "titre": "How Not to Die",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2007,
-        "tags": [
-            "Vie",
-            "Mort"
-        ],
         "synopsis": "Cet article explore des aspects de la vie et de la mort, discutant de la manière de vivre de manière significative et de prendre des décisions éclairées.",
-        "url_article": "https://www.paulgraham.com/die.html"
+        "url_article": "https://www.paulgraham.com/die.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 10,
         "titre": "After Credentials",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2008,
-        "tags": [
-            "Diplôme",
-            "Réussite",
-            "Compétences"
-        ],
         "synopsis": "Cet article explore la valeur des diplômes et des certifications par rapport aux compétences réelles, soulignant l'importance de ce que vous pouvez faire plutôt que de vos titres académiques.",
-        "url_article": "https://www.paulgraham.com/credentials.html"
+        "url_article": "https://www.paulgraham.com/credentials.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 11,
         "titre": "The List of N Things",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2009,
-        "tags": [
-            "Liste",
-            "Ecriture",
-            "Communication"
-        ],
         "synopsis": "Cet article discute de la structure classique des listes, explorant comment leur utilisation peut être efficace dans la communication et la persuasion.",
-        "url_article": "https://www.paulgraham.com/nthings.html"
+        "url_article": "https://www.paulgraham.com/nthings.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 12,
         "titre": "Relentlessly Resourceful",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2009,
-        "tags": [
-            "Ingéniosité",
-            "Persévérance",
-            "Problème"
-        ],
         "synopsis": "Cet article discute de l'importance d'être implacablement ingénieux et persévérant dans la résolution de problèmes.",
-        "url_article": "https://www.paulgraham.com/relres.html"
+        "url_article": "https://www.paulgraham.com/relres.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 13,
         "titre": "How You Know",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2014,
-        "tags": [
-            "Connaissance",
-            "Expérience"
-        ],
         "synopsis": "Cet article examine la manière dont nous acquérons des connaissances et explore le concept de \"comment vous savez\" dans divers contextes, soulignant l'importance de l'expérience pratique.",
-        "url_article": "https://www.paulgraham.com/know.html"
+        "url_article": "https://www.paulgraham.com/know.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 14,
         "titre": "Writing and Speaking",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2012,
-        "tags": [
-            "Ecriture",
-            "Prise de parole"
-        ],
         "synopsis": "Cet article aborde l'importance de l'écriture et de la prise de parole en public, soulignant comment ces compétences peuvent être précieuses dans divers contextes professionnels.",
-        "url_article": "https://www.paulgraham.com/speak.html"
+        "url_article": "https://www.paulgraham.com/speak.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 15,
         "titre": "Write Like You Talk",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2015,
-        "tags": [
-            "Ecriture",
-            "Communication"
-        ],
         "synopsis": "Cet article encourage à écrire de manière naturelle et conversationnelle, soulignant comment cette approche peut rendre la communication plus efficace.",
-        "url_article": "https://www.paulgraham.com/talk.html"
+        "url_article": "https://www.paulgraham.com/talk.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 16,
         "titre": "How to Write Usefully",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2020,
-        "tags": [
-            "Ecriture",
-            "Communication"
-        ],
         "synopsis": "Cet article offre des conseils sur la rédaction utile, soulignant l'importance de la clarté et de la pertinence dans la communication écrite.",
-        "url_article": "https://www.paulgraham.com/useful.html"
+        "url_article": "https://www.paulgraham.com/useful.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 17,
         "titre": "The Need To Read",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2022,
-        "tags": [
-            "Lecture",
-            "Réflexion"
-        ],
         "synopsis": "Cet article souligne l'importance de la lecture et explore comment elle peut enrichir la pensée et l'expérience.",
-        "url_article": "https://www.paulgraham.com/read.html"
+        "url_article": "https://www.paulgraham.com/read.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 18,
         "titre": "Is There Such a Thing as Good Taste?",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2021,
-        "tags": [
-            "Opinion",
-            "Goût"
-        ],
         "synopsis": "Cet article aborde la question du bon goût, explorant si cette notion est objective ou subjective.",
-        "url_article": "https://www.paulgraham.com/taste.html"
+        "url_article": "https://www.paulgraham.com/taste.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 19,
         "titre": "How To Work Hard",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2021,
-        "tags": [
-            "Productivité",
-            "Travail"
-        ],
         "synopsis": "Cet article partage des conseils sur le travail acharné, explorant des stratégies pour maintenir la productivité et la motivation.",
-        "url_article": "https://www.paulgraham.com/workhard.html"
+        "url_article": "https://www.paulgraham.com/workhard.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 20,
         "titre": "Write Simply",
         "auteur": "Paul Graham",
         "url_site": "https://paulgraham.com/",
         "date": 2021,
-        "tags": [
-            "Ecriture"
-        ],
         "synopsis": "Cet article encourage à écrire de manière simple et directe, soulignant l'efficacité de la communication claire.",
-        "url_article": "https://www.paulgraham.com/simp.html"
+        "url_article": "https://www.paulgraham.com/simp.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 21,
         "titre": "How to Pick Your Life Partner – Part 1",
         "auteur": "Tim Urban",
         "url_site": "https://waitbutwhy.com/",
         "date": 2014,
-        "tags": [
-            "Amour",
-            "Relation"
-        ],
         "synopsis": "Cet article explique comment choisir un partenaire de vie.",
-        "url_article": "https://waitbutwhy.com/2014/02/pick-life-partner.html"
+        "url_article": "https://waitbutwhy.com/2014/02/pick-life-partner.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 22,
         "titre": "How to Pick Your Life Partner – Part 2",
         "auteur": "Tim Urban",
         "url_site": "https://waitbutwhy.com/",
         "date": 2014,
-        "tags": [
-            "Amour",
-            "Relation"
-        ],
         "synopsis": "Cet article explique comment choisir un partenaire de vie.",
-        "url_article": "https://waitbutwhy.com/2014/02/pick-life-partner-part-2.html"
+        "url_article": "https://waitbutwhy.com/2014/02/pick-life-partner-part-2.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 23,
         "titre": "Why is My Laptop On?",
         "auteur": "Tim Urban",
         "url_site": "https://waitbutwhy.com/",
         "date": 2014,
-        "tags": [
-            "Science",
-            "Technologie"
-        ],
         "synopsis": "Cet article explique d'où vient l'énergie alimentant un ordinateur.",
-        "url_article": "https://waitbutwhy.com/2014/05/fermi-paradox.html"
+        "url_article": "https://waitbutwhy.com/2014/05/fermi-paradox.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 24,
         "titre": "But What About Greenland?",
         "auteur": "Tim Urban",
         "url_site": "https://waitbutwhy.com/",
         "date": 2021,
-        "tags": [
-            "Groenland",
-            "Géographie",
-            "Culture"
-        ],
         "synopsis": "Cet article parle du Groenland.",
-        "url_article": "https://waitbutwhy.com/2013/09/greenland.html"
+        "url_article": "https://waitbutwhy.com/2013/09/greenland.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 25,
         "titre": "Why Cryonics Makes Sense",
         "auteur": "Tim Urban",
         "url_site": "https://waitbutwhy.com/",
         "date": 2016,
         "synopsis": "Cet article explique ce qu'est la cryologie et pourquoi ses défenseurs ont des arguments raisonnables.",
-        "url_article": "https://waitbutwhy.com/2016/03/cryonics.html"
+        "url_article": "https://waitbutwhy.com/2016/03/cryonics.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 26,
         "titre": "Life is a Picture, But You Live in a Pixel",
         "auteur": "Tim Urban",
         "url_site": "https://waitbutwhy.com/",
         "date": 2013,
         "synopsis": "JSP",
-        "url_article": "https://waitbutwhy.com/2013/11/life-is-picture-but-you-live-in-pixel.html"
+        "url_article": "https://waitbutwhy.com/2013/11/life-is-picture-but-you-live-in-pixel.html",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 27,
         "titre": "The Pattern-Seeking Fallacy",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2010,
         "synopsis": "Humans are terrible at discerning patterns from randomness, and in marketing data we unwittingly find “insights” that are actually noise. Here’s how to fix that.",
-        "url_article": "https://longform.asmartbear.com/pattern-seeking-fallacy/"
+        "url_article": "https://longform.asmartbear.com/pattern-seeking-fallacy/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 28,
         "titre": "Your non-linear problem of 90% utilization",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2015,
         "synopsis": "Is everyone working very hard, all the time, and yet accomplishing 1/10th of what it seems they should? Maybe this is why.",
-        "url_article": "https://longform.asmartbear.com/utilization/"
+        "url_article": "https://longform.asmartbear.com/utilization/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 29,
         "titre": "How to measure the accuracy of forecasts",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2016,
         "synopsis": "How do you assess forecasts, when the forecast is only a probability? It’s not just about accuracy. Let’s dive into the math.",
-        "url_article": "https://longform.asmartbear.com/forecast/"
+        "url_article": "https://longform.asmartbear.com/forecast/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 30,
         "titre": "Satisficing vs Maximizing",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2017,
         "synopsis": "Fast, or Best? Choose your decision-making goal wisely, especially if you’re a natural perfectionist.",
-        "url_article": "https://longform.asmartbear.com/maximizing/"
+        "url_article": "https://longform.asmartbear.com/maximizing/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 31,
         "titre": "Stop saying “fail”",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2023,
         "synopsis": "Language shapes our perception of setbacks. Use words other than “failure” to describe situations and to suggest the next step.",
-        "url_article": "https://longform.asmartbear.com/fail/"
+        "url_article": "https://longform.asmartbear.com/fail/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 32,
         "titre": "The “Great” Product Manager, a.k.a. the Impossible Product Manager",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2022,
         "synopsis": "According to the Internet, being a Product Manager is impossible. Can you ever measure up? No. But don’t worry, there’s a better answer.",
-        "url_article": "https://longform.asmartbear.com/great-product-manager/"
+        "url_article": "https://longform.asmartbear.com/great-product-manager/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 33,
         "titre": "Distinguishing constructive criticism from bad business advice",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2008,
         "synopsis": "Beware of advice that tries to change who you are. True wisdom guides you to a better version of yourself.",
-        "url_article": "https://longform.asmartbear.com/bad-advice/"
+        "url_article": "https://longform.asmartbear.com/bad-advice/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 34,
         "titre": "The unfortunate math behind consulting companies",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2011,
         "synopsis": "Hiring even one person creates a lot less profit than you’d think, and launching a product rarely works out. Here are some tips for consulting companies.",
-        "url_article": "https://longform.asmartbear.com/consulting-company-accounting/"
+        "url_article": "https://longform.asmartbear.com/consulting-company-accounting/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 35,
         "titre": "Failure to face the truth",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2022,
         "synopsis": "This admonition recurs in myriad books, frameworks, and topics, across decades of time. When something is so consistent, it must be wisdom.",
-        "url_article": "https://longform.asmartbear.com/failure-to-face-the-truth/"
+        "url_article": "https://longform.asmartbear.com/failure-to-face-the-truth/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 36,
         "titre": "In command",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2023,
         "synopsis": "Being “in control” is impossible, perhaps not even desirable. Being “in command” is ideal: honest, introspective, agile, aware, and proactive.",
-        "url_article": "https://longform.asmartbear.com/in-command/"
+        "url_article": "https://longform.asmartbear.com/in-command/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 37,
         "titre": "The Elephant in the room: The myth of exponential hypergrowth",
         "auteur": "Jason Cohen",
         "url_site": "https://longform.asmartbear.com/",
         "date": 2022,
         "synopsis": "Even Facebook and Slack did not grow “exponentially,” as frequently described. Here is the correct model that you can use to understand and affect growth.",
-        "url_article": "https://longform.asmartbear.com/exponential-growth/"
+        "url_article": "https://longform.asmartbear.com/exponential-growth/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 38,
         "titre": "Nobody is perfect, everything is commensurable",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article argumente en faveur de l'idée que la participation active à des mouvements politiques n'est pas toujours la manière la plus efficace de contribuer au bien social, préconisant plutôt des actions comme les dons caritatifs.",
-        "url_article": "https://slatestarcodex.com/2014/12/19/nobody-is-perfect-everything-is-commensurable/"
+        "url_article": "https://slatestarcodex.com/2014/12/19/nobody-is-perfect-everything-is-commensurable/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 39,
         "titre": "Beware the man of one study",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article met en garde contre la confiance excessive dans les résultats d'une seule étude ou la sélection sélective de données pour soutenir un point de vue.",
-        "url_article": "https://slatestarcodex.com/2014/12/12/beware-the-man-of-one-study/"
+        "url_article": "https://slatestarcodex.com/2014/12/12/beware-the-man-of-one-study/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 40,
         "titre": "Arguments from my opponent believe something",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2013,
         "synopsis": "Cet article présente plusieurs arguments fallacieux typiques.",
-        "url_article": "https://slatestarcodex.com/2013/06/13/arguments-from-my-opponent-believes-something/"
+        "url_article": "https://slatestarcodex.com/2013/06/13/arguments-from-my-opponent-believes-something/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 41,
         "titre": "In favor of niceness, community and civilization",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article parle du fait que ce n’est pas parce que votre cause est importante que vous devez vous comporter comme un abruti.",
-        "url_article": "https://slatestarcodex.com/2014/02/23/in-favor-of-niceness-community-and-civilization/"
+        "url_article": "https://slatestarcodex.com/2014/02/23/in-favor-of-niceness-community-and-civilization/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 42,
         "titre": "The control group is out of control",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article explique la faiblesse de nombreuses recherches scientifiques et statistiques modernes.",
-        "url_article": "https://slatestarcodex.com/2014/04/28/the-control-group-is-out-of-control/"
+        "url_article": "https://slatestarcodex.com/2014/04/28/the-control-group-is-out-of-control/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 43,
         "titre": "I can tolerate anything except the outgroup",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article propose un cadre général de réflexion sur la tolérance et les préjugés.",
-        "url_article": "https://slatestarcodex.com/2014/09/30/i-can-tolerate-anything-except-the-outgroup/"
+        "url_article": "https://slatestarcodex.com/2014/09/30/i-can-tolerate-anything-except-the-outgroup/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 44,
         "titre": "The toxoplasma of rage",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article explique comment fonctionnent les médias et pourquoi les synopsiss stupides reviennent sans cesse.",
-        "url_article": "https://slatestarcodex.com/2014/12/17/the-toxoplasma-of-rage/"
+        "url_article": "https://slatestarcodex.com/2014/12/17/the-toxoplasma-of-rage/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 45,
         "titre": "Increasingly competitive college admissions: much more than you wanted to know",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2019,
         "synopsis": "Cet article explore le déclin des taux d'acceptation dans les collèges prestigieux au cours de la dernière décennie, mettant en lumière l'intensification de la compétition académique",
-        "url_article": "https://slatestarcodex.com/2019/04/15/increasingly-competitive-college-admissions-much-more-than-you-wanted-to-know/"
+        "url_article": "https://slatestarcodex.com/2019/04/15/increasingly-competitive-college-admissions-much-more-than-you-wanted-to-know/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 46,
         "titre": "Preschool: much more than you wanted to know",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2018,
         "synopsis": "Cet article explore l'idée selon laquelle donner des cours particuliers aux enfants avant leur scolarité est efficace.",
-        "url_article": "https://slatestarcodex.com/2018/11/13/preschool-much-more-than-you-wanted-to-know/"
+        "url_article": "https://slatestarcodex.com/2018/11/13/preschool-much-more-than-you-wanted-to-know/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 47,
         "titre": "Marijuana: much more than you wanted to know",
         "auteur": "Scott Alexander",
         "url_site": "https://slatestarcodex.com/",
         "date": 2014,
         "synopsis": "Cet article cherche à démontrer que la décriminalisation et la légalisation de la marijuana à des fins médicales n'augmentent pas le taux d'utilisation de la marijuana chez les jeunes, bien que des preuves indirectes suggèrent une augmentation de l'utilisation chez les adultes, accompagnée de comportements indésirables. Il parle également des effets sur la santé.",
-        "url_article": "https://slatestarcodex.com/2014/01/05/marijuana-much-more-than-you-wanted-to-know/"
+        "url_article": "https://slatestarcodex.com/2014/01/05/marijuana-much-more-than-you-wanted-to-know/",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 48,
         "titre": "Hypergamy: much more than you wanted to know",
         "auteur": "Scott Alexander",
         "url_site": "https://www.astralcodexten.com/",
         "date": 2023,
         "synopsis": "Cet explore la théorie selon laquelle les femmes cherchent des partenaires qui ont un statut plus élevé qu'elles.",
-        "url_article": "https://www.astralcodexten.com/p/hypergamy-much-more-than-you-wanted"
+        "url_article": "https://www.astralcodexten.com/p/hypergamy-much-more-than-you-wanted",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 49,
         "titre": "The media very rarely lies",
         "auteur": "Scott Alexander",
         "url_site": "https://www.astralcodexten.com/",
         "date": 2022,
         "synopsis": "Cet article traite de la question de la désinformation dans les médias, soulignant que les médias se trouvent rarement explicitement et directement. Au lieu de cela, la désinformation se produit souvent par une mauvaise interprétation, l'exclusion du contexte ou le rapport sélectif des événements.",
-        "url_article": "https://www.astralcodexten.com/p/the-media-very-rarely-lies"
+        "url_article": "https://www.astralcodexten.com/p/the-media-very-rarely-lies",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 50,
         "titre": "Does capitalism beat charity",
         "auteur": "Scott Alexander",
         "url_site": "https://www.astralcodexten.com/",
         "date": 2024,
         "synopsis": "Cet article traite de la question des bienfaits de la charité comparé aux bienfaits apportés par le capitalisme quant à l'augmentation de la qualité de vie d'une population.",
-        "url_article": "https://www.astralcodexten.com/p/does-capitalism-beat-charity"
+        "url_article": "https://www.astralcodexten.com/p/does-capitalism-beat-charity",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 51,
         "titre": "The Best Textbooks on Every Subject",
         "auteur": "lukeprog",
         "url_site": "https://www.lesswrong.com/",
         "date": 2011,
         "synopsis": "Cet article défend l'idée que les livres sont de loin la meilleure façon d'apprendre.",
-        "url_article": "https://www.lesswrong.com/posts/xg3hXCYQPJkwHyik2/the-best-textbooks-on-every-subject"
+        "url_article": "https://www.lesswrong.com/posts/xg3hXCYQPJkwHyik2/the-best-textbooks-on-every-subject",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 52,
         "titre": "Pain is not the unit of Effort",
         "auteur": "alkjash",
         "url_site": "https://www.lesswrong.com/",
         "date": 2020,
         "synopsis": "Cet article défend l'idée qu'associer progression et souffrance est contreproductif.",
-        "url_article": "https://www.lesswrong.com/posts/bx3gkHJehRCYZAF3r/pain-is-not-the-unit-of-effort"
+        "url_article": "https://www.lesswrong.com/posts/bx3gkHJehRCYZAF3r/pain-is-not-the-unit-of-effort",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 53,
         "titre": "Schelling fences on slippery slopes",
         "auteur": "Scott Alexander",
         "url_site": "https://www.lesswrong.com/",
         "date": 2012,
         "synopsis": "Cet article explore le concept des 'pentes glissantes'.",
-        "url_article": "https://www.lesswrong.com/posts/Kbm6QnJv9dgWsPHQP/schelling-fences-on-slippery-slopes"
+        "url_article": "https://www.lesswrong.com/posts/Kbm6QnJv9dgWsPHQP/schelling-fences-on-slippery-slopes",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     },
     {
-        "id": 54,
         "titre": "The correct response to uncertainty is *not* half-speed",
         "auteur": "AnnaSalamon",
         "url_site": "https://www.lesswrong.com/",
         "date": 2016,
         "synopsis": "Cet article parle de l'idée que couper la poire en deux n'est jamais la bonne solution.",
-        "url_article": "https://www.lesswrong.com/posts/FMkQtPvzsriQAow5q/the-correct-response-to-uncertainty-is-not-half-speed"
+        "url_article": "https://www.lesswrong.com/posts/FMkQtPvzsriQAow5q/the-correct-response-to-uncertainty-is-not-half-speed",
+        "date_creation": "2024-01-10 09:42:32",
+        "date_modification": "2024-01-10 09:42:32"
     }
 ]
