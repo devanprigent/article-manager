@@ -36,7 +36,7 @@ const COLUMNS = [
                 {'Site'}
             </strong>
         ),
-        width: 200,
+        width: 220,
         renderCell: (params) => (
             <a href={params.row.url_site} target="_blank" rel="noopener noreferrer">
                 {params.row.url_site}
@@ -50,7 +50,7 @@ const COLUMNS = [
                 {'Date'}
             </strong>
         ),
-        width: 100,
+        width: 80,
     },
     {
         field: 'synopsis',
