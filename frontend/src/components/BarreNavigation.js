@@ -21,17 +21,20 @@ function BarreNavigation() {
 
             <div className={`collapse navbar-collapse ${expanded ? "show" : ""}`}>
                 <ul className="navbar-nav mr-auto">
-                    <li className="nav-item">
+                    <li className="nav-item display-7">
                         <NavLink className="nav-link font-weight-bold" to="/articles">
                             Articles
                         </NavLink>
                     </li>
-                    <li className="nav-item">
+                    <li className="nav-item display-7">
                         <NavLink className="nav-link font-weight-bold" to="/tags">
                             Tags
                         </NavLink>
                     </li>
                 </ul>
+                <span className="navbar-text mx-auto font-weight-bold display-5">
+                    Article Manager
+                </span>
             </div>
         </nav>
     );

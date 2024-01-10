@@ -3,7 +3,6 @@ import React from "react";
 import Tableau from "./Tableau";
 import Ajout from "./Ajout";
 import FetchData from "./FetchData";
-import Header from "./Header";
 import Footer from "./Footer";
 import { getArticlesURL } from "./Urls";
 
@@ -13,7 +12,6 @@ function Articles() {
 
     return (
         <>
-            <Header />
             <Ajout fetchData={fetchData} />
             <Tableau data={data} />
             <Footer />
