@@ -1,8 +1,9 @@
-// Bibliothèques
+// Libraries
 import React from "react";
 import DataTable from "./DataTable";
 import ButtonAdd from "./ButtonAdd";
 import ButtonDelete from "./ButtonDelete";
+import ButtonEdit from "./ButtonEdit";
 import FetchData from "./FetchData";
 import { getArticlesURL } from "./Urls";
 
@@ -88,18 +89,25 @@ function Articles() {
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 120,
+            width: 200,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Actions'}
                 </strong>
             ),
             renderCell: (params) => (
-                <ButtonDelete
-                    fetchData={fetchData}
-                    urlToRequest={API_URL_ARTICLES}
-                    objectId={params.row.id}
-                />
+                <div className="d-flex justify-content-between">
+                    <ButtonEdit
+                        fetchData={fetchData}
+                        urlToRequest={API_URL_ARTICLES}
+                        activeItem={params.row}
+                    />
+                    <ButtonDelete
+                        fetchData={fetchData}
+                        urlToRequest={API_URL_ARTICLES}
+                        itemId={params.row.id}
+                    />
+                </div>
             ),
         }
     ];

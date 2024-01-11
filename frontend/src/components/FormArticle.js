@@ -1,4 +1,4 @@
-// Bibliothèques
+// Libraries
 import React, { useState } from "react";
 import {
     Button,
@@ -17,8 +17,8 @@ import { getTagsURL } from "./Urls";
 /**
  * The goal of this component is to provide a modal form for adding or editing an article. 
  */
-function FormArticle({ isOpen, toggle, onSave, title }) {
-    const [item, setItem] = useState({});
+function FormArticle({ isOpen, toggle, onSave, title, activeItem }) {
+    const [item, setItem] = useState(activeItem);
     const API_URL_TAGS = getTagsURL();
     const { data: tags } = FetchData(API_URL_TAGS);
 
@@ -35,7 +35,6 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
     }
 
     function validateForm() {
-        console.log(item);
         return onSave(item);
     }
 
@@ -57,6 +56,7 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
                         <Input
                             type="text"
                             name="titre"
+                            value={item.titre}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -65,6 +65,7 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
                         <Input
                             type="text"
                             name="auteur"
+                            value={item.auteur}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -73,6 +74,7 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
                         <Input
                             type="text"
                             name="url_site"
+                            value={item.url_site}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -81,6 +83,7 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
                         <Input
                             type="text"
                             name="date"
+                            value={item.date}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -89,6 +92,7 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
                         <Input
                             type="text"
                             name="synopsis"
+                            value={item.synopsis}
                             onChange={handleChange}
                         />
                     </FormGroup>
@@ -97,6 +101,7 @@ function FormArticle({ isOpen, toggle, onSave, title }) {
                         <Input
                             type="text"
                             name="url_article"
+                            value={item.url_article}
                             onChange={handleChange}
                         />
                     </FormGroup>

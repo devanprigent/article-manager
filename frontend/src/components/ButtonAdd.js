@@ -39,7 +39,18 @@ function Ajout({ fetchData, urlToFetch }) {
         isOpen={modalCreate}
         toggle={toggleModalCreate}
         onSave={create}
-        title="Ajout d'un article"
+        title={"Ajout d'un article"}
+        activeItem={{
+          "tags": [],
+          "titre": "",
+          "auteur": "",
+          "url_site": "",
+          "url_article": "",
+          "date": undefined,
+          "synopsis": "",
+          "date_creation": "",
+          "date_modification": ""
+        }}
       />}
     </div>
   );

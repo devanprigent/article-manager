@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
-
-// Composants
 import FormConfirmation from "./FormConfirmation";
 
 /**
@@ -11,19 +9,17 @@ import FormConfirmation from "./FormConfirmation";
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonDelete({ fetchData, urlToRequest, objectId }) {
-    const [item, setItem] = useState(null);
+function ButtonDelete({ fetchData, urlToRequest, itemId }) {
     const [modalRemove, setModalRemove] = useState(false);
 
-    function toggleModalRemove(item) {
-        setItem(item);
+    function toggleModalRemove() {
         setModalRemove(!modalRemove);
     }
 
-    function remove(objectId) {
+    function remove(itemId) {
         setModalRemove(!modalRemove);
         axios
-            .delete(`${urlToRequest}${objectId}/`)
+            .delete(`${urlToRequest}${itemId}/`)
             .then(() => {
                 fetchData();
             })
@@ -44,8 +40,7 @@ function ButtonDelete({ fetchData, urlToRequest, objectId }) {
             <FormConfirmation
                 isOpen={modalRemove}
                 toggle={toggleModalRemove}
-                onSave={() => remove(objectId)}
-                item={item}
+                onSave={() => remove(itemId)}
             />
         </main>
     );
