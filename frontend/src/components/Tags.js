@@ -1,6 +1,6 @@
 // Bibliothèques
 import React from "react";
-import Tableau from "./Tableau";
+import DataTable from "./DataTable";
 import FetchData from "./FetchData";
 import { getTagsURL } from "./Urls";
 
@@ -35,7 +35,7 @@ function Tags() {
     return (
         <div className="container my-4">
             <div className="shadow p-3 mb-5 bg-white rounded">
-                <Tableau data={data} columns={COLUMNS} />
+                <DataTable data={data} columns={COLUMNS} />
             </div>
         </div>
     );

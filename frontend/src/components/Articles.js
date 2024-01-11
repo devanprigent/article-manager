@@ -1,7 +1,7 @@
 // Bibliothèques
 import React from "react";
-import Tableau from "./Tableau";
-import Ajout from "./Ajout";
+import DataTable from "./DataTable";
+import ButtonAdd from "./ButtonAdd";
 import FetchData from "./FetchData";
 import { getArticlesURL } from "./Urls";
 
@@ -89,9 +89,9 @@ function Articles() {
 
     return (
         <div className="container my-4">
-            <Ajout fetchData={fetchData} urlToFetch={API_URL_ARTICLES} />
+            <ButtonAdd fetchData={fetchData} urlToFetch={API_URL_ARTICLES} />
             <div className="mx-auto shadow p-3 mb-5 bg-white rounded">
-                <Tableau data={data} columns={COLUMNS} />
+                <DataTable data={data} columns={COLUMNS} />
             </div>
         </div>
     );
