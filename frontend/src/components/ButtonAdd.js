@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import FormArticle from "./FormArticle";
+import { Button } from "reactstrap";
 
 /***
  * The goal of this component is to provide a button to add an entity. The component takes 
@@ -30,9 +31,9 @@ function Ajout({ fetchData, urlToFetch }) {
 
   return (
     <div className="d-flex justify-content-end">
-      <button className="btn btn-success mb-3" onClick={toggleModalCreate}>
+      <Button className="btn btn-success mb-3" onClick={toggleModalCreate}>
         Ajouter
-      </button>
+      </Button>
 
       {modalCreate && <FormArticle
         isOpen={modalCreate}
