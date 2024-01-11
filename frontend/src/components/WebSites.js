@@ -1,4 +1,4 @@
-// Bibliothèques
+// Libraries
 import React from "react";
 import DataTable from "./DataTable";
 import FetchData from "./FetchData";

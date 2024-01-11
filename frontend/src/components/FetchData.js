@@ -1,4 +1,4 @@
-// Bibliothèques
+// Libraries
 import { useEffect, useState } from "react";
 
 /**

@@ -1,4 +1,4 @@
-// Bibliothèques
+// Libraries
 import React, { useState } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
