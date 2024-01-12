@@ -11,39 +11,21 @@ import {
     Input,
     Label,
 } from "reactstrap";
-import FetchData from "./FetchData";
-import { getTagsURL } from "./Urls";
+import Tags from "./Tags";
 
 /**
  * The goal of this component is to provide a modal form for adding or editing an article. 
  */
 function FormArticle({ isOpen, toggle, onSave, title, activeItem }) {
     const [item, setItem] = useState(activeItem);
-    const API_URL_TAGS = getTagsURL();
-    const { data: tags } = FetchData(API_URL_TAGS);
 
     function handleChange(e) {
         const { name, value } = e.target;
-        if (name === "tags") {
-            const selectedTags = Array.from(e.target.selectedOptions, (option) =>
-                JSON.parse(option.value)
-            );
-            setItem((prevItem) => ({ ...prevItem, [name]: selectedTags }));
-        } else {
-            setItem((prevItem) => ({ ...prevItem, [name]: value }));
-        }
+        setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }
 
     function validateForm() {
         return onSave(item);
-    }
-
-    function generateOptionsTags() {
-        return tags.map((tag) => (
-            <option key={tag.id} value={JSON.stringify(tag)}>
-                {tag.nom}
-            </option>
-        ));
     }
 
     return (
@@ -109,14 +91,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }) {
                         <Label for="exampleSelect">
                             Choix des tags
                         </Label>
-                        <Input
-                            type="select"
-                            name="tags"
-                            multiple
-                            onChange={handleChange}
-                        >
-                            {generateOptionsTags()}
-                        </Input>
+                        <Tags onChange={handleChange} />
                     </FormGroup>
                 </Form>
             </ModalBody>
