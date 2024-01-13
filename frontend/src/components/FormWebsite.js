@@ -1,22 +1,20 @@
 // Libraries
 import React, { useState } from "react";
-import {
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-} from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
+import * as yup from 'yup';
+
+const validationSchema = yup.object({
+    nom: yup.string().required('Le nom de l\'article est requis.'),
+    url: yup.string().url('Format de l\'url invalide.').required('L\'url du site est requise.'),
+    image_url: yup.string().url('Format de l\'url invalide.'),
+});
 
 /**
  * The goal of this component is to provide a modal form for adding or editing a website. 
  */
 function FormWebsite({ isOpen, toggle, onSave, title, activeItem }) {
     const [item, setItem] = useState(activeItem);
+    const [errors, setErrors] = useState({});
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -24,7 +22,19 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }) {
     }
 
     function validateForm() {
-        return onSave(item);
+        validationSchema
+            .validate(item, { abortEarly: false })
+            .then(() => {
+                onSave(item);
+                toggle();
+            })
+            .catch((error) => {
+                const newErrors = {};
+                error.inner.forEach((err) => {
+                    newErrors[err.path] = err.message;
+                });
+                setErrors(newErrors);
+            });
     }
 
     return (
@@ -40,7 +50,9 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }) {
                             placeholder="Nom"
                             value={item.nom}
                             onChange={handleChange}
+                            invalid={errors.nom}
                         />
+                        {errors.nom && <div className="error-message">{errors.nom}</div>}
                     </FormGroup>
                     <FormGroup>
                         <Label for="url"><b>Site</b></Label>
@@ -50,7 +62,9 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }) {
                             placeholder="Url"
                             value={item.url}
                             onChange={handleChange}
+                            invalid={errors.url}
                         />
+                        {errors.url && <div className="error-message">{errors.url}</div>}
                     </FormGroup>
                     <FormGroup>
                         <Label for="image_url"><b>Logo</b></Label>
@@ -60,7 +74,9 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }) {
                             placeholder="Url"
                             value={item.image_url}
                             onChange={handleChange}
+                            invalid={errors.image_url}
                         />
+                        {errors.image_url && <div className="error-message">{errors.image_url}</div>}
                     </FormGroup>
                 </Form>
             </ModalBody>
