@@ -19,7 +19,7 @@ function WebSites() {
             field: 'image_url',
             renderHeader: () => (
                 <strong className="fs-5">
-                    {'Image'}
+                    {'Logo'}
                 </strong>
             ),
             width: 250,
@@ -30,7 +30,7 @@ function WebSites() {
             field: 'nom',
             renderHeader: () => (
                 <strong className="fs-5">
-                    {'Nom'}
+                    {'Site'}
                 </strong>
             ),
             width: 250,

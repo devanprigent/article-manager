@@ -1,3 +1,22 @@
+USE article_manager;
+
+INSERT INTO website_website (nom, url, image_url) VALUES
+("Wait But Why","https://waitbutwhy.com/","https://149909199.v2.pressablecdn.com/wp-content/uploads/2019/02/WBW-logo-vector-crop.jpg"),
+
+("Paul Graham","https://www.paulgraham.com/articles.html","https://upload.wikimedia.org/wikipedia/commons/e/e3/Paulgraham_240x320.jpg"),
+
+("A Smart Bear","https://longform.asmartbear.com/","https://longform.asmartbear.com/svg/bear-big.svg"),
+
+("Taylor Pearson","https://taylorpearson.me/","https://taylorpearson.cdnoptimus.com/wp-content/uploads/2016/06/cropped-TaylorPearsonProfileThumbnail.png"),
+
+("Astral Codex Ten","https://www.astralcodexten.com/","https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F430241cb-ade5-4316-b1c9-6e3fe6e63e5e_256x256.png"),
+
+("Less Wrong","https://www.lesswrong.com/","https://pbs.twimg.com/profile_images/1334972247983833089/-ddlGdHQ_400x400.png"),
+
+("Black Swan Group","https://www.blackswanltd.com/negotiation-leadership-resources?type=case-studies","https://www.blackswanltd.com/hubfs/_BlackSwan2022/logos/logo-black-swan.svg"),
+
+("Seth's Blog","https://seths.blog/popular/","https://149521506.v2.pressablecdn.com/wp-content/themes/godin/img/seth.webp");
+
 INSERT INTO article_article (titre, auteur, url_site, date, synopsis, url_article, date_creation, date_modification) VALUES
 ("What You'll Wish You'd Known","Paul Graham","https://paulgraham.com/",2005,"L'article prodigue des conseils aux lycéens en suggérant qu'ils se concentrent sur la découverte de leurs centres d'intérêt et passions plutôt que de s'inquiéter de plans de carrière spécifiques","https://www.paulgraham.com/hs.html","2024-01-10 09:42:32","2024-01-10 09:42:32"),
 
