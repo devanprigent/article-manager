@@ -101,6 +101,8 @@ function Articles() {
                     <ButtonEdit
                         fetchData={fetchData}
                         urlToRequest={API_URL_ARTICLES}
+                        FormComponent={FormArticle}
+                        title={"Modification d'un article"}
                         activeItem={params.row}
                     />
                     <ButtonDelete

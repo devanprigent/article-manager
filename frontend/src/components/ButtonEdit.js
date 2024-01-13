@@ -2,14 +2,13 @@
 import React, { useState } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
-import FormArticle from "./FormArticle";
 
 /**
  * The role of this component is to handle the deletion of an item.
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonEdit({ fetchData, urlToRequest, activeItem }) {
+function ButtonEdit({ fetchData, urlToRequest, FormComponent, title, activeItem }) {
     const [modalEdit, setModalEdit] = useState(false);
 
     function toggleModalEdit() {
@@ -37,11 +36,11 @@ function ButtonEdit({ fetchData, urlToRequest, activeItem }) {
                 {"Modifier"}
             </Button>
 
-            <FormArticle
+            <FormComponent
                 isOpen={modalEdit}
                 toggle={toggleModalEdit}
                 onSave={edit}
-                title={"Modification d'un article"}
+                title={title}
                 activeItem={activeItem}
             />
         </main>
