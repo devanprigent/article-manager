@@ -1,5 +1,6 @@
 // Libraries
 import { useState } from 'react'
+import { Label } from "reactstrap";
 import "../style/tags.css"
 
 /**
@@ -35,15 +36,20 @@ function Tags({ onChange }) {
     }
 
     return (
-        <div className="tags-input-container">
-            {tags.map((tag, index) => (
-                <div className="tag-item" key={index}>
-                    <span className="text">{tag}</span>
-                    <span className="close" onClick={() => removeTag(index)}>&times;</span>
-                </div>
-            ))}
-            <input onKeyDown={handleKeyDown} type="text" className="tags-input" placeholder="Entrez un tag" />
-        </div>
+        <>
+            <Label for="tags">
+                <b>Tags</b>
+            </Label>
+            <div className="tags-input-container">
+                {tags.map((tag, index) => (
+                    <div className="tag-item" key={index}>
+                        <span className="text">{tag}</span>
+                        <span className="close" onClick={() => removeTag(index)}>&times;</span>
+                    </div>
+                ))}
+                <input name="tags" onKeyDown={handleKeyDown} type="text" className="tags-input" />
+            </div>
+        </>
     )
 }
 
