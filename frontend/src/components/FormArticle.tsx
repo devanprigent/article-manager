@@ -1,6 +1,7 @@
 // Libraries
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
+import { FormProps } from "./Types";
 import Tags from "./Tags";
 import * as yup from 'yup';
 
@@ -13,15 +14,14 @@ const validationSchema = yup.object({
     synopsis: yup.string().required(" "),
 });
 
-
 /**
  * The goal of this component is to provide a modal form for adding or editing an article. 
  */
-function FormArticle({ isOpen, toggle, onSave, title, activeItem }) {
+function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
     const [item, setItem] = useState(activeItem);
     const [errors, setErrors] = useState({});
 
-    function handleChange(e) {
+    function handleChange(e: KeyboardEvent<HTMLInputElement>) {
         const { name, value } = e.target;
         setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }

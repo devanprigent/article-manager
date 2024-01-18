@@ -4,19 +4,25 @@ import { Button } from "reactstrap";
 import axios from "axios";
 import FormConfirmation from "./FormConfirmation";
 
+interface ButtonDeleteProps {
+    fetchData: () => void;
+    urlToRequest: string;
+    itemId: number;
+}
+
 /**
  * The role of this component is to handle the deletion of an item.
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonDelete({ fetchData, urlToRequest, itemId }) {
+function ButtonDelete({ fetchData, urlToRequest, itemId }: ButtonDeleteProps) {
     const [modalRemove, setModalRemove] = useState(false);
 
     function toggleModalRemove() {
         setModalRemove(!modalRemove);
     }
 
-    function remove(itemId) {
+    function remove(itemId: number) {
         setModalRemove(!modalRemove);
         axios
             .delete(`${urlToRequest}${itemId}/`)

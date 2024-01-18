@@ -1,6 +1,13 @@
 // Libraries
 import React from "react";
+import { Article } from "./Types";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+
+interface FormConfirmationProps {
+  isOpen: boolean;
+  toggle: () => void;
+  onSave: (item: Article) => void;
+}
 
 /**
  * Le rôle de ce composant est d'afficher une boîte de dialogue de confirmation
@@ -8,7 +15,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
  * Il est utilisé pour demander une confirmation à l'utilisateur avant d'effectuer une action.
  * Dans PEPH, il est utilisé uniquement pour les suppressions.
  */
-function FormConfirmation({ isOpen, toggle, onSave }) {
+function FormConfirmation({ isOpen, toggle, onSave }: FormConfirmationProps) {
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
       <ModalHeader>Confirmation</ModalHeader>

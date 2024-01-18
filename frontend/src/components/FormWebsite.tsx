@@ -1,7 +1,8 @@
 // Libraries
-import React, { useState } from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
+import React, { useState, KeyboardEvent } from "react";
+import { FormProps } from "./Types";
 import * as yup from 'yup';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
 
 const validationSchema = yup.object({
     nom: yup.string().required('Le nom du site est requis.'),
@@ -12,11 +13,11 @@ const validationSchema = yup.object({
 /**
  * The goal of this component is to provide a modal form for adding or editing a website. 
  */
-function FormWebsite({ isOpen, toggle, onSave, title, activeItem }) {
+function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
     const [item, setItem] = useState(activeItem);
     const [errors, setErrors] = useState({});
 
-    function handleChange(e) {
+    function handleChange(e: KeyboardEvent<HTMLInputElement>) {
         const { name, value } = e.target;
         setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }

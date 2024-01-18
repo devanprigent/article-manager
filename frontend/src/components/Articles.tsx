@@ -1,5 +1,6 @@
 // Libraries
 import React from "react";
+import { GridColDef } from '@mui/x-data-grid';
 import DataTable from "./DataTable";
 import ButtonAdd from "./ButtonAdd";
 import ButtonDelete from "./ButtonDelete";
@@ -14,7 +15,7 @@ import { getArticlesURL } from "./Urls";
 function Articles() {
     const API_URL_ARTICLES = getArticlesURL();
     const { data, fetchData } = FetchData(API_URL_ARTICLES);
-    const COLUMNS = [
+    const COLUMNS: GridColDef[] = [
         {
             field: 'titre',
             renderHeader: () => (

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 /**
  * The role of this component is to load data from a specified URL.
  */
-function FetchData(urlFetch) {
+function FetchData(urlFetch: string) {
     const [data, setData] = useState([]);
 
     async function fetchData() {

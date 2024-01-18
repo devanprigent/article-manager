@@ -1,7 +1,16 @@
 // Libraries
-import React, { useState } from "react";
+import React, { useState, FunctionComponent } from "react";
 import axios from "axios";
 import { Button } from "reactstrap";
+import { Article } from "./Types";
+
+interface AjoutProps {
+  fetchData: () => void;
+  urlToFetch: string;
+  FormComponent: FunctionComponent;
+  title: string;
+  activeItem: Article;
+}
 
 /***
  * The goal of this component is to provide a button to add an entity. The component takes 
@@ -9,14 +18,14 @@ import { Button } from "reactstrap";
  * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
  * fetchData to update the datatable.
  */
-function Ajout({ fetchData, urlToFetch, FormComponent, title, activeItem }) {
-  const [modalCreate, setModalCreate] = useState(false);
+function Ajout({ fetchData, urlToFetch, FormComponent, title, activeItem }: AjoutProps) {
+  const [modalCreate, setModalCreate] = useState<boolean>(false);
 
   function toggleModalCreate() {
     setModalCreate(!modalCreate);
   }
 
-  function create(item) {
+  function create(item: Article) {
     toggleModalCreate();
     axios
       .post(urlToFetch, item)

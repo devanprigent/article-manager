@@ -1,39 +1,50 @@
 // Libraries
-import { useState } from 'react'
+import React, { useState, KeyboardEvent } from 'react';
 import { Label } from "reactstrap";
 import "../style/tags.css"
+
+interface TagsProps {
+    onChange: (event: KeyboardEvent<HTMLInputElement>) => void;
+}
 
 /**
  * The goal of this component is to provide a user interface for managing tags. 
  * It allows users to input tags through an input field.
  */
-function Tags({ onChange }) {
-    const [tags, setTags] = useState([])
+function Tags({ onChange }: TagsProps) {
+    const [tags, setTags] = useState<string[]>([])
 
-    function handleKeyDown(e) {
+    function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
         if ((e.key === 'Delete') || (e.key === 'Backspace')) {
             removeTag(tags.length - 1);
         }
         if (e.key !== 'Enter') return
-        const value = e.target.value
+        const value: string = e.currentTarget.value
         if (!value.trim()) return
         const newTags = [...tags, value];
         update(newTags);
         setTags(newTags);
-        e.target.value = '';
+        e.currentTarget.value = '';
     }
 
-    function removeTag(index) {
+    function removeTag(index: number) {
         const newTags = tags.filter((el, i) => i !== index);
         update(newTags);
         setTags(newTags);
     }
 
-    function update(newTags) {
+    function update(newTags: string[]) {
+        const event: KeyboardEvent<HTMLInputElement> = {
+            target: {
+                name: "tags",
+                value: newTags.toString()
+            }
+        }
+
         onChange({
             "target": {
                 "name": "tags",
-                "value": newTags
+                "value": newTags.toString()
             }
         });
     }
@@ -45,9 +56,9 @@ function Tags({ onChange }) {
             </Label>
             <div className="tags-input-container">
                 {tags.map((tag, index) => (
-                    <div className="tag-item" key={tag.name}>
+                    <div className="tag-item" key={tag}>
                         <span className="text" onKeyDown={() => removeTag(index)} >{tag}</span>
-                        <span className="close" onClick={() => removeTag(index)}>&times;</span>
+                        <span className="close" onKeyDown={handleKeyDown} onClick={() => removeTag(index)}>&times;</span>
                     </div>
                 ))}
                 <input name="tags" onKeyDown={handleKeyDown} type="text" className="tags-input" />

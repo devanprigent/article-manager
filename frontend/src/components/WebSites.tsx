@@ -12,7 +12,7 @@ import { getWebSitesURL } from "./Urls";
  * This component generates the Tag page.
  */
 function WebSites() {
-    const API_URL_WEBSITES = getWebSitesURL();
+    const API_URL_WEBSITES: String = getWebSitesURL();
     const { data, fetchData } = FetchData(API_URL_WEBSITES);
     const COLUMNS = [
         {

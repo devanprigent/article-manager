@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es5", // Version ECMAScript cible
+        "lib": [
+            "dom",
+            "es2015"
+        ], // Bibliothèques incluses
+        "jsx": "preserve", // Type de syntaxe JSX (react ou preserve)
+        "module": "commonjs", // Type de module (commonjs, amd, system, umd, es2015, esnext, etc.)
+        "moduleResolution": "node", // Résolution des modules (node ou classic)
+        "esModuleInterop": true, // Autorise l'interopérabilité esModule
+        "forceConsistentCasingInFileNames": true, // Assure une casse constante dans les noms de fichiers
+        "noImplicitReturns": true, // Signale une erreur si une fonction n'a pas de déclaration de retour
+        "noUnusedLocals": true, // Signale une erreur pour les variables locales non utilisées
+        "noUnusedParameters": true, // Signale une erreur pour les paramètres de fonction non utilisés
+        "strict": true, // Active tous les modes stricts
+        "skipLibCheck": true // Ne vérifie pas les fichiers de déclaration de type
+    },
+    "include": [
+        "src/**/*.ts", // Inclure les fichiers TypeScript du dossier src
+        "src/**/*.tsx", // Inclure les fichiers TypeScript avec JSX du dossier src
+        "src/**/*.d.ts" // Inclure les fichiers de déclaration de type du dossier src
+    ],
+    "exclude": [
+        "node_modules" // Exclure le dossier node_modules
+    ]
+}

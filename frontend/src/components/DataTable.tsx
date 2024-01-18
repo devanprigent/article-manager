@@ -1,13 +1,19 @@
 // Libraries
 import React from "react";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Article } from "./Types";
+
+interface TableauProps {
+    data: Article[];
+    columns: GridColDef[];
+}
 
 /***
  * The goal of this component is to render a data grid using the DataGrid component 
  * from the Material-UI library. The component takes in data and columns as props, 
  * which represent the rows and columns of the data grid, respectively.
  */
-function Tableau({ data, columns }) {
+function Tableau({ data, columns }: TableauProps) {
     return (
         <div style={{ height: 500, width: '100%' }}>
             <DataGrid rows={data} columns={columns} getRowHeight={() => 'auto'} hideFooter />
