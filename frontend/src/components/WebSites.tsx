@@ -1,5 +1,6 @@
 // Libraries
 import React from "react";
+import { GridColDef } from '@mui/x-data-grid';
 import DataTable from "./DataTable";
 import FetchData from "./FetchData";
 import ButtonAdd from "./ButtonAdd";
@@ -12,9 +13,9 @@ import { getWebSitesURL } from "./Urls";
  * This component generates the Tag page.
  */
 function WebSites() {
-    const API_URL_WEBSITES: String = getWebSitesURL();
+    const API_URL_WEBSITES: string = getWebSitesURL();
     const { data, fetchData } = FetchData(API_URL_WEBSITES);
-    const COLUMNS = [
+    const COLUMNS: GridColDef[] = [
         {
             field: 'image_url',
             renderHeader: () => (

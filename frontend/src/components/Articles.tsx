@@ -85,7 +85,7 @@ function Articles() {
             ),
             width: 150,
             renderCell: (params) => (
-                params.value.map((tag) => (tag.nom)).join(', ')
+                params.value.map((tag: string) => (tag)).join(', ')
             ),
         },
         {
@@ -124,12 +124,13 @@ function Articles() {
                 FormComponent={FormArticle}
                 title={"Ajout d'un article"}
                 activeItem={{
+                    "id": 0,
                     "tags": [],
                     "titre": "",
                     "auteur": "",
                     "url_site": "",
                     "url_article": "",
-                    "date": undefined,
+                    "date": 0,
                     "synopsis": "",
                     "date_creation": "",
                     "date_modification": ""

@@ -2,12 +2,12 @@
 import React, { useState, FunctionComponent } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
-import { Article } from "./Types";
+import { Article, FormProps } from "./Types";
 
 interface ButtonEditProps {
     fetchData: () => void;
     urlToRequest: string;
-    FormComponent: FunctionComponent;
+    FormComponent: FunctionComponent<FormProps>;
     title: string;
     activeItem: Article;
 }

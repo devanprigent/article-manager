@@ -13,6 +13,12 @@ export interface Article {
     date_modification: string;
 }
 
+export interface WebSite {
+    nom: string;
+    url: string;
+    image_url: string;
+}
+
 export interface FormProps {
     isOpen: boolean;
     toggle: () => void;

@@ -40,13 +40,7 @@ function Tags({ onChange }: TagsProps) {
                 value: newTags.toString()
             }
         }
-
-        onChange({
-            "target": {
-                "name": "tags",
-                "value": newTags.toString()
-            }
-        });
+        onChange(event);
     }
 
     return (

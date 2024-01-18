@@ -22,7 +22,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
     const [errors, setErrors] = useState({});
 
     function handleChange(e: KeyboardEvent<HTMLInputElement>) {
-        const { name, value } = e.target;
+        const { name, value } = e.currentTarget;
         setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }
 
@@ -33,8 +33,8 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                 onSave(item);
                 toggle();
             })
-            .catch((error) => {
-                const newErrors = {};
+            .catch((error: yup.ValidationError) => {
+                const newErrors: Record<string, string> = {};
                 error.inner.forEach((err) => {
                     newErrors[err.path] = err.message;
                 });

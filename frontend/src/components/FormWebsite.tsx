@@ -18,7 +18,7 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
     const [errors, setErrors] = useState({});
 
     function handleChange(e: KeyboardEvent<HTMLInputElement>) {
-        const { name, value } = e.target;
+        const { name, value } = e.currentTarget;
         setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }
 

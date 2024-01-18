@@ -2,14 +2,14 @@
 import React, { useState, FunctionComponent } from "react";
 import axios from "axios";
 import { Button } from "reactstrap";
-import { Article } from "./Types";
+import { Article, WebSite, FormProps } from "./Types";
 
-interface AjoutProps {
+interface ButtonAddProps {
   fetchData: () => void;
   urlToFetch: string;
-  FormComponent: FunctionComponent;
+  FormComponent: FunctionComponent<FormProps>;
   title: string;
-  activeItem: Article;
+  activeItem: Article | WebSite;
 }
 
 /***
@@ -18,7 +18,7 @@ interface AjoutProps {
  * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
  * fetchData to update the datatable.
  */
-function Ajout({ fetchData, urlToFetch, FormComponent, title, activeItem }: AjoutProps) {
+function ButtonAdd({ fetchData, urlToFetch, FormComponent, title, activeItem }: ButtonAddProps) {
   const [modalCreate, setModalCreate] = useState<boolean>(false);
 
   function toggleModalCreate() {
@@ -55,4 +55,4 @@ function Ajout({ fetchData, urlToFetch, FormComponent, title, activeItem }: Ajou
 }
 
 // Exportation
-export default Ajout;
+export default ButtonAdd;
