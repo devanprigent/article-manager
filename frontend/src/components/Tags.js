@@ -11,6 +11,9 @@ function Tags({ onChange }) {
     const [tags, setTags] = useState([])
 
     function handleKeyDown(e) {
+        if ((e.key === 'Delete') || (e.key === 'Backspace')) {
+            removeTag(tags.length - 1);
+        }
         if (e.key !== 'Enter') return
         const value = e.target.value
         if (!value.trim()) return
@@ -42,8 +45,8 @@ function Tags({ onChange }) {
             </Label>
             <div className="tags-input-container">
                 {tags.map((tag, index) => (
-                    <div className="tag-item" key={index}>
-                        <span className="text">{tag}</span>
+                    <div className="tag-item" key={tag.name}>
+                        <span className="text" onKeyDown={() => removeTag(index)} >{tag}</span>
                         <span className="close" onClick={() => removeTag(index)}>&times;</span>
                     </div>
                 ))}

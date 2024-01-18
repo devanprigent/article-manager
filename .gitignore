@@ -24,3 +24,7 @@ dist/
 # Editor directories and files
 .idea/
 .vscode/
+
+# SonarQube
+.scannerwork
+sonar-project.properties
