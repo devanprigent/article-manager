@@ -1,7 +1,8 @@
+export interface Item {
+    id?: number;
+}
 
-
-export interface Article {
-    id: number;
+export interface Article extends Item {
     tags: string[];
     titre: string;
     auteur: string;
@@ -13,16 +14,20 @@ export interface Article {
     date_modification: string;
 }
 
-export interface WebSite {
+export interface WebSite extends Item {
     nom: string;
     url: string;
     image_url: string;
 }
 
-export interface FormProps {
+export interface Tag extends Item {
+    nom: string;
+}
+
+export interface FormProps<T extends Item> {
     isOpen: boolean;
     toggle: () => void;
-    onSave: (item: Article) => void;
+    onSave: (item: T) => void;
     title: string;
-    activeItem: Article;
+    activeItem: T;
 }

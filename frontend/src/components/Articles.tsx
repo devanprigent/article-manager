@@ -8,13 +8,26 @@ import ButtonEdit from "./ButtonEdit";
 import FetchData from "./FetchData";
 import FormArticle from "./FormArticle";
 import { getArticlesURL } from "./Urls";
+import { Article, Tag } from "./Types";
 
 /**
  * This component generates the Article page.
  */
 function Articles() {
-    const API_URL_ARTICLES = getArticlesURL();
+    const API_URL_ARTICLES: string = getArticlesURL();
     const { data, fetchData } = FetchData(API_URL_ARTICLES);
+    const TITLE_ADD_FORM: string = "Ajout d'un article";
+    const newArticle: Article = {
+        "tags": [],
+        "titre": "",
+        "auteur": "",
+        "url_site": "",
+        "url_article": "",
+        "date": 0,
+        "synopsis": "",
+        "date_creation": "",
+        "date_modification": ""
+    };
     const COLUMNS: GridColDef[] = [
         {
             field: 'titre',
@@ -85,7 +98,7 @@ function Articles() {
             ),
             width: 150,
             renderCell: (params) => (
-                params.value.map((tag: string) => (tag)).join(', ')
+                params.value.map((tag: Tag) => (tag.nom)).join(', ')
             ),
         },
         {
@@ -99,7 +112,7 @@ function Articles() {
             ),
             renderCell: (params) => (
                 <div className="d-flex justify-content-between">
-                    <ButtonEdit
+                    <ButtonEdit<Article>
                         fetchData={fetchData}
                         urlToRequest={API_URL_ARTICLES}
                         FormComponent={FormArticle}
@@ -118,23 +131,12 @@ function Articles() {
 
     return (
         <div className="container my-4">
-            <ButtonAdd
+            <ButtonAdd<Article>
                 fetchData={fetchData}
                 urlToFetch={API_URL_ARTICLES}
                 FormComponent={FormArticle}
-                title={"Ajout d'un article"}
-                activeItem={{
-                    "id": 0,
-                    "tags": [],
-                    "titre": "",
-                    "auteur": "",
-                    "url_site": "",
-                    "url_article": "",
-                    "date": 0,
-                    "synopsis": "",
-                    "date_creation": "",
-                    "date_modification": ""
-                }}
+                title={TITLE_ADD_FORM}
+                activeItem={newArticle}
             />
             <div className="mx-auto shadow p-3 mb-5 bg-white rounded">
                 <DataTable data={data} columns={COLUMNS} />

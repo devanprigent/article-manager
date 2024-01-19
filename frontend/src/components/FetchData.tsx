@@ -1,11 +1,12 @@
 // Libraries
 import { useEffect, useState } from "react";
+import { Article, WebSite } from "./Types";
 
 /**
  * The role of this component is to load data from a specified URL.
  */
-function FetchData(urlFetch: string) {
-    const [data, setData] = useState([]);
+function FetchData(urlFetch: string): { data: Article[] | WebSite[], fetchData: () => Promise<void> } {
+    const [data, setData] = useState<Article[] | WebSite[]>([]);
 
     async function fetchData() {
         const raw_data = await fetch(urlFetch);

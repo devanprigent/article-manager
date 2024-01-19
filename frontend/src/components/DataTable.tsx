@@ -1,10 +1,10 @@
 // Libraries
 import React from "react";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Article } from "./Types";
+import { Article, WebSite } from "./Types";
 
 interface TableauProps {
-    data: Article[];
+    data: Article[] | WebSite[];
     columns: GridColDef[];
 }
 

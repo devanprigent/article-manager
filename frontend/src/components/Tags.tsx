@@ -4,7 +4,7 @@ import { Label } from "reactstrap";
 import "../style/tags.css"
 
 interface TagsProps {
-    onChange: (event: KeyboardEvent<HTMLInputElement>) => void;
+    onChange: (newTags: string[]) => void;
 }
 
 /**
@@ -22,25 +22,15 @@ function Tags({ onChange }: TagsProps) {
         const value: string = e.currentTarget.value
         if (!value.trim()) return
         const newTags = [...tags, value];
-        update(newTags);
+        onChange(newTags);
         setTags(newTags);
         e.currentTarget.value = '';
     }
 
     function removeTag(index: number) {
-        const newTags = tags.filter((el, i) => i !== index);
-        update(newTags);
+        const newTags = tags.filter((_, i) => i !== index);
+        onChange(newTags);
         setTags(newTags);
-    }
-
-    function update(newTags: string[]) {
-        const event: KeyboardEvent<HTMLInputElement> = {
-            target: {
-                name: "tags",
-                value: newTags.toString()
-            }
-        }
-        onChange(event);
     }
 
     return (

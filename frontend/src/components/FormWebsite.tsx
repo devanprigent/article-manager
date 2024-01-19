@@ -1,8 +1,8 @@
 // Libraries
-import React, { useState, KeyboardEvent } from "react";
-import { FormProps } from "./Types";
-import * as yup from 'yup';
+import React, { useState, ChangeEvent, FunctionComponent } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
+import { FormProps, WebSite } from "./Types";
+import * as yup from 'yup';
 
 const validationSchema = yup.object({
     nom: yup.string().required('Le nom du site est requis.'),
@@ -13,11 +13,11 @@ const validationSchema = yup.object({
 /**
  * The goal of this component is to provide a modal form for adding or editing a website. 
  */
-function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
+const FormWebsite: FunctionComponent<FormProps<WebSite>> = ({ isOpen, toggle, onSave, title, activeItem }) => {
     const [item, setItem] = useState(activeItem);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
-    function handleChange(e: KeyboardEvent<HTMLInputElement>) {
+    function handleChange(e: ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.currentTarget;
         setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }
@@ -29,10 +29,12 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                 onSave(item);
                 toggle();
             })
-            .catch((error) => {
-                const newErrors = {};
+            .catch((error: yup.ValidationError) => {
+                const newErrors: Record<string, string> = {};
                 error.inner.forEach((err) => {
-                    newErrors[err.path] = err.message;
+                    if (err.path !== undefined) {
+                        newErrors[err.path] = err.message;
+                    }
                 });
                 setErrors(newErrors);
             });
@@ -51,7 +53,7 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                             placeholder="Nom"
                             value={item.nom}
                             onChange={handleChange}
-                            invalid={errors.nom}
+                            invalid={errors.nom !== undefined && errors.nom !== ""}
                         />
                         {errors.nom && <div className="error-message">{errors.nom}</div>}
                     </FormGroup>
@@ -63,7 +65,7 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                             placeholder="Url"
                             value={item.url}
                             onChange={handleChange}
-                            invalid={errors.url}
+                            invalid={errors.url !== undefined && errors.url !== ""}
                         />
                         {errors.url && <div className="error-message">{errors.url}</div>}
                     </FormGroup>
@@ -75,7 +77,7 @@ function FormWebsite({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                             placeholder="Url"
                             value={item.image_url}
                             onChange={handleChange}
-                            invalid={errors.image_url}
+                            invalid={errors.image_url !== undefined && errors.image_url !== ""}
                         />
                         {errors.image_url && <div className="error-message">{errors.image_url}</div>}
                     </FormGroup>

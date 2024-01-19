@@ -1,12 +1,11 @@
 // Libraries
 import React from "react";
-import { Article } from "./Types";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 interface FormConfirmationProps {
   isOpen: boolean;
   toggle: () => void;
-  onSave: (item: Article) => void;
+  onSave: () => void;
 }
 
 /**

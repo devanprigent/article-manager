@@ -2,14 +2,14 @@
 import React, { useState, FunctionComponent } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
-import { Article, FormProps } from "./Types";
+import { FormProps, Item } from "./Types";
 
-interface ButtonEditProps {
+interface ButtonEditProps<T extends Item> {
     fetchData: () => void;
     urlToRequest: string;
-    FormComponent: FunctionComponent<FormProps>;
+    FormComponent: FunctionComponent<FormProps<T>>;
     title: string;
-    activeItem: Article;
+    activeItem: T;
 }
 
 /**
@@ -17,14 +17,14 @@ interface ButtonEditProps {
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonEdit({ fetchData, urlToRequest, FormComponent, title, activeItem }: ButtonEditProps) {
+function ButtonEdit<T extends Item>({ fetchData, urlToRequest, FormComponent, title, activeItem }: ButtonEditProps<T>) {
     const [modalEdit, setModalEdit] = useState(false);
 
     function toggleModalEdit() {
         setModalEdit(!modalEdit);
     }
 
-    function edit(item: Article) {
+    function edit(item: T) {
         setModalEdit(!modalEdit);
         axios
             .patch(`${urlToRequest}${item.id}/`, item)

@@ -1,7 +1,7 @@
 // Libraries
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, ChangeEvent, FunctionComponent } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
-import { FormProps } from "./Types";
+import { FormProps, Article } from "./Types";
 import Tags from "./Tags";
 import * as yup from 'yup';
 
@@ -17,11 +17,15 @@ const validationSchema = yup.object({
 /**
  * The goal of this component is to provide a modal form for adding or editing an article. 
  */
-function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
+const FormArticle: FunctionComponent<FormProps<Article>> = ({ isOpen, toggle, onSave, title, activeItem }) => {
     const [item, setItem] = useState(activeItem);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
-    function handleChange(e: KeyboardEvent<HTMLInputElement>) {
+    function handleTagChange(newTags: string[]): void {
+        setItem((prevItem) => ({ ...prevItem, "tags": newTags }));
+    }
+
+    function handleChange(e: ChangeEvent<HTMLInputElement>): void {
         const { name, value } = e.currentTarget;
         setItem((prevItem) => ({ ...prevItem, [name]: value }));
     }
@@ -36,7 +40,9 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
             .catch((error: yup.ValidationError) => {
                 const newErrors: Record<string, string> = {};
                 error.inner.forEach((err) => {
-                    newErrors[err.path] = err.message;
+                    if (err.path !== undefined) {
+                        newErrors[err.path] = err.message;
+                    }
                 });
                 setErrors(newErrors);
             });
@@ -58,7 +64,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                                 placeholder="Titre"
                                 value={item.titre}
                                 onChange={handleChange}
-                                invalid={errors.titre}
+                                invalid={errors.titre !== undefined && errors.titre !== ""}
                             />
                             {errors.titre && <div className="error-message">{errors.titre}</div>}
                         </FormGroup>
@@ -73,7 +79,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                                     placeholder="Auteur"
                                     value={item.auteur}
                                     onChange={handleChange}
-                                    invalid={errors.auteur}
+                                    invalid={errors.auteur !== undefined && errors.auteur !== ""}
                                 />
                                 {errors.auteur && <div className="error-message">{errors.auteur}</div>}
                             </FormGroup>
@@ -87,7 +93,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                                     placeholder="Année"
                                     value={item.date}
                                     onChange={handleChange}
-                                    invalid={errors.date}
+                                    invalid={errors.date !== undefined && errors.date !== ""}
                                 />
                                 {errors.date && <div className="error-message">{errors.date}</div>}
                             </FormGroup>
@@ -102,7 +108,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                                 placeholder="Url site"
                                 value={item.url_site}
                                 onChange={handleChange}
-                                invalid={errors.url_site}
+                                invalid={errors.url_site !== undefined && errors.url_site !== ""}
                             />
                             {errors.url_site && <div className="error-message">{errors.url_site}</div>}
                         </FormGroup>
@@ -116,7 +122,7 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                                 placeholder="Url article"
                                 value={item.url_article}
                                 onChange={handleChange}
-                                invalid={errors.url_article}
+                                invalid={errors.url_article !== undefined && errors.url_article !== ""}
                             />
                             {errors.url_article && <div className="error-message">{errors.url_article}</div>}
                         </FormGroup>
@@ -129,12 +135,12 @@ function FormArticle({ isOpen, toggle, onSave, title, activeItem }: FormProps) {
                                 name="synopsis"
                                 value={item.synopsis}
                                 onChange={handleChange}
-                                invalid={errors.synopsis}
+                                invalid={errors.synopsis !== undefined && errors.synopsis !== ""}
                             />
                             {errors.synopsis && <div className="error-message">{errors.synopsis}</div>}
                         </FormGroup>
                         <FormGroup>
-                            <Tags onChange={handleChange} />
+                            <Tags onChange={handleTagChange} />
                         </FormGroup>
                     </Form>
                 </div>

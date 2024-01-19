@@ -8,6 +8,7 @@ import FormWebsite from "./FormWebsite";
 import ButtonDelete from "./ButtonDelete";
 import ButtonEdit from "./ButtonEdit";
 import { getWebSitesURL } from "./Urls";
+import { WebSite } from "./Types";
 
 /**
  * This component generates the Tag page.
@@ -15,6 +16,12 @@ import { getWebSitesURL } from "./Urls";
 function WebSites() {
     const API_URL_WEBSITES: string = getWebSitesURL();
     const { data, fetchData } = FetchData(API_URL_WEBSITES);
+    const TITLE_WEBSITE_FORM: string = "Ajout d'un site web";
+    const newWebSite: WebSite = {
+        "nom": "",
+        "url": "",
+        "image_url": ""
+    };
     const COLUMNS: GridColDef[] = [
         {
             field: 'image_url',
@@ -86,12 +93,8 @@ function WebSites() {
                 fetchData={fetchData}
                 urlToFetch={API_URL_WEBSITES}
                 FormComponent={FormWebsite}
-                title={"Ajout d'un site web"}
-                activeItem={{
-                    "nom": "",
-                    "url": "",
-                    "image_url": ""
-                }}
+                title={TITLE_WEBSITE_FORM}
+                activeItem={newWebSite}
             />
             <div className="shadow p-3 mb-5 bg-white rounded">
                 <DataTable data={data} columns={COLUMNS} />
