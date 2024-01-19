@@ -1,4 +1,4 @@
-# Django
+# BACKEND (Django)
 __pycache__/
 *.pyc
 *.pyo
@@ -9,22 +9,22 @@ db.sqlite3
 *.pyc
 *.pyo
 
-# Environnement virtuel
+# BACKEND (Virtual Environment)
 venv/
 __venv__/
 
-# Node
+# FRONTEND (Node.js)
 node_modules/
 
-# React build
+# FRONTEND (React)
 build/
 dist/
 .DS_Store
 
-# Editor directories and files
+# IDE
 .idea/
 .vscode/
 
-# SonarQube
+# TEST (SonarQube)
 .scannerwork
 sonar-project.properties
