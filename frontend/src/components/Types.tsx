@@ -3,7 +3,7 @@ export interface Item {
 }
 
 export interface Article extends Item {
-    tags: string[];
+    tags: Tag[];
     titre: string;
     auteur: string;
     url_site: string;

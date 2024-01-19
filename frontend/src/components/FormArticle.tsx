@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState, ChangeEvent, FunctionComponent } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label } from "reactstrap";
-import { FormProps, Article } from "./Types";
+import { FormProps, Article, Tag } from "./Types";
 import Tags from "./Tags";
 import * as yup from 'yup';
 
@@ -21,7 +21,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({ isOpen, toggle, on
     const [item, setItem] = useState(activeItem);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    function handleTagChange(newTags: string[]): void {
+    function handleTagChange(newTags: Tag[]): void {
         setItem((prevItem) => ({ ...prevItem, "tags": newTags }));
     }
 
@@ -140,7 +140,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({ isOpen, toggle, on
                             {errors.synopsis && <div className="error-message">{errors.synopsis}</div>}
                         </FormGroup>
                         <FormGroup>
-                            <Tags onChange={handleTagChange} />
+                            <Tags onChange={handleTagChange} currentTags={activeItem.tags} />
                         </FormGroup>
                     </Form>
                 </div>
