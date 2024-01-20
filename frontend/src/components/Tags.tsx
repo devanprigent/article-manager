@@ -17,11 +17,11 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
     const [tags, setTags] = useState<Tag[]>(currentTags)
 
     function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
-        if ((e.key === 'Delete') || (e.key === 'Backspace')) {
+        const value: string = e.currentTarget.value;
+        if (((e.key === 'Delete') || (e.key === 'Backspace')) && (!value.trim())) {
             removeTag(tags.length - 1);
         }
         if (e.key !== 'Enter') return
-        const value: string = e.currentTarget.value;
         if (!value.trim()) return
         const newTag: Tag = { 
             id: 0,
