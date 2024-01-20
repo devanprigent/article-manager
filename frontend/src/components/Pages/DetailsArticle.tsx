@@ -18,69 +18,68 @@ interface DetailsArticleProps {
 /**
  * The goal of this component is to provide a modal form for adding or editing an article. 
  */
-function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: DetailsArticleProps)  {
+function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readonly<DetailsArticleProps>)  {
     const API_URL_ARTICLES: string = getArticlesURL();
 
     return (
-<Modal isOpen={isOpen} toggle={toggle} size="xl">
-    <ModalHeader toggle={toggle}>
-        <b className="h1">{title}</b>
-    </ModalHeader>
-    <ModalBody>
-        <div className="container">
-            <div className="d-flex mb-2">
-                <div className="col-md-6">
-                        <b>Nom :</b> {activeItem.nom}
+        <Modal isOpen={isOpen} toggle={toggle} size="xl">
+            <ModalHeader toggle={toggle}>
+                <b className="h1">{title}</b>
+            </ModalHeader>
+            <ModalBody>
+                <div className="container">
+                    <div className="d-flex mb-2">
+                        <div className="col-md-6">
+                                <b>Nom :</b> {activeItem.nom}
+                        </div>
+                        <div className="col-md-6">
+                                <b>URL Site : </b>
+                                <a href={activeItem.url_site} target="_blank" rel="noopener noreferrer">
+                                    {activeItem.url_site}
+                                </a>
+                        </div>
+                    </div>
+                    <div className="d-flex mb-2">
+                        <div className="col-md-6">
+                            <b>Auteur :</b> {activeItem.auteur}
+                        </div>
+                        <div className="col-md-6">
+                            <b>URL Article : </b>
+                            <a href={activeItem.url_article} target="_blank" rel="noopener noreferrer">
+                                {activeItem.url_article}
+                            </a>
+                        </div>
+                    </div>
+                    <div className="d-flex mb-5">
+                        <div className="col-md-6">
+                            <b>Date : </b> {activeItem.date}
+                        </div>
+                        <div className="col-md-6">
+                            <b>Tags : </b> {activeItem.tags.map((tag: Tag) => (tag.nom)).join(', ')}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <b>Synopsis : </b> {activeItem.synopsis}
+                    </div>
                 </div>
-                <div className="col-md-6">
-                        <b>URL Site : </b>
-                        <a href={activeItem.url_site} target="_blank" rel="noopener noreferrer">
-                            {activeItem.url_site}
-                        </a>
-                </div>
+            </ModalBody>
+            <ModalFooter className="d-flex justify-content-center">
+            <div className="d-flex justify-content-between w-100">
+                    <ButtonEdit<Article>
+                        fetchData={fetchData}
+                        urlToRequest={API_URL_ARTICLES}
+                        FormComponent={FormArticle}
+                        title={"Modification d'un article"}
+                        activeItem={activeItem}
+                    />
+                    <ButtonDelete
+                        fetchData={fetchData}
+                        urlToRequest={API_URL_ARTICLES}
+                        itemId={activeItem.id}
+                    />
             </div>
-            <div className="d-flex mb-2">
-                <div className="col-md-6">
-                    <b>Auteur :</b> {activeItem.auteur}
-                </div>
-                <div className="col-md-6">
-                    <b>URL Article : </b>
-                    <a href={activeItem.url_article} target="_blank" rel="noopener noreferrer">
-                        {activeItem.url_article}
-                    </a>
-                </div>
-            </div>
-            <div className="d-flex mb-5">
-                <div className="col-md-6">
-                    <b>Date : </b> {activeItem.date}
-                </div>
-                <div className="col-md-6">
-                    <b>Tags : </b> {activeItem.tags.map((tag: Tag) => (tag.nom)).join(', ')}
-                </div>
-            </div>
-            <div className="row">
-                <b>Synopsis : </b> {activeItem.synopsis}
-            </div>
-        </div>
-    </ModalBody>
-    <ModalFooter className="d-flex justify-content-center">
-    <div className="d-flex justify-content-between w-100">
-            <ButtonEdit<Article>
-                fetchData={fetchData}
-                urlToRequest={API_URL_ARTICLES}
-                FormComponent={FormArticle}
-                title={"Modification d'un article"}
-                activeItem={activeItem}
-            />
-            <ButtonDelete
-                fetchData={fetchData}
-                urlToRequest={API_URL_ARTICLES}
-                itemId={activeItem.id}
-            />
-    </div>
-    </ModalFooter>
-</Modal>
-
+            </ModalFooter>
+        </Modal>
     );
 }
 

@@ -17,6 +17,11 @@ function NavBar() {
             </span>
             <ul className="navbar-nav">
               <li className="nav-item display-7">
+                <NavLink className="nav-link font-weight-bold" to="/accounts">
+                  Comptes
+                </NavLink>
+              </li>
+              <li className="nav-item display-7">
                 <NavLink className="nav-link font-weight-bold" to="/articles">
                   Articles
                 </NavLink>
