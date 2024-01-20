@@ -1,10 +1,10 @@
 export interface Item {
-    id?: number;
+    id: number;
+    nom: string;
 }
 
 export interface Article extends Item {
     tags: Tag[];
-    titre: string;
     auteur: string;
     url_site: string;
     url_article: string;
@@ -15,13 +15,11 @@ export interface Article extends Item {
 }
 
 export interface WebSite extends Item {
-    nom: string;
     url: string;
     image_url: string;
 }
 
 export interface Tag extends Item {
-    nom: string;
 }
 
 export interface FormProps<T extends Item> {

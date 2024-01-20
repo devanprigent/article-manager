@@ -18,6 +18,7 @@ function WebSites() {
     const { data, fetchData } = FetchData(API_URL_WEBSITES);
     const TITLE_WEBSITE_FORM: string = "Ajout d'un site web";
     const newWebSite: WebSite = {
+        "id": 0,
         "nom": "",
         "url": "",
         "image_url": ""
@@ -30,34 +31,22 @@ function WebSites() {
                     {'Logo'}
                 </strong>
             ),
-            width: 250,
+            width: 180,
             renderCell: (params) => <img src={params.row.image_url} width="120" height="100" alt="Website logo" />,
-            flex: 1
         },
         {
             field: 'nom',
+            width: 220,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Site'}
                 </strong>
             ),
-            width: 250,
-            flex: 1
-        },
-        {
-            field: 'url',
-            renderHeader: () => (
-                <strong className="fs-5">
-                    {'URL'}
-                </strong>
-            ),
-            width: 250,
             renderCell: (params) => (
                 <a href={params.row.url} target="_blank" rel="noopener noreferrer">
-                    {params.row.url}
+                    {params.row.nom}
                 </a>
-            ),
-            flex: 1
+            ), 
         },
         {
             field: 'actions',
@@ -89,15 +78,21 @@ function WebSites() {
 
     return (
         <div className="container my-4">
-            <ButtonAdd
-                fetchData={fetchData}
-                urlToFetch={API_URL_WEBSITES}
-                FormComponent={FormWebsite}
-                title={TITLE_WEBSITE_FORM}
-                activeItem={newWebSite}
-            />
-            <div className="shadow p-3 mb-5 bg-white rounded">
-                <DataTable data={data} columns={COLUMNS} />
+            <div className="col-md-12">
+                <div className="d-flex justify-content-center">
+                    <ButtonAdd
+                        fetchData={fetchData}
+                        urlToFetch={API_URL_WEBSITES}
+                        FormComponent={FormWebsite}
+                        title={TITLE_WEBSITE_FORM}
+                        activeItem={newWebSite}
+                    />
+                </div>
+            </div>
+            <div className="col-md-8 mx-auto">
+                <div className="mx-auto shadow p-3 mb-5 bg-white rounded">
+                    <DataTable data={data} columns={COLUMNS} />
+                </div>
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
 /**
@@ -7,38 +7,30 @@ import { NavLink } from "react-router-dom";
  * The navigation bar uses the react-router-dom library to handle navigation
  * between the various pages of the application.
  */
-function BarreNavigation() {
-    const [expanded, setExpanded] = useState(false);
-    const toggleNavbar = () => {
-        setExpanded(!expanded);
-    };
+function NavBar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <button className="navbar-toggler" type="button" onClick={toggleNavbar}>
-                <span className="navbar-toggler-icon"></span>
-            </button>
-
-            <div className={`collapse navbar-collapse ${expanded ? "show" : ""}`}>
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item display-7">
-                        <NavLink className="nav-link font-weight-bold" to="/articles">
-                            Articles
-                        </NavLink>
-                    </li>
-                    <li className="nav-item display-7">
-                        <NavLink className="nav-link font-weight-bold" to="/websites">
-                            WebSites
-                        </NavLink>
-                    </li>
-                </ul>
-                <span className="navbar-text mx-auto font-weight-bold display-5">
-                    Article Manager
-                </span>
-            </div>
+          <div className="container-fluid">
+            <span className="navbar-text font-weight-bold display-5">
+                Article Manager
+            </span>
+            <ul className="navbar-nav">
+              <li className="nav-item display-7">
+                <NavLink className="nav-link font-weight-bold" to="/articles">
+                  Articles
+                </NavLink>
+              </li>
+              <li className="nav-item display-7">
+                <NavLink className="nav-link font-weight-bold" to="/websites">
+                  WebSites
+                </NavLink>
+              </li>
+            </ul>
+          </div>
         </nav>
-    );
+      );
 }
 
 // Exportation
-export default BarreNavigation;
+export default NavBar;

@@ -39,7 +39,7 @@ function ButtonAdd<T extends Item>({ fetchData, urlToFetch, FormComponent, title
 
   return (
     <div className="d-flex justify-content-end">
-      <Button className="btn btn-success mb-3" onClick={toggleModalCreate}>
+      <Button className="btn btn-success btn-lg mb-4" onClick={toggleModalCreate}>
         Ajouter
       </Button>
 

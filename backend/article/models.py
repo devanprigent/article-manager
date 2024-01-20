@@ -3,7 +3,7 @@ from tag.models import Tag
 
 class Article(models.Model):
    id = models.AutoField(primary_key=True)
-   titre = models.TextField()
+   nom = models.TextField()
    auteur = models.TextField()
    url_site = models.TextField()
    url_article = models.TextField()

@@ -6,7 +6,7 @@ import Tags from "./Tags";
 import * as yup from 'yup';
 
 const validationSchema = yup.object({
-    titre: yup.string().required(" "),
+    nom: yup.string().required(" "),
     auteur: yup.string().required(" "),
     url_site: yup.string().url(" ").required(" "),
     url_article: yup.string().url(" ").required(" "),
@@ -55,18 +55,18 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({ isOpen, toggle, on
                 <div className="container">
                     <Form>
                         <FormGroup>
-                            <Label for="titre">
+                            <Label for="nom">
                                 <b>Titre</b>
                             </Label>
                             <Input
                                 type="text"
-                                name="titre"
+                                name="nom"
                                 placeholder="Titre"
-                                value={item.titre}
+                                value={item.nom}
                                 onChange={handleChange}
-                                invalid={errors.titre !== undefined && errors.titre !== ""}
+                                invalid={errors.nom !== undefined && errors.nom !== ""}
                             />
-                            {errors.titre && <div className="error-message">{errors.titre}</div>}
+                            {errors.nom && <div className="error-message">{errors.nom}</div>}
                         </FormGroup>
                         <div className="row">
                             <FormGroup className="col-md-6">

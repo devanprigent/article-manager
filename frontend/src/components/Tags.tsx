@@ -23,7 +23,10 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
         if (e.key !== 'Enter') return
         const value: string = e.currentTarget.value;
         if (!value.trim()) return
-        const newTag: Tag = { nom: e.currentTarget.value, };
+        const newTag: Tag = { 
+            id: 0,
+            nom: e.currentTarget.value
+        };
         const newTags = [...tags, newTag];
         onChange(newTags);
         setTags(newTags);
