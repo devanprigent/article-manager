@@ -25,7 +25,7 @@ function ButtonDetails({ fetchData, activeItem }: Readonly<ButtonDetailsProps>) 
   return (
     <div className="d-flex justify-content-end">
       
-      <Info onClick={toggleModal} size={"40px"} strokeWidth={"2px"} color={"#0c9c02"}/>
+      <Info onClick={toggleModal} size={"40px"} strokeWidth={"2px"} color={"#198754"}/>
       
       {modal && <DetailsArticle
         isOpen={modal}
