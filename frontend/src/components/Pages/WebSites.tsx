@@ -31,12 +31,12 @@ function WebSites() {
                     {'Logo'}
                 </strong>
             ),
-            width: 180,
+            width: 170,
             renderCell: (params) => <img src={params.row.image_url} width="120" height="100" alt="Website logo" />,
         },
         {
             field: 'nom',
-            width: 220,
+            width: 150,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Site'}
@@ -51,7 +51,7 @@ function WebSites() {
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 200,
+            width: 100,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Actions'}
@@ -78,21 +78,17 @@ function WebSites() {
 
     return (
         <div className="container my-4">
-            <div className="col-md-12">
-                <div className="d-flex justify-content-center">
-                    <ButtonAdd
-                        fetchData={fetchData}
-                        urlToFetch={API_URL_WEBSITES}
-                        FormComponent={FormWebsite}
-                        title={TITLE_WEBSITE_FORM}
-                        activeItem={newWebSite}
-                    />
-                </div>
+            <div className="mx-auto shadow p-3 mb-5 bg-white rounded">
+                <DataTable data={data} columns={COLUMNS} />
             </div>
-            <div className="col-md-8 mx-auto">
-                <div className="mx-auto shadow p-3 mb-5 bg-white rounded">
-                    <DataTable data={data} columns={COLUMNS} />
-                </div>
+            <div className="d-flex justify-content-center">
+                <ButtonAdd
+                    fetchData={fetchData}
+                    urlToFetch={API_URL_WEBSITES}
+                    FormComponent={FormWebsite}
+                    title={TITLE_WEBSITE_FORM}
+                    activeItem={newWebSite}
+                />
             </div>
         </div>
     );

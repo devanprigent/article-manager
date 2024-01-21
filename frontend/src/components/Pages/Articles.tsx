@@ -31,12 +31,12 @@ function Articles() {
     const COLUMNS: GridColDef[] = [
         {
             field: 'titre',
+            width: 320,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Titre'}
                 </strong>
             ),
-            width: 320,
             renderCell: (params) => (
                 <a href={params.row.url_article} target="_blank" rel="noopener noreferrer">
                     {params.row.nom}
@@ -45,15 +45,16 @@ function Articles() {
         },
         {
             field: 'auteur',
+            width: 130,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Auteur'}
                 </strong>
             ),
-            width: 170,
         },
         {
             field: 'date',
+            width: 80,
             renderHeader: () => (
                 <strong className="fs-5">
                     {'Date'}
@@ -81,21 +82,17 @@ function Articles() {
 
     return (
         <div className="container my-4">
-            <div className="col-md-12">
-                <div className="d-flex justify-content-center">
-                    <ButtonAdd<Article>
-                         fetchData={fetchData}
-                        urlToFetch={API_URL_ARTICLES}
-                         FormComponent={FormArticle}
-                        title={TITLE_ADD_FORM}
-                        activeItem={newArticle}
-                    />
-                </div>
+            <div className="shadow p-3 mb-5 bg-white rounded">
+                <DataTable data={data} columns={COLUMNS} />
             </div>
-                <div className="col-md-8 mx-auto">
-                    <div className="mx-auto shadow p-3 mb-5 bg-white rounded">
-                        <DataTable data={data} columns={COLUMNS} />
-                    </div>
+            <div className="d-flex justify-content-center">
+                <ButtonAdd<Article>
+                    fetchData={fetchData}
+                    urlToFetch={API_URL_ARTICLES}
+                    FormComponent={FormArticle}
+                    title={TITLE_ADD_FORM}
+                    activeItem={newArticle}
+                />
             </div>
         </div>
     );

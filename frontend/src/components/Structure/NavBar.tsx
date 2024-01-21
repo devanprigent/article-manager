@@ -13,7 +13,7 @@ function NavBar() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
             <span className="navbar-text font-weight-bold display-5">
-                Article Manager
+                Tableau de bord
             </span>
             <ul className="navbar-nav">
               <li className="nav-item display-7">
@@ -23,12 +23,7 @@ function NavBar() {
               </li>
               <li className="nav-item display-7">
                 <NavLink className="nav-link font-weight-bold" to="/articles">
-                  Articles
-                </NavLink>
-              </li>
-              <li className="nav-item display-7">
-                <NavLink className="nav-link font-weight-bold" to="/websites">
-                  WebSites
+                  Article Manager
                 </NavLink>
               </li>
             </ul>

@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState } from "react";
-import { Button } from "reactstrap";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import axios from "axios";
 import FormConfirmation from "../Forms/FormConfirmation";
 
@@ -36,12 +36,9 @@ function ButtonDelete({ fetchData, urlToRequest, itemId }: Readonly<ButtonDelete
 
     return (
         <main>
-            <Button
-                className="btn bg-danger text-white float-end"
-                onClick={toggleModalRemove}
-            >
-                {"Supprimer"}
-            </Button>
+            <button onClick={toggleModalRemove}>
+                <DeleteRoundedIcon/>
+            </button>
 
             <FormConfirmation
                 isOpen={modalRemove}

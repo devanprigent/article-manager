@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState } from "react";
-import { Button } from "reactstrap";
+import InfoSharpIcon from '@mui/icons-material/InfoSharp';
 import { Article } from "../Tools/Types";
 import DetailsArticle from "../Pages/DetailsArticle";
 
@@ -24,10 +24,10 @@ function ButtonDetails({ fetchData, activeItem }: Readonly<ButtonDetailsProps>) 
 
   return (
     <div className="d-flex justify-content-end">
-      <Button className="btn btn-success" onClick={toggleModalCreate}>
-        +
-      </Button>
-
+      <button onClick={toggleModalCreate}>
+        <InfoSharpIcon/>
+      </button>
+      
       {modalCreate && <DetailsArticle
         isOpen={modalCreate}
         toggle={toggleModalCreate}

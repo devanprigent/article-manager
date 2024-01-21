@@ -2,8 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/Structure/NavBar";
 import Accounts from "./components/Pages/Accounts";
-import Articles from "./components/Pages/Articles";
-import WebSites from "./components/Pages/WebSites";
+import ArticleManager from "./components/Pages/ArticleManager";
 import Footer from "./components/Structure/Footer";
 
 function App() {
@@ -11,14 +10,14 @@ function App() {
     <div className="App">
       <NavBar />
       <Routes>
-        <Route exact path="/" element={<Articles />} />
+        <Route exact path="/" element={<ArticleManager />} />
         <Route path="/accounts" element={<Accounts />} />
-        <Route path="/articles" element={<Articles />} />
-        <Route path="/websites" element={<WebSites />} />
+        <Route path="/articles" element={<ArticleManager />} />
       </Routes>
       <Footer />
     </div>
   );
 }
 
+// Exportation
 export default App;

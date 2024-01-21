@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState, FunctionComponent } from "react";
-import { Button } from "reactstrap";
+import EditIcon from '@mui/icons-material/Edit';
 import axios from "axios";
 import { FormProps, Item } from "../Tools/Types";
 
@@ -38,12 +38,9 @@ function ButtonEdit<T extends Item>({ fetchData, urlToRequest, FormComponent, ti
 
     return (
         <main>
-            <Button
-                className="btn bg-warning text-white float-end"
-                onClick={toggleModalEdit}
-            >
-                {"Modifier"}
-            </Button>
+            <button onClick={toggleModalEdit}>
+                <EditIcon/>
+            </button>
 
             <FormComponent
                 isOpen={modalEdit}
