@@ -23,14 +23,19 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
         }
         if (e.key !== 'Enter') return
         if (!value.trim()) return
-        const newTag: Tag = { 
+        e.currentTarget.value = "";
+        addTag(value);
+    }
+
+    function addTag(nom: string) {
+        if (tags.some(tag => tag.nom === nom)) return
+        const newTag: Tag = {
             id: 0,
-            nom: e.currentTarget.value
+            nom: nom
         };
         const newTags = [...tags, newTag];
         onChange(newTags);
         setTags(newTags);
-        e.currentTarget.value = '';
     }
 
     function removeTag(index: number) {

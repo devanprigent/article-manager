@@ -18,7 +18,7 @@ interface DetailsArticleProps {
 /**
  * The goal of this component is to provide a modal form for adding or editing an article. 
  */
-function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readonly<DetailsArticleProps>)  {
+function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readonly<DetailsArticleProps>) {
     const API_URL_ARTICLES: string = getArticlesURL();
 
     return (
@@ -29,21 +29,21 @@ function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readon
             <ModalBody>
                 <div className="container">
                     <div className="d-flex mb-2">
-                        <div className="col-md-6">
-                                <b>Nom :</b> {activeItem.nom}
+                        <div className="col-md-5">
+                            <b>Nom :</b> {activeItem.nom}
                         </div>
-                        <div className="col-md-6">
-                                <b>URL Site : </b>
-                                <a href={activeItem.url_site} target="_blank" rel="noopener noreferrer">
-                                    {activeItem.url_site}
-                                </a>
+                        <div className="col-md-7">
+                            <b>URL Site : </b>
+                            <a href={activeItem.url_site} target="_blank" rel="noopener noreferrer">
+                                {activeItem.url_site}
+                            </a>
                         </div>
                     </div>
                     <div className="d-flex mb-2">
-                        <div className="col-md-6">
+                        <div className="col-md-5">
                             <b>Auteur :</b> {activeItem.auteur}
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-7">
                             <b>URL Article : </b>
                             <a href={activeItem.url_article} target="_blank" rel="noopener noreferrer">
                                 {activeItem.url_article}
@@ -51,10 +51,10 @@ function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readon
                         </div>
                     </div>
                     <div className="d-flex mb-5">
-                        <div className="col-md-6">
+                        <div className="col-md-5">
                             <b>Date : </b> {activeItem.date}
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-7">
                             <b>Tags : </b> {activeItem.tags.map((tag: Tag) => (tag.nom)).join(', ')}
                         </div>
                     </div>
@@ -64,7 +64,7 @@ function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readon
                 </div>
             </ModalBody>
             <ModalFooter className="d-flex justify-content-center">
-            <div className="d-flex justify-content-between w-100">
+                <div className="d-flex justify-content-between w-100">
                     <ButtonEdit<Article>
                         fetchData={fetchData}
                         urlToRequest={API_URL_ARTICLES}
@@ -77,7 +77,7 @@ function DetailsArticle({ isOpen, toggle, fetchData, title, activeItem }: Readon
                         urlToRequest={API_URL_ARTICLES}
                         itemId={activeItem.id}
                     />
-            </div>
+                </div>
             </ModalFooter>
         </Modal>
     );
