@@ -81,9 +81,6 @@ function Articles() {
 
   return (
     <div className="container my-4">
-      <div className="shadow p-3 mb-5 bg-white rounded">
-        <DataTable data={data} columns={COLUMNS} />
-      </div>
       <div className="d-flex justify-content-center">
         <ButtonAdd<Article>
           fetchData={fetchData}
@@ -92,6 +89,9 @@ function Articles() {
           title={TITLE_ADD_FORM}
           activeItem={newArticle}
         />
+      </div>
+      <div className="shadow p-3 mb-5 bg-white rounded">
+        <DataTable data={data} columns={COLUMNS} />
       </div>
     </div>
   );
