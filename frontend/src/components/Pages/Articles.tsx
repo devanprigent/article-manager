@@ -24,7 +24,7 @@ function Articles() {
     auteur: "",
     url_site: "",
     url_article: "",
-    date: 0,
+    date: new Date().getFullYear(),
     summary: "",
     read: false,
     favoris: false,
