@@ -21,8 +21,9 @@ const validationSchema = yup.object({
   url_site: yup.string().url(" ").required(" "),
   url_article: yup.string().url(" ").required(" "),
   date: yup.date().required(" "),
-  synopsis: yup.string().required(" "),
+  summary: yup.string().required(" "),
   read: yup.boolean().required(" "),
+  favoris: yup.boolean().required(" "),
 });
 
 /**
@@ -161,20 +162,18 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
               )}
             </FormGroup>
             <FormGroup>
-              <Label for="synopsis">
-                <b>Synopsis</b>
+              <Label for="summary">
+                <b>Résumé</b>
               </Label>
               <Input
                 type="textarea"
-                name="synopsis"
-                value={item.synopsis}
+                name="summary"
+                value={item.summary}
                 onChange={handleChange}
-                invalid={
-                  errors.synopsis !== undefined && errors.synopsis !== ""
-                }
+                invalid={errors.summary !== undefined && errors.summary !== ""}
               />
-              {errors.synopsis && (
-                <div className="error-message">{errors.synopsis}</div>
+              {errors.summary && (
+                <div className="error-message">{errors.summary}</div>
               )}
             </FormGroup>
             <FormGroup>
@@ -190,6 +189,21 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
               />
               {errors.read && (
                 <div className="error-message">{errors.read}</div>
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Label for="favoris">
+                <b>Favoris</b>
+              </Label>
+              <br />
+              <Input
+                type="checkbox"
+                name="favoris"
+                checked={item.favoris}
+                onChange={handleChange}
+              />
+              {errors.favoris && (
+                <div className="error-message">{errors.favoris}</div>
               )}
             </FormGroup>
             <FormGroup>
