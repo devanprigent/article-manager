@@ -39,7 +39,7 @@ function WebSites() {
     },
     {
       field: "nom",
-      width: 150,
+      width: 210,
       renderHeader: () => <strong className="fs-5">{"Site"}</strong>,
       renderCell: (params) => (
         <a href={params.row.url} target="_blank" rel="noopener noreferrer">
@@ -50,7 +50,7 @@ function WebSites() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 100,
+      width: 90,
       renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
       renderCell: (params) => (
         <div className="d-flex justify-content-between">
