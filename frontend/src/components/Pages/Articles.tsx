@@ -80,7 +80,7 @@ function Articles() {
   ];
 
   return (
-    <div className="container my-4">
+    <div className="flex flex-col my-4">
       <div className="d-flex justify-content-center">
         <ButtonAdd<Article>
           fetchData={fetchData}
