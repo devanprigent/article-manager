@@ -80,8 +80,8 @@ function Articles() {
   ];
 
   return (
-    <div className="flex flex-col my-4">
-      <div className="d-flex justify-content-center">
+    <div className="h-full flex flex-col mx-8 my-8">
+      <div className="flex flex-row justify-center">
         <ButtonAdd<Article>
           fetchData={fetchData}
           urlToFetch={API_URL_ARTICLES}
@@ -90,7 +90,7 @@ function Articles() {
           activeItem={newArticle}
         />
       </div>
-      <div className="shadow p-3 mb-5 bg-white rounded">
+      <div className="shadow bg-white rounded overflow-auto">
         <DataTable data={data} columns={COLUMNS} />
       </div>
     </div>
