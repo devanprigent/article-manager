@@ -11,9 +11,12 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import { FormProps, Article, Tag } from "../Tools/Types";
+import CreatableSelect from "react-select/creatable";
+import { FormProps, Tag, Article } from "../Tools/Types";
 import Tags from "../Forms/FormTags";
 import * as yup from "yup";
+import { getArticlesURL } from "../Tools/Urls";
+import FetchData from "../Tools/FetchData";
 
 const validationSchema = yup.object({
   nom: yup.string().required(" "),
@@ -25,6 +28,10 @@ const validationSchema = yup.object({
   read: yup.boolean().required(" "),
   favoris: yup.boolean().required(" "),
 });
+
+function onlyUnique(value: string, index: number, array: string[]) {
+  return array.indexOf(value) === index;
+}
 
 /**
  * The goal of this component is to provide a modal form for adding or editing an article.
@@ -38,6 +45,12 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
 }) => {
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const API_URL_ARTICLES: string = getArticlesURL();
+  const { data } = FetchData(API_URL_ARTICLES);
+  const authors = (data as Article[])
+    .map((article: Article) => article.auteur)
+    .filter(onlyUnique)
+    .sort();
 
   function handleTagChange(newTags: Tag[]): void {
     setItem((prevItem) => ({ ...prevItem, tags: newTags }));
@@ -51,6 +64,10 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
     setItem((prevItem) => ({ ...prevItem, [name]: value }));
   }
 
+  function handleAuthorsChange(newValue: any) {
+    setItem((prevItem) => ({ ...prevItem, auteur: newValue.value }));
+  }
+
   function validateForm() {
     validationSchema
       .validate(item, { abortEarly: false })
@@ -59,6 +76,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
         toggle();
       })
       .catch((error: yup.ValidationError) => {
+        console.log(error);
         const newErrors: Record<string, string> = {};
         error.inner.forEach((err) => {
           if (err.path !== undefined) {
@@ -96,13 +114,15 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                 <Label for="auteur">
                   <b>Auteur</b>
                 </Label>
-                <Input
-                  type="text"
+                <CreatableSelect
                   name="auteur"
                   placeholder="Auteur"
-                  value={item.auteur}
-                  onChange={handleChange}
-                  invalid={errors.auteur !== undefined && errors.auteur !== ""}
+                  onChange={handleAuthorsChange}
+                  isClearable
+                  options={authors.map((author) => ({
+                    value: author,
+                    label: author,
+                  }))}
                 />
                 {errors.auteur && (
                   <div className="error-message">{errors.auteur}</div>
