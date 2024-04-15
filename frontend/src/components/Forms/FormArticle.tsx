@@ -1,5 +1,6 @@
 // Libraries
 import React, { useState, ChangeEvent, FunctionComponent } from "react";
+import * as yup from "yup";
 import {
   Button,
   Modal,
@@ -12,9 +13,8 @@ import {
   Label,
 } from "reactstrap";
 import CreatableSelect from "react-select/creatable";
-import { FormProps, Tag, Article } from "../Tools/Types";
 import Tags from "../Forms/FormTags";
-import * as yup from "yup";
+import { FormProps, Tag, Article } from "../Tools/Types";
 import { getArticlesURL } from "../Tools/Urls";
 import FetchData from "../Tools/FetchData";
 

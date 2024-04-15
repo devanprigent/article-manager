@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState, FunctionComponent } from "react";
 import axios from "axios";
-import { Button } from "reactstrap";
 import { Item, FormProps } from "../Tools/Types";
 
 interface ButtonAddProps<T extends Item> {
@@ -45,9 +44,12 @@ function ButtonAdd<T extends Item>({
 
   return (
     <>
-      <Button className="btn btn-success btn-lg" onClick={toggleModalCreate}>
+      <button
+        className="bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
+        onClick={toggleModalCreate}
+      >
         Ajouter
-      </Button>
+      </button>
 
       {modalCreate && (
         <FormComponent
