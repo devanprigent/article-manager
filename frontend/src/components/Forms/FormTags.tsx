@@ -1,7 +1,6 @@
 // Libraries
 import React, { useState, KeyboardEvent } from "react";
 import { Tag } from "../Tools/Types";
-import "../../style/tags.css";
 
 interface TagsProps {
   onChange: (newTags: Tag[]) => void;
@@ -48,14 +47,17 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
       <label htmlFor="tags">
         <b>Tags</b>
       </label>
-      <div className="tags-input-container">
+      <div className="border border-gray-300 p-2 rounded flex items-center flex-wrap gap-2">
         {tags.map((tag, index) => (
-          <div className="tag-item" key={tag.name}>
+          <div
+            className="flex flex-row space-x-2 bg-gray-300 px-3 py-2 rounded-full items-center"
+            key={tag.name}
+          >
             <span className="text" onKeyDown={() => removeTag(index)}>
               {tag.name}
             </span>
             <span
-              className="close"
+              className="bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center"
               onKeyDown={handleKeyDown}
               onClick={() => removeTag(index)}
             >
@@ -67,7 +69,7 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
           name="tags"
           onKeyDown={handleKeyDown}
           type="text"
-          className="tags-input"
+          className="flex-grow p-y-2 border-none outline-gray-50 bg-gray-50"
         />
       </div>
     </>
