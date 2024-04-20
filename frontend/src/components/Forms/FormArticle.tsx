@@ -10,7 +10,7 @@ import FetchData from "../Tools/FetchData";
 import PopupWrapper from "../Wrappers/PopupWrapper";
 
 const validationSchema = yup.object({
-  nom: yup.string().required(" "),
+  name: yup.string().required(" "),
   auteur: yup.string().required(" "),
   url_site: yup.string().url(" ").required(" "),
   url_article: yup.string().url(" ").required(" "),
@@ -39,7 +39,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
   const API_URL_ARTICLES: string = getArticlesURL();
   const { data } = FetchData(API_URL_ARTICLES);
   const authors = (data as Article[])
-    .map((article: Article) => article.auteur)
+    .map((article: Article) => article.author)
     .filter(onlyUnique)
     .sort();
 
@@ -85,18 +85,20 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
         <form>
           <div className="flex flex-col space-y-2">
             <div>
-              <label htmlFor="nom">
+              <label htmlFor="name">
                 <b>Titre</b>
               </label>
               <Input
                 type="text"
-                name="nom"
+                name="name"
                 placeholder="Titre"
-                value={item.nom}
+                value={item.name}
                 onChange={handleChange}
-                invalid={errors.nom !== undefined && errors.nom !== ""}
+                invalid={errors.name !== undefined && errors.name !== ""}
               />
-              {errors.nom && <div className="error-message">{errors.nom}</div>}
+              {errors.name && (
+                <div className="error-message">{errors.name}</div>
+              )}
             </div>
             <div className="row">
               <div className="col-md-6">
@@ -208,7 +210,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
               <Input
                 type="checkbox"
                 name="favoris"
-                checked={item.favoris}
+                checked={item.favorite}
                 onChange={handleChange}
               />
               {errors.favoris && (

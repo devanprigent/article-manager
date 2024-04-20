@@ -16,7 +16,7 @@ function PageFavoris() {
   const { data, fetchData } = FetchData(API_URL_ARTICLES);
   const typedData = data as Article[];
   const favoris = typedData.filter(
-    (article: Article) => article.favoris === true
+    (article: Article) => article.favorite === true
   );
 
   const COLUMNS: GridColDef[] = [
@@ -30,12 +30,12 @@ function PageFavoris() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {params.row.nom}
+          {params.row.name}
         </a>
       ),
     },
     {
-      field: "auteur",
+      field: "author",
       width: 150,
       renderHeader: () => <strong className="fs-5">{"Auteur"}</strong>,
     },
@@ -54,15 +54,15 @@ function PageFavoris() {
       ),
     },
     {
-      field: "Lu",
+      field: "read",
       renderHeader: () => <strong className="fs-5">{"Consulté"}</strong>,
       renderCell: (params) => <Checkbox disabled checked={params.row.read} />,
     },
     {
-      field: "Favoris",
-      renderHeader: () => <strong className="fs-5">{"Favoris"}</strong>,
+      field: "read_again",
+      renderHeader: () => <strong className="fs-5">{"Consulté"}</strong>,
       renderCell: (params) => (
-        <Checkbox disabled checked={params.row.favoris} />
+        <Checkbox disabled checked={params.row.read_again} />
       ),
     },
   ];

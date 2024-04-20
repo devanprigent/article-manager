@@ -10,7 +10,7 @@ class Article(models.Model):
    date = models.IntegerField()
    summary = models.TextField(blank=True)
    read = models.BooleanField(default=False)
-   reread = models.BooleanField(default=False)
+   read_again = models.BooleanField(default=False)
    favorite = models.BooleanField(default=False)
    tags = models.ManyToManyField(Tag, blank=True)
    date_creation = models.DateTimeField(auto_now_add=True)

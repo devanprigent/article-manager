@@ -19,7 +19,7 @@ function WebSites() {
   const TITLE_WEBSITE_FORM: string = "Ajout d'un site web";
   const newWebSite: WebSite = {
     id: 0,
-    nom: "",
+    name: "",
     url: "",
     image_url: "",
   };

@@ -6,12 +6,12 @@ import PopupWrapper from "../Wrappers/PopupWrapper";
 import * as yup from "yup";
 
 const validationSchema = yup.object({
-  nom: yup.string().required("Le nom du site est requis."),
+  name: yup.string().required("The name of the site is required."),
   url: yup
     .string()
-    .url("Format de l'url invalide.")
-    .required("L'url du site est requise."),
-  image_url: yup.string().url("Format de l'url invalide."),
+    .url("Invalid url format.")
+    .required("The url of the site is required."),
+  image_url: yup.string().url("Invalid url format."),
 });
 
 /**
@@ -57,18 +57,20 @@ const FormWebsite: FunctionComponent<FormProps<WebSite>> = ({
         <form>
           <div className="flex flex-col space-y-4">
             <div>
-              <label className="font-bold" htmlFor="nom">
+              <label className="font-bold" htmlFor="name">
                 Nom
               </label>
               <Input
                 type="text"
-                name="nom"
+                name="name"
                 placeholder="Nom"
-                value={item.nom}
+                value={item.name}
                 onChange={handleChange}
-                invalid={errors.nom !== undefined && errors.nom !== ""}
+                invalid={errors.name !== undefined && errors.name !== ""}
               />
-              {errors.nom && <div className="error-message">{errors.nom}</div>}
+              {errors.name && (
+                <div className="error-message">{errors.name}</div>
+              )}
             </div>
             <div>
               <label className="font-bold" htmlFor="url">

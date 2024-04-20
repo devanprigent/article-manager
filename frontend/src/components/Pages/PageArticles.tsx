@@ -19,15 +19,16 @@ function PageArticles() {
   const TITLE_ADD_FORM: string = "Ajout d'un article";
   const newArticle: Article = {
     id: 0,
-    tags: [],
-    nom: "",
-    auteur: "",
+    name: "",
+    author: "",
     url_site: "",
     url_article: "",
     date: new Date().getFullYear(),
     summary: "",
     read: false,
-    favoris: false,
+    read_again: false,
+    favorite: false,
+    tags: [],
     date_creation: "",
     date_modification: "",
   };
@@ -42,12 +43,12 @@ function PageArticles() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          {params.row.nom}
+          {params.row.name}
         </a>
       ),
     },
     {
-      field: "auteur",
+      field: "author",
       width: 150,
       renderHeader: () => <strong className="fs-5">{"Auteur"}</strong>,
     },
@@ -66,15 +67,22 @@ function PageArticles() {
       ),
     },
     {
-      field: "Lu",
+      field: "read",
       renderHeader: () => <strong className="fs-5">{"Consulté"}</strong>,
       renderCell: (params) => <Checkbox disabled checked={params.row.read} />,
+    },
+    {
+      field: "read_again",
+      renderHeader: () => <strong className="fs-5">{"A relire"}</strong>,
+      renderCell: (params) => (
+        <Checkbox disabled checked={params.row.read_again} />
+      ),
     },
     {
       field: "Favoris",
       renderHeader: () => <strong className="fs-5">{"Favoris"}</strong>,
       renderCell: (params) => (
-        <Checkbox disabled checked={params.row.favoris} />
+        <Checkbox disabled checked={params.row.favorite} />
       ),
     },
   ];

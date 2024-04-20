@@ -37,7 +37,7 @@ function FormDetailsArticle({
         <div className="container">
           <div className="d-flex mb-3">
             <div className="col-md-5">
-              <b>Nom :</b> {activeItem.nom}
+              <b>Nom :</b> {activeItem.name}
             </div>
             <div className="col-md-7">
               <b>URL Site : </b>
@@ -52,7 +52,7 @@ function FormDetailsArticle({
           </div>
           <div className="d-flex mb-3">
             <div className="col-md-5">
-              <b>Auteur :</b> {activeItem.auteur}
+              <b>Auteur :</b> {activeItem.author}
             </div>
             <div className="col-md-7">
               <b>URL Article : </b>
@@ -71,7 +71,7 @@ function FormDetailsArticle({
             </div>
             <div className="col-md-7">
               <b>Tags : </b>{" "}
-              {activeItem.tags.map((tag: Tag) => tag.nom).join(", ")}
+              {activeItem.tags.map((tag: Tag) => tag.name).join(", ")}
             </div>
           </div>
           <div className="d-flex mb-3">
@@ -80,7 +80,7 @@ function FormDetailsArticle({
             </div>
             <div className="col-md-7">
               <b>Favoris : </b>{" "}
-              <Checkbox disabled checked={activeItem.favoris} />
+              <Checkbox disabled checked={activeItem.favorite} />
             </div>
           </div>
           <div className="row">

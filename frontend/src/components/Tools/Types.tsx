@@ -1,17 +1,18 @@
 export interface Item {
   id: number;
-  nom: string;
+  name: string;
 }
 
 export interface Article extends Item {
-  tags: Tag[];
-  auteur: string;
+  author: string;
   url_site: string;
   url_article: string;
   date: number;
   summary: string;
   read: boolean;
-  favoris: boolean;
+  read_again: boolean;
+  favorite: boolean;
+  tags: Tag[];
   date_creation: string;
   date_modification: string;
 }

@@ -26,11 +26,11 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
     addTag(value);
   }
 
-  function addTag(nom: string) {
-    if (tags.some((tag) => tag.nom === nom)) return;
+  function addTag(name: string) {
+    if (tags.some((tag) => tag.name === name)) return;
     const newTag: Tag = {
       id: 0,
-      nom: nom,
+      name: name,
     };
     const newTags = [...tags, newTag];
     onChange(newTags);
@@ -50,9 +50,9 @@ function Tags({ onChange, currentTags }: Readonly<TagsProps>) {
       </label>
       <div className="tags-input-container">
         {tags.map((tag, index) => (
-          <div className="tag-item" key={tag.nom}>
+          <div className="tag-item" key={tag.name}>
             <span className="text" onKeyDown={() => removeTag(index)}>
-              {tag.nom}
+              {tag.name}
             </span>
             <span
               className="close"
