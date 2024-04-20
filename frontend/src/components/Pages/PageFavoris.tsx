@@ -3,34 +3,22 @@ import React from "react";
 import { GridColDef } from "@mui/x-data-grid";
 import Checkbox from "@mui/material/Checkbox";
 import DataTable from "../Structure/DataTable";
-import ButtonAdd from "../Buttons/ButtonAdd";
 import ButtonDetails from "../Buttons/ButtonDetails";
-import FormArticle from "../Forms/FormArticle";
-import { getArticlesURL } from "../Tools/Urls";
 import FetchData from "../Tools/FetchData";
+import { getArticlesURL } from "../Tools/Urls";
 import { Article } from "../Tools/Types";
 
 /**
- * This component generates the Article page.
+ * This component generates the Tag page.
  */
-function Articles() {
+function PageFavoris() {
   const API_URL_ARTICLES: string = getArticlesURL();
   const { data, fetchData } = FetchData(API_URL_ARTICLES);
-  const TITLE_ADD_FORM: string = "Ajout d'un article";
-  const newArticle: Article = {
-    id: 0,
-    tags: [],
-    nom: "",
-    auteur: "",
-    url_site: "",
-    url_article: "",
-    date: new Date().getFullYear(),
-    summary: "",
-    read: false,
-    favoris: false,
-    date_creation: "",
-    date_modification: "",
-  };
+  const typedData = data as Article[];
+  const favoris = typedData.filter(
+    (article: Article) => article.favoris === true
+  );
+
   const COLUMNS: GridColDef[] = [
     {
       field: "titre",
@@ -81,21 +69,12 @@ function Articles() {
 
   return (
     <div className="h-full flex flex-col mx-16 space-y-4">
-      <div className="flex flex-row justify-center">
-        <ButtonAdd<Article>
-          fetchData={fetchData}
-          urlToFetch={API_URL_ARTICLES}
-          FormComponent={FormArticle}
-          title={TITLE_ADD_FORM}
-          activeItem={newArticle}
-        />
-      </div>
       <div className="shadow bg-white rounded overflow-auto">
-        <DataTable data={data} columns={COLUMNS} />
+        <DataTable data={favoris} columns={COLUMNS} />
       </div>
     </div>
   );
 }
 
 // Exportation
-export default Articles;
+export default PageFavoris;

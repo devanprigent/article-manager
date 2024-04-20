@@ -4,7 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Checkbox from "@mui/material/Checkbox";
 import { Article, Tag } from "../Tools/Types";
 import { getArticlesURL } from "../Tools/Urls";
-import FormArticle from "../Forms/FormArticle";
+import FormArticle from "./FormArticle";
 import ButtonDelete from "../Buttons/ButtonDelete";
 import ButtonEdit from "../Buttons/ButtonEdit";
 
@@ -19,7 +19,7 @@ interface DetailsArticleProps {
 /**
  * The goal of this component is to provide a modal form for adding or editing an article.
  */
-function DetailsArticle({
+function FormDetailsArticle({
   isOpen,
   toggle,
   fetchData,
@@ -109,4 +109,4 @@ function DetailsArticle({
 }
 
 // Exportation
-export default DetailsArticle;
+export default FormDetailsArticle;
