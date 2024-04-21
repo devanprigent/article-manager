@@ -101,15 +101,15 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                 <div className="error-message">{errors.name}</div>
               )}
             </div>
-            <div className="row">
-              <div className="col-md-6">
+            <div className="flex flex-row space-x-4">
+              <div>
                 <label htmlFor="author">
                   <b>Author</b>
                 </label>
                 <CreatableSelect
                   name="author"
                   onChange={handleAuthorsChange}
-                  isClearable
+                  isClearable={false}
                   options={authors.map((author) => ({
                     value: author,
                     label: author,
@@ -119,7 +119,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                   <div className="error-message">{errors.author}</div>
                 )}
               </div>
-              <div className="col-md-6">
+              <div>
                 <label htmlFor="year">
                   <b>Year</b>
                 </label>
