@@ -14,7 +14,7 @@ const validationSchema = yup.object({
   author: yup.string().required(" "),
   url_site: yup.string().url(" ").required(" "),
   url_article: yup.string().url(" ").required(" "),
-  date: yup.date().required(" "),
+  year: yup.date().required(" "),
   summary: yup.string(),
   read: yup.boolean().required(" "),
   read_again: yup.boolean().required(" "),
@@ -81,18 +81,18 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
 
   return (
     <PopupWrapper popup={isOpen} setPopup={toggle} status="neutral">
-      <div className="flex flex-col space-y-4">
-        <h1 className="text-center text-red-600 font-bold text-2xl">{title}</h1>
+      <div className="flex flex-col space-y-4 w-100">
+        <h1 className="text-center text-red-600 font-bold text-xl">{title}</h1>
         <form>
           <div className="flex flex-col space-y-2">
             <div>
               <label htmlFor="name">
-                <b>Titre</b>
+                <b>Title</b>
               </label>
               <Input
                 type="text"
+                placeholder="Title"
                 name="name"
-                placeholder="Titre"
                 value={item.name}
                 onChange={handleChange}
                 invalid={errors.name !== undefined && errors.name !== ""}
@@ -108,7 +108,6 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                 </label>
                 <CreatableSelect
                   name="author"
-                  placeholder="author"
                   onChange={handleAuthorsChange}
                   isClearable
                   options={authors.map((author) => ({
@@ -121,61 +120,39 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                 )}
               </div>
               <div className="col-md-6">
-                <label htmlFor="date">
-                  <b>Année</b>
+                <label htmlFor="year">
+                  <b>Year</b>
                 </label>
                 <Input
                   type="text"
-                  name="date"
-                  placeholder="Année"
-                  value={item.date}
+                  name="year"
+                  placeholder="Year"
+                  value={item.year}
                   onChange={handleChange}
-                  invalid={errors.date !== undefined && errors.date !== ""}
+                  invalid={errors.year !== undefined && errors.year !== ""}
                 />
-                {errors.date && (
-                  <div className="error-message">{errors.date}</div>
+                {errors.year && (
+                  <div className="error-message">{errors.year}</div>
                 )}
               </div>
             </div>
             <div>
-              <label htmlFor="url_site">
-                <b>Url Site</b>
+              <label htmlFor="url">
+                <b>Url</b>
               </label>
               <Input
                 type="text"
-                name="url_site"
-                placeholder="Url site"
-                value={item.url_site}
+                name="url"
+                placeholder="Url"
+                value={item.url}
                 onChange={handleChange}
-                invalid={
-                  errors.url_site !== undefined && errors.url_site !== ""
-                }
+                invalid={errors.url !== undefined && errors.url !== ""}
               />
-              {errors.url_site && (
-                <div className="error-message">{errors.url_site}</div>
-              )}
-            </div>
-            <div>
-              <label htmlFor="url_article">
-                <b>Url Article</b>
-              </label>
-              <Input
-                type="text"
-                name="url_article"
-                placeholder="Url article"
-                value={item.url_article}
-                onChange={handleChange}
-                invalid={
-                  errors.url_article !== undefined && errors.url_article !== ""
-                }
-              />
-              {errors.url_article && (
-                <div className="error-message">{errors.url_article}</div>
-              )}
+              {errors.url && <div className="error-message">{errors.url}</div>}
             </div>
             <div>
               <label htmlFor="summary">
-                <b>Résumé</b>
+                <b>Summary</b>
               </label>
               <Input
                 type="textarea"
@@ -188,50 +165,52 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                 <div className="error-message">{errors.summary}</div>
               )}
             </div>
-            <div>
-              <label htmlFor="read">
-                <b>Consulté</b>
-              </label>
-              <br />
-              <Input
-                type="checkbox"
-                name="read"
-                checked={item.read}
-                onChange={handleChange}
-              />
-              {errors.read && (
-                <div className="error-message">{errors.read}</div>
-              )}
-            </div>
-            <div>
-              <label htmlFor="read_again">
-                <b>A relire</b>
-              </label>
-              <br />
-              <Input
-                type="checkbox"
-                name="read_again"
-                checked={item.read_again}
-                onChange={handleChange}
-              />
-              {errors.read_again && (
-                <div className="error-message">{errors.read_again}</div>
-              )}
-            </div>
-            <div>
-              <label htmlFor="favorite">
-                <b>Favoris</b>
-              </label>
-              <br />
-              <Input
-                type="checkbox"
-                name="favorite"
-                checked={item.favorite}
-                onChange={handleChange}
-              />
-              {errors.favorite && (
-                <div className="error-message">{errors.favorite}</div>
-              )}
+            <div className="flex flex-row space-x-4 justify-evenly">
+              <div>
+                <label htmlFor="read">
+                  <b>Consulted</b>
+                </label>
+                <br />
+                <Input
+                  type="checkbox"
+                  name="read"
+                  checked={item.read}
+                  onChange={handleChange}
+                />
+                {errors.read && (
+                  <div className="error-message">{errors.read}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="read_again">
+                  <b>Read again</b>
+                </label>
+                <br />
+                <Input
+                  type="checkbox"
+                  name="read_again"
+                  checked={item.read_again}
+                  onChange={handleChange}
+                />
+                {errors.read_again && (
+                  <div className="error-message">{errors.read_again}</div>
+                )}
+              </div>
+              <div>
+                <label htmlFor="favorite">
+                  <b>Favorite</b>
+                </label>
+                <br />
+                <Input
+                  type="checkbox"
+                  name="favorite"
+                  checked={item.favorite}
+                  onChange={handleChange}
+                />
+                {errors.favorite && (
+                  <div className="error-message">{errors.favorite}</div>
+                )}
+              </div>
             </div>
             <div>
               <Tags onChange={handleTagChange} currentTags={activeItem.tags} />

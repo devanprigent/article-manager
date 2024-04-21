@@ -54,7 +54,7 @@ function PopupWrapper({
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            maxWidth: "30%",
+            maxWidth: "70%",
             maxHeight: "70%",
           }}
         >

@@ -39,16 +39,6 @@ function FormDetailsArticle({
             <div className="col-md-5">
               <b>Nom :</b> {activeItem.name}
             </div>
-            <div className="col-md-7">
-              <b>URL Site : </b>
-              <a
-                href={activeItem.url_site}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {activeItem.url_site}
-              </a>
-            </div>
           </div>
           <div className="d-flex mb-3">
             <div className="col-md-5">
@@ -57,17 +47,17 @@ function FormDetailsArticle({
             <div className="col-md-7">
               <b>URL Article : </b>
               <a
-                href={activeItem.url_article}
+                href={activeItem.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {activeItem.url_article}
+                {activeItem.url}
               </a>
             </div>
           </div>
           <div className="d-flex mb-3">
             <div className="col-md-5">
-              <b>Date : </b> {activeItem.date}
+              <b>Year : </b> {activeItem.year}
             </div>
             <div className="col-md-7">
               <b>Tags : </b>{" "}

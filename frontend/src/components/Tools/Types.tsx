@@ -5,9 +5,8 @@ export interface Item {
 
 export interface Article extends Item {
   author: string;
-  url_site: string;
-  url_article: string;
-  date: number;
+  url: string;
+  year: number;
   summary: string;
   read: boolean;
   read_again: boolean;

@@ -21,9 +21,8 @@ function PageArticles() {
     id: 0,
     name: "",
     author: "",
-    url_site: "",
-    url_article: "",
-    date: new Date().getFullYear(),
+    url: "",
+    year: new Date().getFullYear(),
     summary: "",
     read: false,
     read_again: false,
@@ -38,11 +37,7 @@ function PageArticles() {
       width: 450,
       renderHeader: () => <strong className="fs-5">{"Titre"}</strong>,
       renderCell: (params) => (
-        <a
-          href={params.row.url_article}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={params.row.url} target="_blank" rel="noopener noreferrer">
           {params.row.name}
         </a>
       ),
