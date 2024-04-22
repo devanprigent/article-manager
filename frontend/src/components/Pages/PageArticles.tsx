@@ -52,23 +52,14 @@ function PageArticles() {
       renderHeader: () => <strong className="fs-5">{"Year"}</strong>,
     },
     {
-      field: "actions",
-      headerName: "Actions",
-      renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
-      renderCell: (params) => (
-        <div className="d-flex justify-content-center align-items-center">
-          <ButtonDetails fetchData={fetchData} activeItem={params.row} />
-        </div>
-      ),
-    },
-    {
       field: "read",
       renderHeader: () => <strong className="fs-5">{"Read"}</strong>,
       renderCell: (params) => <Checkbox disabled checked={params.row.read} />,
     },
     {
       field: "read_again",
-      renderHeader: () => <strong className="fs-5">{"To reread"}</strong>,
+      width: 150,
+      renderHeader: () => <strong className="fs-5">{"Read Again"}</strong>,
       renderCell: (params) => (
         <Checkbox disabled checked={params.row.read_again} />
       ),
@@ -78,6 +69,16 @@ function PageArticles() {
       renderHeader: () => <strong className="fs-5">{"Favorite"}</strong>,
       renderCell: (params) => (
         <Checkbox disabled checked={params.row.favorite} />
+      ),
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
+      renderCell: (params) => (
+        <div className="d-flex justify-content-center align-items-center">
+          <ButtonDetails fetchData={fetchData} activeItem={params.row} />
+        </div>
       ),
     },
   ];

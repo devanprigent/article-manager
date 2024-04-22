@@ -1,8 +1,10 @@
 // Libraries
 import React, { useState } from "react";
 import { Info } from "react-feather";
+import axios from "axios";
 import { Article } from "../Tools/Types";
-import FormDetailsArticle from "../Forms/FormDetailsArticle";
+import FormArticle from "../Forms/FormArticle";
+import { getArticlesURL } from "../Tools/Urls";
 
 interface ButtonDetailsProps {
   fetchData: () => void;
@@ -20,9 +22,22 @@ function ButtonDetails({
   activeItem,
 }: Readonly<ButtonDetailsProps>) {
   const [modal, setModal] = useState<boolean>(false);
+  const API_URL_ARTICLES: string = getArticlesURL();
 
   function toggleModal() {
     setModal(!modal);
+  }
+
+  function edit(article: Article) {
+    toggleModal();
+    axios
+      .patch(`${API_URL_ARTICLES}${article.id}/`, article)
+      .then(() => {
+        fetchData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   return (
@@ -35,10 +50,10 @@ function ButtonDetails({
       />
 
       {modal && (
-        <FormDetailsArticle
+        <FormArticle
           isOpen={modal}
           toggle={toggleModal}
-          fetchData={fetchData}
+          onSave={edit}
           title={"Fiche de l'article"}
           activeItem={activeItem}
         />

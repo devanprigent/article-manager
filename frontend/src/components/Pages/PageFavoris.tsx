@@ -44,6 +44,19 @@ function PageFavoris() {
       renderHeader: () => <strong className="fs-5">{"Year"}</strong>,
     },
     {
+      field: "read",
+      renderHeader: () => <strong className="fs-5">{"Read"}</strong>,
+      renderCell: (params) => <Checkbox disabled checked={params.row.read} />,
+    },
+    {
+      field: "read_again",
+      width: 150,
+      renderHeader: () => <strong className="fs-5">{"Read Again"}</strong>,
+      renderCell: (params) => (
+        <Checkbox disabled checked={params.row.read_again} />
+      ),
+    },
+    {
       field: "actions",
       headerName: "Actions",
       renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
@@ -51,18 +64,6 @@ function PageFavoris() {
         <div className="d-flex justify-content-center align-items-center">
           <ButtonDetails fetchData={fetchData} activeItem={params.row} />
         </div>
-      ),
-    },
-    {
-      field: "read",
-      renderHeader: () => <strong className="fs-5">{"Read"}</strong>,
-      renderCell: (params) => <Checkbox disabled checked={params.row.read} />,
-    },
-    {
-      field: "read_again",
-      renderHeader: () => <strong className="fs-5">{"To reread"}</strong>,
-      renderCell: (params) => (
-        <Checkbox disabled checked={params.row.read_again} />
       ),
     },
   ];

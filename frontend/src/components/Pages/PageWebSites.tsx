@@ -38,12 +38,12 @@ function WebSites() {
       ),
     },
     {
-      field: "nom",
+      field: "name",
       width: 210,
       renderHeader: () => <strong className="fs-5">{"Site"}</strong>,
       renderCell: (params) => (
         <a href={params.row.url} target="_blank" rel="noopener noreferrer">
-          {params.row.nom}
+          {params.row.name}
         </a>
       ),
     },

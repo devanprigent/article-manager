@@ -12,8 +12,7 @@ import PopupWrapper from "../Wrappers/PopupWrapper";
 const validationSchema = yup.object({
   name: yup.string().required(" "),
   author: yup.string().required(" "),
-  url_site: yup.string().url(" ").required(" "),
-  url_article: yup.string().url(" ").required(" "),
+  url: yup.string().url(" ").required(" "),
   year: yup.date().required(" "),
   summary: yup.string(),
   read: yup.boolean().required(" "),
@@ -49,11 +48,13 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
   }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>): void {
-    let { name, type, value } = e.currentTarget;
-    if (type === "checkbox") {
-      value = e.currentTarget.checked ? "true" : "false";
-    }
+    let { name, value } = e.currentTarget;
     setItem((prevItem) => ({ ...prevItem, [name]: value }));
+  }
+
+  function handleCheckBoxChange(e: ChangeEvent<HTMLInputElement>): void {
+    let { name, checked } = e.currentTarget;
+    setItem((prevItem) => ({ ...prevItem, [name]: checked }));
   }
 
   function handleAuthorsChange(newValue: any) {
@@ -71,6 +72,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
         console.log(error);
         const newErrors: Record<string, string> = {};
         error.inner.forEach((err) => {
+          console.log(err.path, err.message);
           if (err.path !== undefined) {
             newErrors[err.path] = err.message;
           }
@@ -110,6 +112,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                   name="author"
                   onChange={handleAuthorsChange}
                   isClearable={false}
+                  value={{ value: item.author, label: item.author }}
                   options={authors.map((author) => ({
                     value: author,
                     label: author,
@@ -151,21 +154,9 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
               {errors.url && <div className="error-message">{errors.url}</div>}
             </div>
             <div>
-              <label htmlFor="summary">
-                <b>Summary</b>
-              </label>
-              <Input
-                type="textarea"
-                name="summary"
-                value={item.summary}
-                onChange={handleChange}
-                invalid={errors.summary !== undefined && errors.summary !== ""}
-              />
-              {errors.summary && (
-                <div className="error-message">{errors.summary}</div>
-              )}
+              <Tags onChange={handleTagChange} currentTags={activeItem.tags} />
             </div>
-            <div className="flex flex-row space-x-4 justify-evenly">
+            <div className="flex flex-row space-x-4 justify-between px-4">
               <div>
                 <label htmlFor="read">
                   <b>Consulted</b>
@@ -175,7 +166,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                   type="checkbox"
                   name="read"
                   checked={item.read}
-                  onChange={handleChange}
+                  onChange={handleCheckBoxChange}
                 />
                 {errors.read && (
                   <div className="error-message">{errors.read}</div>
@@ -190,7 +181,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                   type="checkbox"
                   name="read_again"
                   checked={item.read_again}
-                  onChange={handleChange}
+                  onChange={handleCheckBoxChange}
                 />
                 {errors.read_again && (
                   <div className="error-message">{errors.read_again}</div>
@@ -205,7 +196,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
                   type="checkbox"
                   name="favorite"
                   checked={item.favorite}
-                  onChange={handleChange}
+                  onChange={handleCheckBoxChange}
                 />
                 {errors.favorite && (
                   <div className="error-message">{errors.favorite}</div>
@@ -213,7 +204,19 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
               </div>
             </div>
             <div>
-              <Tags onChange={handleTagChange} currentTags={activeItem.tags} />
+              <label htmlFor="summary">
+                <b>Summary</b>
+              </label>
+              <Input
+                type="textarea"
+                name="summary"
+                value={item.summary}
+                onChange={handleChange}
+                invalid={errors.summary !== undefined && errors.summary !== ""}
+              />
+              {errors.summary && (
+                <div className="error-message">{errors.summary}</div>
+              )}
             </div>
           </div>
         </form>
