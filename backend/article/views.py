@@ -11,6 +11,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
+        # Check if an article with the same title and author already exists
+        article = Article.objects.filter(name=validated_data['name'], author=validated_data['author'])
+        if article.exists():
+            raise serializers.ValidationError("Article with the same name and author already exists")
+        # Get the tags data from the request
         tags_data = self.context['request'].data.get('tags', [])
         validated_tags = []
         for tag_data in tags_data:
