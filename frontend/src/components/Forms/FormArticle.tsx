@@ -8,6 +8,7 @@ import { FormProps, Tag, Article } from "../Tools/Types";
 import { getArticlesURL } from "../Tools/Urls";
 import FetchData from "../Tools/FetchData";
 import PopupWrapper from "../Wrappers/PopupWrapper";
+import ButtonDelete from "../Buttons/ButtonDelete";
 
 const validationSchema = yup.object({
   name: yup.string().required(" "),
@@ -83,7 +84,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
 
   return (
     <PopupWrapper popup={isOpen} setPopup={toggle} status="neutral">
-      <div className="flex flex-col space-y-4 w-100">
+      <div className="flex flex-col space-y-8 w-100">
         <h1 className="text-center text-red-600 font-bold text-xl">{title}</h1>
         <form>
           <div className="flex flex-col space-y-2">
@@ -222,12 +223,20 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
           </div>
         </form>
         <div className="flex flex-col justify-content-center items-center">
-          <button
-            className="bg-green-600 hover:bg-green-800 text-white w-64 py-2 px-6 rounded"
-            onClick={() => validateForm()}
-          >
-            Enregistrer
-          </button>
+          <div className="w-full flex flex-row justify-between">
+            <ButtonDelete
+              fetchData={() => {}}
+              urlToRequest={API_URL_ARTICLES}
+              itemId={activeItem.id}
+            />
+
+            <button
+              className="bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
+              onClick={() => validateForm()}
+            >
+              Enregistrer
+            </button>
+          </div>
         </div>
       </div>
     </PopupWrapper>
