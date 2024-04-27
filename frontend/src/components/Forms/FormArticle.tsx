@@ -226,7 +226,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
         <div className="flex flex-col justify-content-center items-center">
           {showDeleteButton ? (
             <div className="w-full flex flex-row justify-between">
-              <ButtonDelete url={API_URL_ARTICLES} itemId={activeItem.id} />
+              <ButtonDelete itemId={activeItem.id} />
               <button
                 className="bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
                 onClick={() => validateForm()}

@@ -6,7 +6,6 @@ import { proxy, requestTypes } from "../Tools/Proxy";
 import { ADD_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 interface ButtonAddProps<T extends Item> {
-  url: string;
   FormComponent: FunctionComponent<FormProps<T>>;
   title: string;
   activeItem: T;
@@ -32,14 +31,11 @@ function ButtonAdd<T extends Item>({
 
   async function create(item: T) {
     const { error, message } = await proxy(requestTypes.ADD_ARTICLE, item);
-    if (error) {
-      dispatch(SET_NOTIFICATION(message, "error"));
-      return;
-    } else {
+    if (!error) {
       const article = item as unknown as Article;
       dispatch(ADD_ARTICLE(article));
-      dispatch(SET_NOTIFICATION(message, "success"));
     }
+    dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
     toggleModalCreate();
   }
 

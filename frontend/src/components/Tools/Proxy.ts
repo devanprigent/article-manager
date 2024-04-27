@@ -8,6 +8,7 @@ import { Article } from "./Types";
 export const requestTypes = {
   FETCH_ARTICLES: "FETCH_ARTICLES",
   ADD_ARTICLE: "ADD_ARTICLE",
+  EDIT_ARTICLE: "EDIT_ARTICLE",
   DELETE_ARTICLE: "DELETE_ARTICLE",
 };
 
@@ -48,6 +49,24 @@ export async function proxy(
         const response = await axios.post(API_ARTICLES, parameter);
         error = (response.status < 200 || response.status >= 300);
         message = "Article successfully added";
+      } catch (err: any) {
+        error = true;
+        message = err.message;
+        if (err.response) {
+          data = err.response.data;
+          message = data.message;
+        }
+      }
+      return { error, message, data: {} };
+    }
+    case requestTypes.EDIT_ARTICLE: {
+      let error: boolean;
+      let message: string;
+      let data: any;
+      try {
+        const response = await axios.put(`${API_ARTICLES}${parameter.id}/`, parameter);
+        error = response.status !== 200;
+        message = "Article successfully edited";
       } catch (err: any) {
         error = true;
         message = err.message;

@@ -6,7 +6,6 @@ import { proxy, requestTypes } from "../Tools/Proxy";
 import { DELETE_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 interface ButtonDeleteProps {
-  url: string;
   itemId: number;
 }
 

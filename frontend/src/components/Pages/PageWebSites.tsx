@@ -52,7 +52,7 @@ function WebSites() {
       renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
       renderCell: (params) => (
         <div className="d-flex justify-content-between">
-          <ButtonDelete url={API_URL_WEBSITES} itemId={params.row.id} />
+          <ButtonDelete itemId={params.row.id} />
         </div>
       ),
     },
@@ -64,7 +64,6 @@ function WebSites() {
         <div className="h-full flex flex-col space-y-4">
           <div className="flex flex-row justify-content-center">
             <ButtonAdd
-              url={API_URL_WEBSITES}
               FormComponent={FormWebsite}
               title={TITLE_WEBSITE_FORM}
               activeItem={newWebSite}

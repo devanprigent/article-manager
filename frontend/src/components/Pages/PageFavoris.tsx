@@ -4,7 +4,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import Checkbox from "@mui/material/Checkbox";
 // Configuration Files
 import { Article } from "../Tools/Types";
-import { getArticlesURL } from "../Tools/Urls";
 import { useArticles } from "../../redux/selectors";
 // Components
 import DataTable from "../Structure/DataTable";
@@ -18,7 +17,6 @@ function PageFavoris() {
   const favoris = currentArticles.filter(
     (article: Article) => article.favorite === true
   );
-  const API_URL_ARTICLES: string = getArticlesURL();
 
   const COLUMNS: GridColDef[] = [
     {
@@ -63,7 +61,7 @@ function PageFavoris() {
       renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
       renderCell: (params) => (
         <div className="d-flex justify-content-center align-items-center">
-          <ButtonEdit url={API_URL_ARTICLES} activeItem={params.row} />
+          <ButtonEdit activeItem={params.row} />
         </div>
       ),
     },
