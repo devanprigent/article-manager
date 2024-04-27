@@ -30,3 +30,12 @@ export interface FormProps<T extends Item> {
   title: string;
   activeItem: T;
 }
+
+export type SeverityType = "error" | "warning" | "info" | "success";
+
+export type NotificationType = {
+  timestamp?: number;
+  open: boolean;
+  message: string;
+  severity: SeverityType;
+};
