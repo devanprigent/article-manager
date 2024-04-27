@@ -1,9 +1,9 @@
 // Libraries
 import React, { useState, FunctionComponent } from "react";
 import axios from "axios";
-import { Item, FormProps } from "../Tools/Types";
+import { Item, FormProps, Article } from "../Tools/Types";
 import { useDispatch } from "react-redux";
-import { SET_NOTIFICATION } from "../../redux/actionsCreators";
+import { ADD_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 interface ButtonAddProps<T extends Item> {
   fetchData: () => void;
@@ -20,7 +20,6 @@ interface ButtonAddProps<T extends Item> {
  * fetchData to update the datatable.
  */
 function ButtonAdd<T extends Item>({
-  fetchData,
   urlToFetch,
   FormComponent,
   title,
@@ -38,7 +37,8 @@ function ButtonAdd<T extends Item>({
     axios
       .post(urlToFetch, item)
       .then(() => {
-        fetchData();
+        const article = item as unknown as Article;
+        dispatch(ADD_ARTICLE(article));
         dispatch(SET_NOTIFICATION("An article has been added", "success"));
       })
       .catch((error) => {

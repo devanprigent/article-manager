@@ -1,21 +1,39 @@
 // Libraries
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { GridColDef } from "@mui/x-data-grid";
 import Checkbox from "@mui/material/Checkbox";
-import DataTable from "../Structure/DataTable";
+// Configuration Files
+import { Article } from "../Tools/Types";
+import { useArticles } from "../../redux/selectors";
+import { proxy, requestTypes } from "../Tools/Proxy";
+import { SET_ARTICLES, SET_NOTIFICATION } from "../../redux/actionsCreators";
+// Components
 import ButtonAdd from "../Buttons/ButtonAdd";
+import DataTable from "../Structure/DataTable";
 import ButtonEdit from "../Buttons/ButtonEdit";
 import FormArticle from "../Forms/FormArticle";
-import { getArticlesURL } from "../Tools/Urls";
-import FetchData from "../Tools/FetchData";
-import { Article } from "../Tools/Types";
 
 /**
  * This component generates the Article page.
  */
 function PageArticles() {
-  const API_URL_ARTICLES: string = getArticlesURL();
-  const { data, fetchData } = FetchData(API_URL_ARTICLES);
+  const dispatch = useDispatch();
+  const currentArticles = useArticles();
+
+  useEffect(() => {
+    async function fetchData() {
+      const { error, message, data } = await proxy(requestTypes.FETCH_ARTICLES);
+      if (!error) {
+        const articles = data as Article[];
+        dispatch(SET_ARTICLES(articles));
+      }
+      dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
+    }
+
+    fetchData().catch((err) => console.error(err));
+  }, [dispatch]);
+
   const TITLE_ADD_FORM: string = "Ajout d'un article";
   const newArticle: Article = {
     id: 0,
@@ -77,7 +95,7 @@ function PageArticles() {
       renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
       renderCell: (params) => (
         <div className="d-flex justify-content-center align-items-center">
-          <ButtonEdit fetchData={fetchData} activeItem={params.row} />
+          <ButtonEdit fetchData={() => {}} activeItem={params.row} />
         </div>
       ),
     },
@@ -87,15 +105,15 @@ function PageArticles() {
     <div className="h-full flex flex-col mx-16 space-y-4">
       <div className="flex flex-row justify-center">
         <ButtonAdd<Article>
-          fetchData={fetchData}
-          urlToFetch={API_URL_ARTICLES}
+          fetchData={() => {}}
+          urlToFetch={""}
           FormComponent={FormArticle}
           title={TITLE_ADD_FORM}
           activeItem={newArticle}
         />
       </div>
       <div className="shadow bg-white rounded overflow-auto">
-        <DataTable data={data} columns={COLUMNS} />
+        <DataTable data={currentArticles} columns={COLUMNS} />
       </div>
     </div>
   );

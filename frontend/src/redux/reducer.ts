@@ -26,16 +26,16 @@ export default function reducer(state = initialState, action: any) {
         ...state,
         currentNotification: action.payload.currentNotification,
       };
-      case actionsTypes.SET_ARTICLES:
-        return {
-          ...state,
-          currentArticles: action.payload.currentArticles,
-        };
-        case actionsTypes.ADD_ARTICLE:
-        return {
-          ...state,
-          currentArticles: [...state.currentArticles, action.payload.newArticle],
-        };
+    case actionsTypes.SET_ARTICLES:
+      return {
+        ...state,
+        currentArticles: action.payload.newArticles,
+      };
+    case actionsTypes.ADD_ARTICLE:
+      return {
+        ...state,
+        currentArticles: [...state.currentArticles, action.payload.newArticle],
+      };
     default:
       return state;
   }

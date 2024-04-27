@@ -26,6 +26,13 @@ export function DELETE_NOTIFICATION() {
   };
 }
 
+export function SET_ARTICLES(newArticles: Article[]) {
+  return {
+    type: actionsTypes.SET_ARTICLES,
+    payload: { newArticles: newArticles },
+  };
+}
+
 export function ADD_ARTICLE(newArticle: Article) {
   return {
     type: actionsTypes.ADD_ARTICLE,
