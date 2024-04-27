@@ -48,17 +48,31 @@ export async function proxy(
         const response = await axios.post(API_ARTICLES, parameter);
         error = (response.status < 200 || response.status >= 300);
         message = "Article successfully added";
-        data = response.data;
       } catch (err: any) {
         error = true;
         message = err.message;
-        data = { message: message };
         if (err.response) {
           data = err.response.data;
           message = data.message;
         }
       }
-      return { error, message, data };
+      return { error, message, data: {} };
+    }
+    case requestTypes.DELETE_ARTICLE: {
+      let error: boolean;
+      let message: string;
+      try {
+        const response = await axios.delete(`${API_ARTICLES}${parameter}/`);
+        error = response.status !== 204;
+        message = "Article successfully deleted";
+      } catch (err: any) {
+        error = true;
+        message = err.message;
+        if (err.response) {
+          message = err.response.data.message;
+        }
+      }
+      return { error, message, data: {} };
     }
     default:
       throw new Error("This type of request is not supported");

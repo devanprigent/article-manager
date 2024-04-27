@@ -1,8 +1,8 @@
 // Libraries
 import React, { useState } from "react";
-import axios from "axios";
 import FormConfirmation from "../Forms/FormConfirmation";
 import { useDispatch } from "react-redux";
+import { proxy, requestTypes } from "../Tools/Proxy";
 import { DELETE_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 interface ButtonDeleteProps {
@@ -15,7 +15,7 @@ interface ButtonDeleteProps {
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonDelete({ url, itemId }: Readonly<ButtonDeleteProps>) {
+function ButtonDelete({ itemId }: Readonly<ButtonDeleteProps>) {
   const dispatch = useDispatch();
   const [modalRemove, setModalRemove] = useState(false);
 
@@ -23,18 +23,14 @@ function ButtonDelete({ url, itemId }: Readonly<ButtonDeleteProps>) {
     setModalRemove(!modalRemove);
   }
 
-  function remove(itemId: number) {
-    setModalRemove(!modalRemove);
-    axios
-      .delete(`${url}${itemId}/`)
-      .then(() => {
-        dispatch(DELETE_ARTICLE(itemId));
-        dispatch(SET_NOTIFICATION("An article has been deleted", "success"));
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(SET_NOTIFICATION(error.response.data, "error"));
-      });
+  async function remove(itemId: number) {
+    const { error, message } = await proxy(requestTypes.DELETE_ARTICLE, itemId);
+    if (!error) {
+      dispatch(DELETE_ARTICLE(itemId));
+      dispatch(SET_NOTIFICATION(message, "success"));
+    }
+    dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
+    toggleModalRemove();
   }
 
   return (
