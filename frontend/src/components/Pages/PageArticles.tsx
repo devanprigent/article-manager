@@ -38,7 +38,7 @@ function PageArticles() {
   const TITLE_ADD_FORM: string = "Ajout d'un article";
   const newArticle: Article = {
     id: 0,
-    name: "",
+    title: "",
     author: "",
     url: "",
     year: new Date().getFullYear(),
@@ -57,7 +57,7 @@ function PageArticles() {
       renderHeader: () => <strong className="fs-5">{"Title"}</strong>,
       renderCell: (params) => (
         <a href={params.row.url} target="_blank" rel="noopener noreferrer">
-          {params.row.name}
+          {params.row.title}
         </a>
       ),
     },
@@ -105,7 +105,7 @@ function PageArticles() {
   return (
     <div className="h-full flex flex-col mx-16 space-y-4">
       <div className="flex flex-row justify-center">
-        <ButtonAdd<Article>
+        <ButtonAdd
           FormComponent={FormArticle}
           title={TITLE_ADD_FORM}
           activeItem={newArticle}

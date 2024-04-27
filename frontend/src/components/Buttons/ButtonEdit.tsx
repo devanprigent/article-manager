@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { proxy, requestTypes } from "../Tools/Proxy";
 import { EDIT_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
-interface ButtonEditProps {
+interface PropsType {
   activeItem: Article;
 }
 
@@ -17,7 +17,7 @@ interface ButtonEditProps {
  * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
  * fetchData to update the datatable.
  */
-function ButtonEdit({ activeItem }: Readonly<ButtonEditProps>) {
+function ButtonEdit({ activeItem }: Readonly<PropsType>) {
   const dispatch = useDispatch();
   const [modal, setModal] = useState<boolean>(false);
 
@@ -29,7 +29,6 @@ function ButtonEdit({ activeItem }: Readonly<ButtonEditProps>) {
     const { error, message } = await proxy(requestTypes.EDIT_ARTICLE, article);
     if (!error) {
       dispatch(EDIT_ARTICLE(article.id, article));
-      dispatch(SET_NOTIFICATION(message, "success"));
     }
     dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
     toggleModal();

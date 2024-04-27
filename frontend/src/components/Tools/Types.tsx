@@ -1,9 +1,6 @@
-export interface Item {
+export interface Article {
   id: number;
-  name: string;
-}
-
-export interface Article extends Item {
+  title: string;
   author: string;
   url: string;
   year: number;
@@ -16,19 +13,17 @@ export interface Article extends Item {
   date_modification: string;
 }
 
-export interface WebSite extends Item {
-  url: string;
-  image_url: string;
+export interface Tag {
+  id: number;
+  name: string;
 }
 
-export interface Tag extends Item {}
-
-export interface FormProps<T extends Item> {
+export interface FormProps {
   isOpen: boolean;
   toggle: () => void;
-  onSave: (item: T) => void;
+  onSave: (item: Article) => void;
   title: string;
-  activeItem: T;
+  activeItem: Article;
   showDeleteButton?: boolean;
 }
 

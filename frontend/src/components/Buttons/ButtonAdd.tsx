@@ -1,14 +1,14 @@
 // Libraries
 import React, { useState, FunctionComponent } from "react";
 import { useDispatch } from "react-redux";
-import { Item, FormProps, Article } from "../Tools/Types";
+import { FormProps, Article } from "../Tools/Types";
 import { proxy, requestTypes } from "../Tools/Proxy";
 import { ADD_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
-interface ButtonAddProps<T extends Item> {
-  FormComponent: FunctionComponent<FormProps<T>>;
+interface PropsType {
+  FormComponent: FunctionComponent<FormProps>;
   title: string;
-  activeItem: T;
+  activeItem: Article;
 }
 
 /***
@@ -17,11 +17,7 @@ interface ButtonAddProps<T extends Item> {
  * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
  * fetchData to update the datatable.
  */
-function ButtonAdd<T extends Item>({
-  FormComponent,
-  title,
-  activeItem,
-}: Readonly<ButtonAddProps<T>>) {
+function ButtonAdd({ FormComponent, title, activeItem }: Readonly<PropsType>) {
   const dispatch = useDispatch();
   const [modalCreate, setModalCreate] = useState<boolean>(false);
 
@@ -29,10 +25,9 @@ function ButtonAdd<T extends Item>({
     setModalCreate(!modalCreate);
   }
 
-  async function create(item: T) {
-    const { error, message } = await proxy(requestTypes.ADD_ARTICLE, item);
+  async function create(article: Article) {
+    const { error, message } = await proxy(requestTypes.ADD_ARTICLE, article);
     if (!error) {
-      const article = item as unknown as Article;
       dispatch(ADD_ARTICLE(article));
     }
     dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));

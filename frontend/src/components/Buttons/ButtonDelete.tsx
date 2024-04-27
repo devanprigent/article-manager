@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { proxy, requestTypes } from "../Tools/Proxy";
 import { DELETE_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
-interface ButtonDeleteProps {
+interface PropsType {
   itemId: number;
 }
 
@@ -14,7 +14,7 @@ interface ButtonDeleteProps {
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonDelete({ itemId }: Readonly<ButtonDeleteProps>) {
+function ButtonDelete({ itemId }: Readonly<PropsType>) {
   const dispatch = useDispatch();
   const [modalRemove, setModalRemove] = useState(false);
 
@@ -26,7 +26,6 @@ function ButtonDelete({ itemId }: Readonly<ButtonDeleteProps>) {
     const { error, message } = await proxy(requestTypes.DELETE_ARTICLE, itemId);
     if (!error) {
       dispatch(DELETE_ARTICLE(itemId));
-      dispatch(SET_NOTIFICATION(message, "success"));
     }
     dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
     toggleModalRemove();

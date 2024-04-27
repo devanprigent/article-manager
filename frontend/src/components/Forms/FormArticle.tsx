@@ -1,17 +1,16 @@
 // Libraries
-import React, { useState, ChangeEvent, FunctionComponent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import * as yup from "yup";
 import { Input } from "reactstrap";
 import CreatableSelect from "react-select/creatable";
 import Tags from "../Forms/FormTags";
 import { FormProps, Tag, Article } from "../Tools/Types";
-import { getArticlesURL } from "../Tools/Urls";
-import FetchData from "../Tools/FetchData";
+import { useArticles } from "../../redux/selectors";
 import PopupWrapper from "../Wrappers/PopupWrapper";
 import ButtonDelete from "../Buttons/ButtonDelete";
 
 const validationSchema = yup.object({
-  name: yup.string().required(" "),
+  title: yup.string().required(" "),
   author: yup.string().required(" "),
   url: yup.string().url(" ").required(" "),
   year: yup.date().required(" "),
@@ -28,19 +27,18 @@ function onlyUnique(value: string, index: number, array: string[]) {
 /**
  * The goal of this component is to provide a modal form htmlFor adding or editing an article.
  */
-const FormArticle: FunctionComponent<FormProps<Article>> = ({
+function FormArticle({
   isOpen,
   toggle,
   onSave,
   title,
   activeItem,
   showDeleteButton,
-}) => {
+}: FormProps) {
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const API_URL_ARTICLES: string = getArticlesURL();
-  const { data } = FetchData(API_URL_ARTICLES);
-  const authors = (data as Article[])
+  const currentArticles = useArticles();
+  const authors = currentArticles
     .map((article: Article) => article.author)
     .filter(onlyUnique)
     .sort();
@@ -90,19 +88,19 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
         <form>
           <div className="flex flex-col space-y-2">
             <div>
-              <label htmlFor="name">
+              <label htmlFor="title">
                 <b>Title</b>
               </label>
               <Input
                 type="text"
                 placeholder="Title"
-                name="name"
-                value={item.name}
+                name="title"
+                value={item.title}
                 onChange={handleChange}
-                invalid={errors.name !== undefined && errors.name !== ""}
+                invalid={errors.title !== undefined && errors.title !== ""}
               />
-              {errors.name && (
-                <div className="error-message">{errors.name}</div>
+              {errors.title && (
+                <div className="error-message">{errors.title}</div>
               )}
             </div>
             <div className="flex flex-row space-x-4">
@@ -246,7 +244,7 @@ const FormArticle: FunctionComponent<FormProps<Article>> = ({
       </div>
     </PopupWrapper>
   );
-};
+}
 
 // Exportation
 export default FormArticle;

@@ -20,10 +20,6 @@ function NavBar() {
         <NavLink className={linkStyle} to="/favoris">
           Favoris
         </NavLink>
-
-        <NavLink className={linkStyle} to="/websites">
-          WebSites
-        </NavLink>
       </div>
     </nav>
   );
