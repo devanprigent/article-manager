@@ -1,4 +1,4 @@
-import { NotificationType, SeverityType } from "../components/Tools/Types";
+import { NotificationType, SeverityType, Article } from "../components/Tools/Types";
 import actionsTypes from "./actionsTypes";
 
 export function SET_NOTIFICATION(message: string, severity: SeverityType) {
@@ -9,7 +9,7 @@ export function SET_NOTIFICATION(message: string, severity: SeverityType) {
     severity: severity,
   };
   return {
-    type: actionsTypes.SET_CURRENT_NOTIFICATION,
+    type: actionsTypes.SET_NOTIFICATION,
     payload: { currentNotification: newNotification },
   };
 }
@@ -21,7 +21,14 @@ export function DELETE_NOTIFICATION() {
     severity: "info",
   };
   return {
-    type: actionsTypes.SET_CURRENT_NOTIFICATION,
+    type: actionsTypes.SET_NOTIFICATION,
     payload: { currentNotification: newNotification },
+  };
+}
+
+export function ADD_ARTICLE(newArticle: Article) {
+  return {
+    type: actionsTypes.ADD_ARTICLE,
+    payload: { newArticle: newArticle },
   };
 }
