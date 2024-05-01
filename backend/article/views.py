@@ -1,3 +1,4 @@
+from rest_framework.views import exception_handler
 from rest_framework import serializers,viewsets
 from django.http import JsonResponse
 from article.models import Article
@@ -56,3 +57,9 @@ class ArticleView(viewsets.ModelViewSet):
             article = serializer.save()
             return Response({'id': article.id}, status=201)  # return the ID in the response
         return Response(serializer.errors, status=400)
+
+    def handle_exception(self, exc):
+        response = super().handle_exception(exc)
+        if response is not None:
+            response.data = {"message": response.data[0]}
+        return response
