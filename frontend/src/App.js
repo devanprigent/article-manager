@@ -1,9 +1,9 @@
 // Bibliothèques
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/Structure/NavBar";
-import PageFavoris from "./components/Pages/PageFavoris";
-import PageArticles from "./components/Pages/PageArticles";
-import DataLoader from "./components/Pages/DataLoader";
+import FavoritesPage from "./components/Pages/FavoritesPage";
+import ArticlesPage from "./components/Pages/ArticlesPage";
+import DataLoader from "./components/Tools/DataLoader";
 import NotificationBox from "./components/Structure/NotificationBox";
 
 function App() {
@@ -12,9 +12,9 @@ function App() {
       <NavBar />
       <div className="h-96 flex-grow m-4">
         <Routes>
-          <Route exact path="/" element={<PageArticles />} />
-          <Route exact path="/favoris" element={<PageFavoris />} />
-          <Route path="*" element={<PageArticles />} />
+          <Route exact path="/" element={<ArticlesPage />} />
+          <Route exact path="/favoris" element={<FavoritesPage />} />
+          <Route path="*" element={<ArticlesPage />} />
         </Routes>
       </div>
       <DataLoader />

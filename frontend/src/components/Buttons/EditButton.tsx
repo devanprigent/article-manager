@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Info } from "react-feather";
 import { Article } from "../Tools/Types";
-import FormArticle from "../Forms/FormArticle";
+import FormArticle from "../Forms/ArticleForm";
 import { useDispatch } from "react-redux";
 import { proxy, requestTypes } from "../Tools/Proxy";
 import { EDIT_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
@@ -17,7 +17,7 @@ interface PropsType {
  * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
  * fetchData to update the datatable.
  */
-function ButtonEdit({ activeItem }: Readonly<PropsType>) {
+function EditButton({ activeItem }: Readonly<PropsType>) {
   const dispatch = useDispatch();
   const [modal, setModal] = useState<boolean>(false);
 
@@ -58,4 +58,4 @@ function ButtonEdit({ activeItem }: Readonly<PropsType>) {
 }
 
 // Exportation
-export default ButtonEdit;
+export default EditButton;

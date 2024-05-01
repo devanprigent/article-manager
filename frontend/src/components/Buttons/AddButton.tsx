@@ -18,7 +18,7 @@ interface PropsType {
  * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
  * fetchData to update the datatable.
  */
-function ButtonAdd({ FormComponent, title, activeItem }: Readonly<PropsType>) {
+function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
   const dispatch = useDispatch();
   const [modalCreate, setModalCreate] = useState<boolean>(false);
 
@@ -62,4 +62,4 @@ function ButtonAdd({ FormComponent, title, activeItem }: Readonly<PropsType>) {
 }
 
 // Exportation
-export default ButtonAdd;
+export default AddButton;

@@ -14,7 +14,7 @@ interface FormConfirmationProps {
  * Il est utilisé pour demander une confirmation à l'utilisateur avant d'effectuer une action.
  * Dans PEPH, il est utilisé uniquement pour les suppressions.
  */
-function FormConfirmation({
+function ConfirmationForm({
   isOpen,
   toggle,
   onSave,
@@ -45,4 +45,4 @@ function FormConfirmation({
   );
 }
 
-export default FormConfirmation;
+export default ConfirmationForm;

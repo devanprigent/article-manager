@@ -6,39 +6,29 @@ import Checkbox from "@mui/material/Checkbox";
 import { Article } from "../Tools/Types";
 import { useArticles } from "../../redux/selectors";
 // Components
-import ButtonAdd from "../Buttons/ButtonAdd";
 import DataTable from "../Structure/DataTable";
-import ButtonEdit from "../Buttons/ButtonEdit";
-import FormArticle from "../Forms/FormArticle";
+import EditButton from "../Buttons/EditButton";
 
 /**
- * This component generates the Article page.
+ * This component generates the Tag page.
  */
-function PageArticles() {
+function FavoritesPage() {
   const currentArticles = useArticles();
+  const favoris = currentArticles.filter(
+    (article: Article) => article.favorite === true
+  );
 
-  const TITLE_ADD_FORM: string = "Ajout d'un article";
-  const newArticle: Article = {
-    id: 0,
-    title: "",
-    author: "",
-    url: "",
-    year: new Date().getFullYear(),
-    summary: "",
-    read: false,
-    read_again: false,
-    favorite: false,
-    tags: [],
-    date_creation: "",
-    date_modification: "",
-  };
   const COLUMNS: GridColDef[] = [
     {
-      field: "titre",
+      field: "title",
       width: 450,
       renderHeader: () => <strong className="fs-5">{"Title"}</strong>,
       renderCell: (params) => (
-        <a href={params.row.url} target="_blank" rel="noopener noreferrer">
+        <a
+          href={params.row.url_article}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {params.row.title}
         </a>
       ),
@@ -66,39 +56,25 @@ function PageArticles() {
       ),
     },
     {
-      field: "favorite",
-      renderHeader: () => <strong className="fs-5">{"Favorite"}</strong>,
-      renderCell: (params) => (
-        <Checkbox disabled checked={params.row.favorite} />
-      ),
-    },
-    {
       field: "actions",
       headerName: "Actions",
       renderHeader: () => <strong className="fs-5">{"Actions"}</strong>,
       renderCell: (params) => (
         <div className="d-flex justify-content-center align-items-center">
-          <ButtonEdit activeItem={params.row} />
+          <EditButton activeItem={params.row} />
         </div>
       ),
     },
   ];
 
   return (
-    <div className="h-full flex flex-col mx-16 space-y-4">
-      <div className="flex flex-row justify-center">
-        <ButtonAdd
-          FormComponent={FormArticle}
-          title={TITLE_ADD_FORM}
-          activeItem={newArticle}
-        />
-      </div>
+    <div className="h-full flex flex-col justify-start mx-16">
       <div className="shadow bg-white rounded overflow-auto">
-        <DataTable data={currentArticles} columns={COLUMNS} />
+        <DataTable data={favoris} columns={COLUMNS} />
       </div>
     </div>
   );
 }
 
 // Exportation
-export default PageArticles;
+export default FavoritesPage;

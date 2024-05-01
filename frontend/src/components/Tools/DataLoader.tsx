@@ -2,8 +2,8 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 // Configuration Files
-import { Article } from "../Tools/Types";
-import { proxy, requestTypes } from "../Tools/Proxy";
+import { Article } from "./Types";
+import { proxy, requestTypes } from "./Proxy";
 import { SET_ARTICLES, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 function DataLoader() {

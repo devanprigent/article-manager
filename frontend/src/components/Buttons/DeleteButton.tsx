@@ -1,6 +1,6 @@
 // Libraries
 import React, { useState } from "react";
-import FormConfirmation from "../Forms/FormConfirmation";
+import ConfirmationForm from "../Forms/ConfirmationForm";
 import { useDispatch } from "react-redux";
 import { proxy, requestTypes } from "../Tools/Proxy";
 import { buttonSize, buttonStyle } from "../Tools/Styling";
@@ -15,7 +15,7 @@ interface PropsType {
  * It displays a "Delete" button that, when clicked, opens a confirmation form.
  * When the confirmation window is confirmed, a DELETE request is sent to the API.
  */
-function ButtonDelete({ itemId }: Readonly<PropsType>) {
+function DeleteButton({ itemId }: Readonly<PropsType>) {
   const dispatch = useDispatch();
   const [modalRemove, setModalRemove] = useState(false);
 
@@ -41,7 +41,7 @@ function ButtonDelete({ itemId }: Readonly<PropsType>) {
         Supprimer
       </button>
 
-      <FormConfirmation
+      <ConfirmationForm
         isOpen={modalRemove}
         toggle={toggleModalRemove}
         onSave={() => remove(itemId)}
@@ -51,4 +51,4 @@ function ButtonDelete({ itemId }: Readonly<PropsType>) {
 }
 
 // Exportation
-export default ButtonDelete;
+export default DeleteButton;

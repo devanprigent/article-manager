@@ -3,12 +3,12 @@ import React, { useState, ChangeEvent } from "react";
 import * as yup from "yup";
 import { Input } from "reactstrap";
 import CreatableSelect from "react-select/creatable";
-import Tags from "../Forms/FormTags";
+import TagsForm from "./TagsForm";
 import { buttonSize, buttonStyle } from "../Tools/Styling";
 import { FormProps, Tag, Article } from "../Tools/Types";
 import { useArticles } from "../../redux/selectors";
 import PopupWrapper from "../Wrappers/PopupWrapper";
-import ButtonDelete from "../Buttons/ButtonDelete";
+import DeleteButton from "../Buttons/DeleteButton";
 
 const validationSchema = yup.object({
   title: yup.string().required(" "),
@@ -28,7 +28,7 @@ function onlyUnique(value: string, index: number, array: string[]) {
 /**
  * The goal of this component is to provide a modal form htmlFor adding or editing an article.
  */
-function FormArticle({
+function ArticleForm({
   isOpen,
   toggle,
   onSave,
@@ -156,7 +156,10 @@ function FormArticle({
               {errors.url && <div className="error-message">{errors.url}</div>}
             </div>
             <div>
-              <Tags onChange={handleTagChange} currentTags={activeItem.tags} />
+              <TagsForm
+                onChange={handleTagChange}
+                currentTags={activeItem.tags}
+              />
             </div>
             <div className="flex flex-row space-x-4 justify-between px-4">
               <div>
@@ -225,7 +228,7 @@ function FormArticle({
         <div className="flex flex-col justify-content-center items-center">
           {showDeleteButton ? (
             <div className="w-full flex flex-row justify-between">
-              <ButtonDelete itemId={activeItem.id} />
+              <DeleteButton itemId={activeItem.id} />
               <button
                 className="bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
                 onClick={() => validateForm()}
@@ -248,4 +251,4 @@ function FormArticle({
 }
 
 // Exportation
-export default FormArticle;
+export default ArticleForm;
