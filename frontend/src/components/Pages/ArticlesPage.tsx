@@ -38,7 +38,12 @@ function ArticlesPage() {
       width: 450,
       renderHeader: () => <strong className="fs-5">{"Title"}</strong>,
       renderCell: (params) => (
-        <a href={params.row.url} target="_blank" rel="noopener noreferrer">
+        <a
+          href={params.row.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: params.row.read ? "line-through" : "none" }}
+        >
           {params.row.title}
         </a>
       ),
