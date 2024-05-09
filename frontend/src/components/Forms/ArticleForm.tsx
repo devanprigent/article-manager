@@ -8,7 +8,7 @@ import { buttonSize, buttonStyle } from "../Tools/Constants";
 import { FormProps, Tag, Article } from "../Tools/Types";
 import { useArticles } from "../../redux/selectors";
 import PopupWrapper from "../Wrappers/PopupWrapper";
-import DeleteButton from "../Buttons/DeleteButton";
+import RemoveButton from "../Buttons/RemoveButton";
 
 const validationSchema = yup.object({
   title: yup.string().required(" "),
@@ -242,7 +242,7 @@ function ArticleForm({
         <div className="flex flex-col justify-content-center items-center">
           {showDeleteButton ? (
             <div className="w-full flex flex-row justify-between">
-              <DeleteButton itemId={activeItem.id} />
+              <RemoveButton itemId={activeItem.id} />
               <button
                 className="bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
                 onClick={() => validateForm()}
