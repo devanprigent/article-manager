@@ -11,15 +11,11 @@ function NotificationBox() {
   const notification = useNotification();
   const color: string = severityColors[notification.severity];
 
-  function handleClose() {
-    dispatch(DELETE_NOTIFICATION());
-  }
-
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={notification.open}
-      onClose={handleClose}
+      onClose={() => dispatch(DELETE_NOTIFICATION())}
       autoHideDuration={3000}
       key={notification.timestamp}
     >

@@ -13,8 +13,8 @@ import EditButton from "../Buttons/EditButton";
  * This component generates the Tag page.
  */
 function FavoritesPage() {
-  const currentArticles = useArticles();
-  const favoris = currentArticles.filter(
+  const articles = useArticles();
+  const favoris = articles.filter(
     (article: Article) => article.favorite === true
   );
 
