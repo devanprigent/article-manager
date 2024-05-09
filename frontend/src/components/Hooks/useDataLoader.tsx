@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 // Configuration Files
 import { Article } from "../Tools/Types";
 import { proxy, requestTypes } from "../Tools/Proxy";
+import { useNotification } from "../../redux/selectors";
 import { SET_ARTICLES, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 function useDataLoader() {
   const dispatch = useDispatch();
+  const notification = useNotification();
 
   useEffect(() => {
     async function fetchData() {
@@ -21,7 +23,7 @@ function useDataLoader() {
     }
 
     fetchData().catch((err) => console.error(err));
-  }, [dispatch]);
+  }, [dispatch, notification]);
 }
 
 export default useDataLoader;

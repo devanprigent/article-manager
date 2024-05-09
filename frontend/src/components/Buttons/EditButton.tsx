@@ -30,7 +30,7 @@ function EditButton({ activeItem }: Readonly<PropsType>) {
     if (!error) {
       dispatch(EDIT_ARTICLE(article.id, article));
     }
-    dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
+    dispatch(SET_NOTIFICATION(message, error ? "error" : "warning"));
     toggleModal();
   }
 

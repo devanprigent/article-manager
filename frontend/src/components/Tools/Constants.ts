@@ -1,0 +1,27 @@
+const baseURL: string = "http://127.0.0.1:8000/api";
+
+export const API_URLS = {
+  GET_ARTICLES: `${baseURL}/articles/`,
+  GET_WEBSITES: `${baseURL}/websites/`,
+  GET_TAGS: `${baseURL}/tags/`,
+};
+
+export const buttonStyle = {
+  error: "focus:outline-none text-white bg-red-500 hover:bg-red-700 rounded-lg",
+  warning:
+    "focus:outline-none text-black bg-yellow-400 hover:bg-yellow-600 rounded-lg",
+  neutral:
+    "focus:outline-none text-black bg-gray-200 hover:bg-gray-400 rounded p-2",
+  success:
+    "focus:outline-none text-white bg-green-500 hover:bg-green-700 rounded-lg",
+};
+
+export const buttonSize = {
+  small: "w-24 h-12 text-sm",
+  medium: "w-32 h-16 text-md",
+  large: "w-40 h-20 text-lg",
+};
+
+export const pageStyle = {
+  bgColor: "bg-gray-100",
+};

@@ -35,3 +35,9 @@ export type NotificationType = {
   message: string;
   severity: SeverityType;
 };
+
+export type ProxyResponse = {
+  error: boolean;
+  message: string;
+  data: any;
+};

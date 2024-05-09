@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ConfirmationForm from "../Forms/ConfirmationForm";
 import { useDispatch } from "react-redux";
 import { proxy, requestTypes } from "../Tools/Proxy";
-import { buttonSize, buttonStyle } from "../Tools/Styling";
+import { buttonSize, buttonStyle } from "../Tools/Constants";
 import { DELETE_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
 interface PropsType {
@@ -28,7 +28,7 @@ function DeleteButton({ itemId }: Readonly<PropsType>) {
     if (!error) {
       dispatch(DELETE_ARTICLE(itemId));
     }
-    dispatch(SET_NOTIFICATION(message, error ? "error" : "success"));
+    dispatch(SET_NOTIFICATION(message, error ? "error" : "warning"));
     toggleModalRemove();
   }
 

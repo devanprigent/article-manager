@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState, FunctionComponent } from "react";
 import { useDispatch } from "react-redux";
-import { buttonSize, buttonStyle } from "../Tools/Styling";
+import { buttonSize, buttonStyle } from "../Tools/Constants";
 import { FormProps, Article } from "../Tools/Types";
 import { proxy, requestTypes } from "../Tools/Proxy";
 import { ADD_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";

@@ -1,9 +1,7 @@
 // Libraries
 import axios from "axios";
-import {
-  getArticlesURL
-} from "./Urls";
-import { Article } from "./Types";
+import { API_URLS } from "./Constants";
+import { Article, ProxyResponse } from "./Types";
 
 export const requestTypes = {
   FETCH_ARTICLES: "FETCH_ARTICLES",
@@ -11,6 +9,61 @@ export const requestTypes = {
   EDIT_ARTICLE: "EDIT_ARTICLE",
   DELETE_ARTICLE: "DELETE_ARTICLE",
 };
+
+async function request(
+  url: string,
+  method: string,
+  successMsg: string,
+  data?: any
+) {
+  const result: ProxyResponse = { error: false, message: "", data: {} };
+  try {
+    const response = await axios.request({
+      url: url,
+      method: method,
+      data: data,
+    });
+    result.error = response.status < 200 || response.status >= 300;
+    result.message = successMsg;
+    result.data = response.data;
+  } catch (err: any) {
+    result.error = true;
+    result.message = err.message;
+    if (err.response) {
+      result.data = err.response.data;
+      result.message = result.data.message;
+    }
+  }
+  return result;
+}
+
+async function fetchArticles() {
+  const url = API_URLS.GET_ARTICLES;
+  const method = "GET";
+  const sucessMsg = "Articles fetched successfully";
+  return request(url, method, sucessMsg);
+}
+
+async function addArticle(article: Article) {
+  const url = API_URLS.GET_ARTICLES;
+  const method = "POST";
+  const sucessMsg = "Article successfully added";
+  return request(url, method, sucessMsg, article);
+}
+
+async function editArticle(article: Article) {
+  const url = `${API_URLS.GET_ARTICLES}${article.id}/`;
+  const method = "PUT";
+  const sucessMsg = "Article successfully edited";
+  return request(url, method, sucessMsg, article);
+}
+
+async function deleteArticle(id: number) {
+  const url = `${API_URLS.GET_ARTICLES}${id}/`;
+  const method = "DELETE";
+  const sucessMsg = "Article successfully deleted";
+  return request(url, method, sucessMsg);
+}
 
 /**
  * This function is the only way to communicate with the backend.
@@ -22,81 +75,22 @@ export const requestTypes = {
 export async function proxy(
   request: string,
   parameter?: any
-): Promise<{ error: boolean; message: string; data: any }> {
-    const API_ARTICLES : string = getArticlesURL();
+): Promise<ProxyResponse> {
   switch (request) {
     case requestTypes.FETCH_ARTICLES: {
-      let error: boolean;
-      let message: string;
-      let data: Article[];
-      try {
-        const response = await axios.get(API_ARTICLES);
-        error = response.status !== 200;
-        message = "Articles fetched successfully";
-        data = response.data;
-      } catch (err: any) {
-        console.log("FETCH_ARTICLES", err);
-        error = true;
-        message = err.message;
-        data = [];
-      }
-      return { error, message, data };
+      return fetchArticles();
     }
     case requestTypes.ADD_ARTICLE: {
-      let error: boolean;
-      let message: string;
-      let data: any;
-      try {
-        const response = await axios.post(API_ARTICLES, parameter);
-        error = (response.status < 200 || response.status >= 300);
-        message = "Article successfully added";
-        data = response.data;
-      } catch (err: any) {
-        console.log("ADD_ARTICLE", err);
-        error = true;
-        message = err.message;
-        if (err.response) {
-          data = err.response.data;
-          message = data.message;
-        }
-      }
-      return { error, message, data };
+      const article = parameter as Article;
+      return addArticle(article);
     }
     case requestTypes.EDIT_ARTICLE: {
-      let error: boolean;
-      let message: string;
-      let data: any;
-      try {
-        const response = await axios.put(`${API_ARTICLES}${parameter.id}/`, parameter);
-        error = response.status !== 200;
-        message = "Article successfully edited";
-      } catch (err: any) {
-        console.log("EDIT_ARTICLE", err);
-        error = true;
-        message = err.message;
-        if (err.response) {
-          data = err.response.data;
-          message = data.message;
-        }
-      }
-      return { error, message, data: {} };
+      const article = parameter as Article;
+      return editArticle(article);
     }
     case requestTypes.DELETE_ARTICLE: {
-      let error: boolean;
-      let message: string;
-      try {
-        const response = await axios.delete(`${API_ARTICLES}${parameter}/`);
-        error = response.status !== 204;
-        message = "Article successfully deleted";
-      } catch (err: any) {
-        console.log("DELETE_ARTICLE", err);
-        error = true;
-        message = err.message;
-        if (err.response) {
-          message = err.response.data.message;
-        }
-      }
-      return { error, message, data: {} };
+      const id = parameter as number;
+      return deleteArticle(id);
     }
     default:
       throw new Error("This type of request is not supported");
