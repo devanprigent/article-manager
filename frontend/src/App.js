@@ -3,11 +3,11 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/Structure/NavBar";
 import FavoritesPage from "./components/Pages/FavoritesPage";
 import ArticlesPage from "./components/Pages/ArticlesPage";
-import useDataLoader from "./components/Hooks/useDataLoader";
+import useLoadConfig from "./components/Hooks/useLoadConfig";
 import NotificationBox from "./components/Structure/NotificationBox";
 
 function App() {
-  useDataLoader();
+  useLoadConfig();
 
   return (
     <div className="h-screen flex flex-col">

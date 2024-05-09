@@ -4,6 +4,7 @@ import { API_URLS } from "./Constants";
 import { Article, ProxyResponse } from "./Types";
 
 export const requestTypes = {
+  FETCH_TAGS: "FETCH_TAGS",
   FETCH_ARTICLES: "FETCH_ARTICLES",
   ADD_ARTICLE: "ADD_ARTICLE",
   EDIT_ARTICLE: "EDIT_ARTICLE",
@@ -35,6 +36,13 @@ async function request(
     }
   }
   return result;
+}
+
+async function fetchTags() {
+  const url = API_URLS.GET_TAGS;
+  const method = "GET";
+  const sucessMsg = "Tags fetched successfully";
+  return request(url, method, sucessMsg);
 }
 
 async function fetchArticles() {
@@ -77,6 +85,9 @@ export async function proxy(
   parameter?: any
 ): Promise<ProxyResponse> {
   switch (request) {
+    case requestTypes.FETCH_TAGS: {
+      return fetchTags();
+    }
     case requestTypes.FETCH_ARTICLES: {
       return fetchArticles();
     }

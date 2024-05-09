@@ -7,7 +7,7 @@ import { proxy, requestTypes } from "../Tools/Proxy";
 import { useNotification } from "../../redux/selectors";
 import { SET_ARTICLES, SET_NOTIFICATION } from "../../redux/actionsCreators";
 
-function useDataLoader() {
+function useLoadConfig() {
   const dispatch = useDispatch();
   const notification = useNotification();
 
@@ -26,4 +26,4 @@ function useDataLoader() {
   }, [dispatch, notification]);
 }
 
-export default useDataLoader;
+export default useLoadConfig;

@@ -1,5 +1,6 @@
 // Libraries
 import React, { useState, KeyboardEvent } from "react";
+import { useTags } from "../../redux/selectors";
 import { Tag } from "../Tools/Types";
 
 interface TagsProps {
@@ -12,6 +13,7 @@ interface TagsProps {
  * It allows users to input tags through an input field.
  */
 function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
+  const possibleTags = useTags();
   const [tags, setTags] = useState<Tag[]>(currentTags);
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
