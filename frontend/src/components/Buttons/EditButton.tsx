@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import { Info } from "react-feather";
 import { Article } from "../Tools/Types";
 import FormArticle from "../Forms/ArticleForm";
-import { useDispatch } from "react-redux";
-import { proxy, requestTypes } from "../Tools/Proxy";
-import { EDIT_ARTICLE, SET_NOTIFICATION } from "../../redux/actionsCreators";
+import useEditArticle from "../Hooks/useEditArticle";
 
 interface PropsType {
   activeItem: Article;
@@ -18,20 +16,11 @@ interface PropsType {
  * fetchData to update the datatable.
  */
 function EditButton({ activeItem }: Readonly<PropsType>) {
-  const dispatch = useDispatch();
+  const edit = useEditArticle();
   const [modal, setModal] = useState<boolean>(false);
 
   function toggleModal() {
     setModal(!modal);
-  }
-
-  async function edit(article: Article) {
-    const { error, message } = await proxy(requestTypes.EDIT_ARTICLE, article);
-    if (!error) {
-      dispatch(EDIT_ARTICLE(article.id, article));
-    }
-    dispatch(SET_NOTIFICATION(message, error ? "error" : "warning"));
-    toggleModal();
   }
 
   return (
