@@ -1,3 +1,5 @@
+import { severityTypes } from "./Constants";
+
 export interface Article {
   id: number;
   title: string;
@@ -27,13 +29,13 @@ export interface FormProps {
   showDeleteButton?: boolean;
 }
 
-export type SeverityType = "error" | "warning" | "info" | "success";
+export type Severity = (typeof severityTypes)[keyof typeof severityTypes];
 
-export type NotificationType = {
+export type Notification = {
   timestamp?: number;
   open: boolean;
   message: string;
-  severity: SeverityType;
+  severity: Severity;
 };
 
 export type ProxyResponse = {

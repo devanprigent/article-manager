@@ -1,9 +1,9 @@
 // Libraries
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
-import { Article, NotificationType } from "../components/Tools/Types";
+import { Article, Notification } from "../components/Tools/Types";
 
-export const useNotification = (): NotificationType =>
+export const useNotification = (): Notification =>
   useSelector((state: RootState) => state.currentNotification);
 
 export const useArticles = (): Article[] =>

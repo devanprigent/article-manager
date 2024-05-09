@@ -1,8 +1,8 @@
-import { NotificationType, SeverityType, Article } from "../components/Tools/Types";
+import { Notification, Severity, Article } from "../components/Tools/Types";
 import actionsTypes from "./actionsTypes";
 
-export function SET_NOTIFICATION(message: string, severity: SeverityType) {
-  const newNotification: NotificationType = {
+export function SET_NOTIFICATION(message: string, severity: Severity) {
+  const newNotification: Notification = {
     timestamp: new Date().getTime(),
     open: true,
     message: message,
@@ -15,7 +15,7 @@ export function SET_NOTIFICATION(message: string, severity: SeverityType) {
 }
 
 export function DELETE_NOTIFICATION() {
-  const newNotification: NotificationType = {
+  const newNotification: Notification = {
     open: false,
     message: "",
     severity: "info",

@@ -1,13 +1,10 @@
 // Libraries
 import actionsTypes from "./actionsTypes";
-import {
-  NotificationType,
-  Article
-} from "../components/Tools/Types";
+import { Notification, Article } from "../components/Tools/Types";
 
 type State = {
-  currentNotification: NotificationType;
-  currentArticles : Article[]
+  currentNotification: Notification;
+  currentArticles: Article[];
 };
 
 const initialState: State = {
@@ -16,7 +13,7 @@ const initialState: State = {
     message: "",
     severity: "info",
   },
-  currentArticles : []
+  currentArticles: [],
 };
 
 export default function reducer(state = initialState, action: any) {

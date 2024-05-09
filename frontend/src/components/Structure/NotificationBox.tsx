@@ -4,17 +4,12 @@ import SnackbarContent from "@mui/material/SnackbarContent";
 import { useNotification } from "../../redux/selectors";
 import { useDispatch } from "react-redux";
 import { DELETE_NOTIFICATION } from "../../redux/actionsCreators";
+import { severityColors } from "../Tools/Constants";
 
 function NotificationBox() {
   const dispatch = useDispatch();
   const notification = useNotification();
-  const colorMap = {
-    error: "#FE5531", // Soft red
-    warning: "#FEAD28", // Soft orange
-    info: "#31AAFE", // Soft blue
-    success: "#6FCC62", // Soft green
-  };
-  const color: string = colorMap[notification.severity];
+  const color: string = severityColors[notification.severity];
 
   function handleClose() {
     dispatch(DELETE_NOTIFICATION());
