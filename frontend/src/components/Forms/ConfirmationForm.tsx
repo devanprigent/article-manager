@@ -1,6 +1,7 @@
 // Libraries
 import React from "react";
 import PopupWrapper from "../Wrappers/PopupWrapper";
+import { buttonSize, buttonStyle } from "../Tools/Constants";
 
 interface FormProps {
   isOpen: boolean;
@@ -24,13 +25,13 @@ function ConfirmationForm({ isOpen, toggle, onSave }: Readonly<FormProps>) {
         <div>{"Etes-vous sûr de vouloir supprimer cet élément ?"}</div>
         <div className="flex flex-row justify-between">
           <button
-            className="bg-red-600 hover:bg-red-800 text-white py-2 px-6 rounded"
+            className={`${buttonStyle.error} ${buttonSize.medium}`}
             onClick={toggle}
           >
             Annuler
           </button>
           <button
-            className="ml-auto bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
+            className={`${buttonStyle.success} ${buttonSize.medium}`}
             onClick={onSave}
           >
             Valider

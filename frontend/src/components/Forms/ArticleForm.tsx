@@ -239,25 +239,18 @@ function ArticleForm({
             </div>
           </div>
         </form>
-        <div className="flex flex-col justify-content-center items-center">
-          {showDeleteButton ? (
-            <div className="w-full flex flex-row justify-between">
-              <RemoveButton itemId={activeItem.id} />
-              <button
-                className="bg-green-600 hover:bg-green-800 text-white py-2 px-6 rounded"
-                onClick={() => validateForm()}
-              >
-                Enregistrer
-              </button>
-            </div>
-          ) : (
+        <div className="w-full flex flex-row">
+          <div className="justify-self-start">
+            {showDeleteButton && <RemoveButton itemId={activeItem.id} />}
+          </div>
+          <div className="ml-auto">
             <button
               className={`${buttonStyle.success} ${buttonSize.medium}`}
               onClick={() => validateForm()}
             >
               Enregistrer
             </button>
-          )}
+          </div>
         </div>
       </div>
     </PopupWrapper>
