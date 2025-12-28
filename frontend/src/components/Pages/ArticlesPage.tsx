@@ -58,6 +58,14 @@ function ArticlesPage() {
       renderHeader: () => <strong className="fs-5">{"Year"}</strong>,
     },
     {
+      field: "date_modification",
+      renderCell: (params) => {
+        const date = new Date(params.row.date_modification);
+        return date.toLocaleDateString("fr-FR");
+      },
+      renderHeader: () => <strong className="fs-5">{"Time"}</strong>,
+    },
+    {
       field: "read",
       renderHeader: () => <strong className="fs-5">{"Read"}</strong>,
       renderCell: (params) => <Checkbox disabled checked={params.row.read} />,

@@ -26,7 +26,7 @@ function DataTable({ data, columns }: Readonly<TableauProps>) {
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            printOptions: { disableToolbarButton: true },
+            printOptions: { disableToolbarButton: false },
             csvOptions: { disableToolbarButton: true },
             showQuickFilter: true,
           },
