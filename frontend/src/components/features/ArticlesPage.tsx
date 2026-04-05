@@ -9,12 +9,15 @@ import AddButton from "./AddButton";
 import DataTable from "../layout/DataTable";
 import EditButton from "./EditButton";
 import ArticleForm from "../forms/ArticleForm";
+import PageHeader from "../layout/PageHeader";
 
 /**
  * This component generates the Article page.
  */
 function ArticlesPage() {
   const currentArticles = useArticles();
+  const readCount = currentArticles.filter((article) => article.read).length;
+  const favoriteCount = currentArticles.filter((article) => article.favorite).length;
 
   const TITLE_ADD_FORM: string = "Ajout d'un article";
   const newArticle: Article = {
@@ -34,7 +37,7 @@ function ArticlesPage() {
   const COLUMNS: GridColDef[] = [
     {
       field: "title",
-      width: 450,
+      width: 300,
       renderHeader: () => <strong className="fs-5">{"Title"}</strong>,
       renderCell: (params) => (
         <a
@@ -97,15 +100,33 @@ function ArticlesPage() {
   ];
 
   return (
-    <div className="h-full flex flex-col mx-16 space-y-4">
-      <div className="flex flex-row justify-center">
+    <div className="flex flex-col gap-5">
+      <PageHeader
+        title="Articles"
+        description="Gérez votre bibliothèque et suivez vos lectures en un coup d'oeil."
+      >
+        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-700">
+          <span className="rounded-full bg-slate-100 px-3 py-1">
+            {currentArticles.length} total
+          </span>
+          <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">
+            {readCount} lus
+          </span>
+          <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+            {favoriteCount} favoris
+          </span>
+        </div>
+      </PageHeader>
+
+      <div className="flex justify-end">
         <AddButton
           FormComponent={ArticleForm}
           title={TITLE_ADD_FORM}
           activeItem={newArticle}
         />
       </div>
-      <div className="shadow bg-white rounded overflow-auto">
+
+      <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
         <DataTable data={currentArticles} columns={COLUMNS} />
       </div>
     </div>

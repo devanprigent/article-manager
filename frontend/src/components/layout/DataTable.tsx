@@ -14,7 +14,7 @@ interface TableauProps {
  */
 function DataTable({ data, columns }: Readonly<TableauProps>) {
   return (
-    <div className="flex-grow h-full bg-gray-100 border">
+    <div className="min-h-[420px] bg-white">
       <DataGrid
         rows={data}
         columns={columns}
@@ -31,6 +31,29 @@ function DataTable({ data, columns }: Readonly<TableauProps>) {
           },
         }}
         hideFooter
+        sx={{
+          border: 0,
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#f8fafc",
+            borderBottom: "1px solid #e2e8f0",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: 700,
+            color: "#334155",
+          },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: "#f8fafc",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "1px solid #f1f5f9",
+            py: 1,
+          },
+          "& .MuiDataGrid-toolbarContainer": {
+            borderBottom: "1px solid #e2e8f0",
+            padding: "0.5rem 0.75rem",
+            backgroundColor: "#ffffff",
+          },
+        }}
       />
     </div>
   );

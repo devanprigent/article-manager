@@ -24,13 +24,14 @@ function EditButton({ activeItem }: Readonly<PropsType>) {
   }
 
   return (
-    <div className="d-flex justify-content-end">
-      <Info
+    <div className="flex justify-end">
+      <button
         onClick={toggleModal}
-        size={"40px"}
-        strokeWidth={"2px"}
-        color={"#198754"}
-      />
+        className="rounded-lg p-1.5 text-emerald-600 transition hover:bg-emerald-50 hover:text-emerald-700"
+        aria-label="Voir le détail de l'article"
+      >
+        <Info size={24} strokeWidth={2} />
+      </button>
 
       {modal && (
         <FormArticle

@@ -1,6 +1,6 @@
 // Libraries
 import { useState, type FunctionComponent } from "react";
-import { buttonSize, buttonStyle } from "../../constants/constants";
+import { Plus } from "react-feather";
 import { FormProps, Article } from "../../constants/types";
 import useCreateArticle from "../../hooks/useCreateArticle";
 
@@ -27,9 +27,10 @@ function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
   return (
     <>
       <button
-        className={`${buttonStyle.success} ${buttonSize.medium}`}
+        className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
         onClick={toggleModalCreate}
       >
+        <Plus size={16} />
         Ajouter
       </button>
 
