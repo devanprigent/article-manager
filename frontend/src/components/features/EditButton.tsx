@@ -1,6 +1,6 @@
 // Libraries
 import { useState } from "react";
-import { Info } from "react-feather";
+import { Edit3 } from "react-feather";
 import { Article } from "../../constants/types";
 import FormArticle from "../forms/ArticleForm";
 import useEditArticle from "../../hooks/useEditArticle";
@@ -28,9 +28,10 @@ function EditButton({ activeItem }: Readonly<PropsType>) {
       <button
         onClick={toggleModal}
         className="rounded-lg p-1.5 text-emerald-600 transition hover:bg-emerald-50 hover:text-emerald-700"
-        aria-label="Voir le détail de l'article"
+        aria-label="Modifier l'article"
+        title="Modifier l'article"
       >
-        <Info size={24} strokeWidth={2} />
+        <Edit3 size={20} strokeWidth={2.2} />
       </button>
 
       {modal && (
