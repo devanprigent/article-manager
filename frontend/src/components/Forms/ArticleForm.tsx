@@ -222,7 +222,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
               </div>
               <div>
                 <label htmlFor="read_again" className="text-slate-800 dark:text-slate-100">
-                  <b>Read again</b>
+                  <b>Review</b>
                 </label>
                 <br />
                 <Input

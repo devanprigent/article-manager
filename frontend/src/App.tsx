@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/layout/NavBar';
 import FavoritesPage from './components/features/FavoritesPage';
 import ArticlesPage from './components/features/ArticlesPage';
+import StatsPage from './components/features/StatsPage';
 import useLoadConfig from './hooks/useLoadConfig';
 import NotificationBox from './components/layout/NotificationBox';
 import { SET_DARK_MODE } from './redux/actionsCreators';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/" element={<ArticlesPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/favoris" element={<FavoritesPage />} />
+          <Route path="/stats" element={<StatsPage />} />
           <Route path="*" element={<ArticlesPage />} />
         </Routes>
       </div>

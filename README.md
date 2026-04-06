@@ -1,9 +1,13 @@
 # Article Manager
+Web app to **save and search articles** easily. Browse all articles or open your favorite.
+
+## Screenshots
 
 ![Homepage](frontend/docs/img/homepage.PNG)
+----
 ![Favorites](frontend/docs/img/favorites.PNG)
-
-Web app to **save and search articles** easily. Browse all articles or open your favorite.
+----
+![Statistics](frontend/docs/img/stats.PNG)
 
 ## Stack
 
