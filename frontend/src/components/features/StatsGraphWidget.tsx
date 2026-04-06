@@ -5,18 +5,27 @@ interface StatsGraphWidgetProps {
   description: string;
   emptyMessage: string;
   hasData: boolean;
+  isDarkMode: boolean;
   children: ReactNode;
 }
 
-function StatsGraphWidget({ title, description, emptyMessage, hasData, children }: Readonly<StatsGraphWidgetProps>) {
+function StatsGraphWidget({ title, description, emptyMessage, hasData, isDarkMode, children }: Readonly<StatsGraphWidgetProps>) {
   return (
-    <section className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-800">
-      <h3 className="mb-1 text-lg font-semibold text-slate-800 dark:text-slate-100">{title}</h3>
-      <p className="mb-4 text-sm text-slate-500 dark:text-slate-300">{description}</p>
+    <section
+      className={`rounded-2xl border p-5 shadow-sm ${
+        isDarkMode ? 'border-slate-700 bg-slate-800 text-slate-100' : 'border-slate-200/80 bg-white text-slate-800'
+      }`}
+    >
+      <h3 className="mb-1 text-lg font-semibold">{title}</h3>
+      <p className={`mb-4 text-sm ${isDarkMode ? 'text-slate-300' : 'text-slate-500'}`}>{description}</p>
       {hasData ? (
         <div className="h-80 w-full">{children}</div>
       ) : (
-        <div className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-slate-500 dark:border-slate-600 dark:text-slate-300">
+        <div
+          className={`rounded-xl border border-dashed p-8 text-center ${
+            isDarkMode ? 'border-slate-600 text-slate-300' : 'border-slate-300 text-slate-500'
+          }`}
+        >
           {emptyMessage}
         </div>
       )}

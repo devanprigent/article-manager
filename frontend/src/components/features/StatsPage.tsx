@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageHeader from '../layout/PageHeader';
-import { useArticles } from '../../redux/selectors';
+import { useArticles, useIsDarkMode } from '../../redux/selectors';
 import StatsGraphWidget from './StatsGraphWidget';
 
 type AuthorStat = {
@@ -17,6 +17,15 @@ type ReadByMonthStat = {
 
 function StatsPage() {
   const articles = useArticles();
+  const isDarkMode = useIsDarkMode();
+  const axisColor = isDarkMode ? '#cbd5e1' : '#475569';
+  const gridColor = isDarkMode ? '#334155' : '#e2e8f0';
+  const tooltipStyle = {
+    backgroundColor: isDarkMode ? '#0f172a' : '#ffffff',
+    borderColor: isDarkMode ? '#334155' : '#e2e8f0',
+    borderRadius: '0.75rem',
+    color: isDarkMode ? '#e2e8f0' : '#0f172a',
+  };
 
   const topAuthors = useMemo<AuthorStat[]>(() => {
     const counts = new Map<string, number>();
@@ -89,13 +98,14 @@ function StatsPage() {
           description="Most frequently registered authors in your library."
           emptyMessage="Add articles with author names to display this chart."
           hasData={topAuthors.length > 0}
+          isDarkMode={isDarkMode}
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={topAuthors} margin={{ top: 8, right: 12, left: 0, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
               <XAxis dataKey="author" tick={false} />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
+              <YAxis allowDecimals={false} tick={{ fill: axisColor }} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: axisColor }} />
               <Bar dataKey="count" fill="#6366f1" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
@@ -106,13 +116,14 @@ function StatsPage() {
           description="Monthly trend of articles marked as read."
           emptyMessage="Mark articles as read to display monthly activity."
           hasData={readPerMonth.length > 0}
+          isDarkMode={isDarkMode}
         >
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={readPerMonth} margin={{ top: 8, right: 12, left: 0, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="monthLabel" />
-              <YAxis allowDecimals={false} />
-              <Tooltip />
+              <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
+              <XAxis dataKey="monthLabel" tick={{ fill: axisColor }} />
+              <YAxis allowDecimals={false} tick={{ fill: axisColor }} />
+              <Tooltip contentStyle={tooltipStyle} labelStyle={{ color: axisColor }} />
               <Line type="monotone" dataKey="count" stroke="#10b981" strokeWidth={3} dot={{ r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
