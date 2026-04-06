@@ -1,5 +1,8 @@
 # Article Manager
 
+![Homepage](frontend/docs/img/homepage.PNG)
+![Favorites](frontend/docs/img/favorites.PNG)
+
 Web app to **save and search articles** easily. Browse all articles or open your favorite.
 
 ## Stack
