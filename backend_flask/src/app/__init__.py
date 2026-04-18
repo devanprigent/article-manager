@@ -27,7 +27,7 @@ def create_app():
             return jsonify({"error": "Must be a JSON"}), 400
         data = request.get_json()
         try:
-            schema = ArticleSchema(**data)
+            schema = ArticleSchema.model_validate(data)
             tags_id = schema.tags_id
             stmt = select(Tag).where(Tag.id.in_(tags_id))
             tags = db.session.execute(stmt).scalars().all()
@@ -60,7 +60,7 @@ def create_app():
             return jsonify({"error": "Must be a JSON"}), 400
         data = request.get_json()
         try:
-            schema = BasicSchema(**data)
+            schema = BasicSchema.model_validate(data)
             author = Author(name=schema.name)
             db.session.add(author)
             db.session.commit()
@@ -80,7 +80,7 @@ def create_app():
             return jsonify({"error": "Must be a JSON"}), 400
         data = request.get_json()
         try:
-            schema = BasicSchema(**data)
+            schema = BasicSchema.model_validate(data)
             tag = Tag(name=schema.name)
             db.session.add(tag)
             db.session.commit()
