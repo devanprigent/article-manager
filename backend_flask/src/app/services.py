@@ -1,14 +1,25 @@
+from typing import TypeVar
+
 from sqlalchemy import select
 
-from app.database import db
-from app.models import Tag
+from app.database import Base, db
+
+from app.types import EntitiesNotFoundError
+
+ModelType = TypeVar("ModelType", bound=Base)
 
 
-def get_tags(ids: list[int]):
-    stmt = select(Tag).where(Tag.id.in_(ids))
-    tags = db.session.execute(stmt).scalars().all()
+def get_entities(ids: list[int], model: type[ModelType]) -> list[ModelType]:
+    dedup_ids = set(ids)
+    stmt = select(model).where(model.id.in_(dedup_ids))
+    entities = db.session.execute(stmt).scalars().all()
 
-    if len(tags) == len(ids):
-        return tags
+    if len(entities) == len(dedup_ids):
+        return entities
 
-    raise ValueError("One or several tags weren't found based on the provided ids")
+    found_ids = {entity.id for entity in entities}
+    missing_ids = [i for i in dedup_ids if i not in found_ids]
+
+    raise EntitiesNotFoundError(
+        missing_ids, "One or several entities weren't found based on the provided ids"
+    )
