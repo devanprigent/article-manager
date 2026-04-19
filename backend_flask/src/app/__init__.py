@@ -5,7 +5,7 @@ from sqlalchemy import select
 from app.database import db
 from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, BasicSchema, IDSchema
-from app.services import get_entities
+from app.services import get_entities, get_articles_by_author
 from app.types import EntitiesNotFoundError
 
 
@@ -112,6 +112,16 @@ def create_app(test_config=None):
             author_ids = schema.ids
             authors = get_entities(author_ids, Author)
             for author in authors:
+                articles = get_articles_by_author(author.id)
+                if articles:
+                    return (
+                        jsonify(
+                            {
+                                "error": f"The author {author.id} has associated articles."
+                            }
+                        ),
+                        409,
+                    )
                 db.session.delete(author)
             db.session.commit()
             return (

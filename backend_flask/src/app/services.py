@@ -6,6 +6,8 @@ from app.database import Base, db
 
 from app.types import EntitiesNotFoundError
 
+from app.models import Article
+
 ModelType = TypeVar("ModelType", bound=Base)
 
 
@@ -23,3 +25,9 @@ def get_entities(ids: list[int], model: type[ModelType]) -> list[ModelType]:
     raise EntitiesNotFoundError(
         missing_ids, "One or several entities weren't found based on the provided ids"
     )
+
+
+def get_articles_by_author(author_id: int):
+    stmt = select(Article).where(Article.author_id == author_id)
+    articles = db.session.execute(stmt).scalars().all()
+    return articles

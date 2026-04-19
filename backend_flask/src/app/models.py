@@ -43,7 +43,12 @@ class Author(db.Model):
 article_tag = db.Table(
     "article_tag",
     db.Column("article_id", db.Integer, db.ForeignKey("article.id"), primary_key=True),
-    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id"), primary_key=True),
+    db.Column(
+        "tag_id",
+        db.Integer,
+        db.ForeignKey("tag.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
