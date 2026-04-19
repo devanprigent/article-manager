@@ -37,7 +37,7 @@ def tag(client):
 
 
 @pytest.fixture()
-def article():
+def mock_article():
     return {
         "title": "My article",
         "url": "https://example.com/article-1",
@@ -47,6 +47,21 @@ def article():
         "read_again": False,
         "favorite": False,
     }
+
+
+@pytest.fixture()
+def article(client, author, tag, mock_article):
+    r_author = client.post("/authors", json={"name": "Mark Manson"})
+    r_tags = client.post("/tags", json={"name": "Personal Development"})
+    assert r_author.status_code == 201
+    assert r_tags.status_code == 201
+
+    new_article = mock_article.copy()
+    new_article["author_id"] = r_author.get_json()["id"]
+    new_article["tags_id"] = [r_tags.get_json()["id"]]
+    r = client.post("/articles", json=new_article)
+    assert r.status_code == 201
+    return r.get_json()
 
 
 INVALID_ARTICLE_CASES = [

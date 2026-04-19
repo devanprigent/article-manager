@@ -65,13 +65,14 @@ def create_app(test_config=None):
             schema = IDSchema.model_validate(data)
             article_ids = schema.ids
             articles = get_entities(article_ids, Article)
+            articles_dict = [article.to_dict() for article in articles]
             for article in articles:
                 db.session.delete(article)
             db.session.commit()
             return (
                 jsonify(
                     {
-                        "deleted": [article.to_dict() for article in articles],
+                        "deleted": articles_dict,
                         "count": len(articles),
                     }
                 ),
@@ -111,6 +112,7 @@ def create_app(test_config=None):
             schema = IDSchema.model_validate(data)
             author_ids = schema.ids
             authors = get_entities(author_ids, Author)
+            authors_dict = [author.to_dict() for author in authors]
             for author in authors:
                 articles = get_articles_by_author(author.id)
                 if articles:
@@ -127,7 +129,7 @@ def create_app(test_config=None):
             return (
                 jsonify(
                     {
-                        "deleted": [author.to_dict() for author in authors],
+                        "deleted": authors_dict,
                         "count": len(authors),
                     }
                 ),
