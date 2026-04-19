@@ -1,4 +1,3 @@
-from flask import Flask, jsonify, request
 from pydantic import ValidationError
 from sqlalchemy import select
 
@@ -7,6 +6,7 @@ from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, BasicSchema, IDSchema
 from app.services import get_entities, get_articles_by_author
 from app.types import EntitiesNotFoundError
+from app.decorators import validate_json
 
 
 def create_app(test_config=None):
@@ -41,12 +41,8 @@ def create_app(test_config=None):
         return jsonify([article.to_dict() for article in articles]), 200
 
     @app.route("/articles", methods=["POST"])
-    def add_article():
-        if not request.is_json:
-            return jsonify({"error": "Must be a JSON"}), 400
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "JSON body is required"}), 400
+    @validate_json
+    def add_article(data):
         schema = ArticleSchema.model_validate(data)
         tags_id = schema.tags_id
         tags = get_entities(tags_id, Tag)
@@ -66,12 +62,8 @@ def create_app(test_config=None):
         return jsonify(article.to_dict()), 201
 
     @app.route("/articles", methods=["DELETE"])
-    def delete_articles():
-        if not request.is_json:
-            return jsonify({"error": "Must be a JSON"}), 400
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "JSON body is required"}), 400
+    @validate_json
+    def delete_articles(data):
         schema = IDSchema.model_validate(data)
         article_ids = schema.ids
         articles = get_entities(article_ids, Article)
@@ -96,12 +88,8 @@ def create_app(test_config=None):
         return jsonify([author.to_dict() for author in authors]), 200
 
     @app.route("/authors", methods=["POST"])
-    def add_author():
-        if not request.is_json:
-            return jsonify({"error": "Must be a JSON"}), 400
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "JSON body is required"}), 400
+    @validate_json
+    def add_author(data):
         schema = BasicSchema.model_validate(data)
         author = Author(name=schema.name)
         db.session.add(author)
@@ -109,13 +97,8 @@ def create_app(test_config=None):
         return jsonify(author.to_dict()), 201
 
     @app.route("/authors", methods=["DELETE"])
-    def delete_authors():
-        if not request.is_json:
-            return jsonify({"error": "Must be a JSON"}), 400
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "JSON body is required"}), 400
-
+    @validate_json
+    def delete_authors(data):
         schema = IDSchema.model_validate(data)
         author_ids = schema.ids
         authors = get_entities(author_ids, Author)
@@ -148,13 +131,8 @@ def create_app(test_config=None):
         return jsonify([tag.to_dict() for tag in tags]), 200
 
     @app.route("/tags", methods=["POST"])
-    def add_tag():
-        if not request.is_json:
-            return jsonify({"error": "Must be a JSON"}), 400
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "JSON body is required"}), 400
-
+    @validate_json
+    def add_tag(data):
         schema = BasicSchema.model_validate(data)
         tag = Tag(name=schema.name)
         db.session.add(tag)
@@ -162,13 +140,8 @@ def create_app(test_config=None):
         return jsonify(tag.to_dict()), 201
 
     @app.route("/tags", methods=["DELETE"])
-    def delete_tags():
-        if not request.is_json:
-            return jsonify({"error": "Must be a JSON"}), 400
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "JSON body is required"}), 400
-
+    @validate_json
+    def delete_tags(data):
         schema = IDSchema.model_validate(data)
         tags = get_entities(schema.ids, Tag)
         for tag in tags:
