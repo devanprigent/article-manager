@@ -5,7 +5,8 @@ from sqlalchemy import select
 from app.database import db
 from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, BasicSchema, IDSchema
-from app.services import get_tags
+from app.services import get_entities
+from app.types import EntitiesNotFoundError
 
 
 def create_app():
@@ -31,7 +32,7 @@ def create_app():
         try:
             schema = ArticleSchema.model_validate(data)
             tags_id = schema.tags_id
-            tags = get_tags(tags_id)
+            tags = get_entities(tags_id, Tag)
             article = Article(
                 title=schema.title,
                 url=schema.url,
@@ -48,6 +49,34 @@ def create_app():
             return jsonify(article.to_dict()), 201
         except ValidationError as e:
             return jsonify({"errors": e.errors()}), 422
+        except EntitiesNotFoundError as e:
+            return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
+
+    @app.route("/articles", methods=["DELETE"])
+    def delete_articles():
+        if not request.is_json:
+            return jsonify({"error": "Must be a JSON"}), 400
+        data = request.get_json()
+        try:
+            schema = IDSchema.model_validate(data)
+            article_ids = schema.ids
+            articles = get_entities(article_ids, Article)
+            for article in articles:
+                db.session.delete(article)
+            db.session.commit()
+            return (
+                jsonify(
+                    {
+                        "deleted": [article.to_dict() for article in articles],
+                        "count": len(articles),
+                    }
+                ),
+                200,
+            )
+        except ValidationError as e:
+            return jsonify({"errors": e.errors()}), 422
+        except EntitiesNotFoundError as e:
+            return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
     @app.route("/authors")
     def list_authors():
@@ -68,6 +97,32 @@ def create_app():
             return jsonify(author.to_dict()), 201
         except ValidationError as e:
             return jsonify({"errors": e.errors()}), 422
+
+    @app.route("/authors", methods=["DELETE"])
+    def delete_authors():
+        if not request.is_json:
+            return jsonify({"error": "Must be a JSON"}), 400
+        data = request.get_json()
+        try:
+            schema = IDSchema.model_validate(data)
+            author_ids = schema.ids
+            authors = get_entities(author_ids, Author)
+            for author in authors:
+                db.session.delete(author)
+            db.session.commit()
+            return (
+                jsonify(
+                    {
+                        "deleted": [author.to_dict() for author in authors],
+                        "count": len(authors),
+                    }
+                ),
+                200,
+            )
+        except ValidationError as e:
+            return jsonify({"errors": e.errors()}), 422
+        except EntitiesNotFoundError as e:
+            return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
     @app.route("/tags")
     def list_tags():
@@ -90,13 +145,13 @@ def create_app():
             return jsonify({"errors": e.errors()}), 422
 
     @app.route("/tags", methods=["DELETE"])
-    def delete_tag():
+    def delete_tags():
         if not request.is_json:
             return jsonify({"error": "Must be a JSON"}), 400
         data = request.get_json()
         try:
             schema = IDSchema.model_validate(data)
-            tags = get_tags(schema.ids)
+            tags = get_entities(schema.ids, Tag)
             for tag in tags:
                 db.session.delete(tag)
             db.session.commit()
@@ -108,5 +163,7 @@ def create_app():
             )
         except ValidationError as e:
             return jsonify({"errors": e.errors()}), 422
+        except EntitiesNotFoundError as e:
+            return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
     return app
