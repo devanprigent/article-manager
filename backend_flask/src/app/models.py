@@ -20,10 +20,7 @@ class Tag(db.Model):
     )
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name
-        }
+        return {"id": self.id, "name": self.name}
 
 
 class Author(db.Model):
@@ -40,10 +37,7 @@ class Author(db.Model):
     )
 
     def to_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name
-        }
+        return {"id": self.id, "name": self.name}
 
 
 article_tag = db.Table(
@@ -73,7 +67,7 @@ class Article(db.Model):
         onupdate=lambda: datetime.now(timezone.utc),
         nullable=False,
     )
-    
+
     def to_dict(self):
         return {
             "id": self.id,

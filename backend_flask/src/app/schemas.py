@@ -14,5 +14,10 @@ class ArticleSchema(BaseModel):
     favorite: bool
     tags_id: list[PositiveInt]
 
+
 class BasicSchema(BaseModel):
     name: str = Field(..., min_length=1)
+
+
+class IDSchema(BaseModel):
+    ids: list[PositiveInt]
