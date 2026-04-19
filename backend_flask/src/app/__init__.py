@@ -9,10 +9,14 @@ from app.services import get_entities
 from app.types import EntitiesNotFoundError
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
     app.config["SECRET_KEY"] = "dev-secret-key-change-in-production"
+
+    if test_config is not None:
+        app.config.update(test_config)
+
     db.init_app(app)
 
     with app.app_context():
@@ -48,7 +52,7 @@ def create_app():
             db.session.commit()
             return jsonify(article.to_dict()), 201
         except ValidationError as e:
-            return jsonify({"errors": e.errors()}), 422
+            return jsonify({"error": e.errors()}), 422
         except EntitiesNotFoundError as e:
             return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
@@ -74,7 +78,7 @@ def create_app():
                 200,
             )
         except ValidationError as e:
-            return jsonify({"errors": e.errors()}), 422
+            return jsonify({"error": e.errors()}), 422
         except EntitiesNotFoundError as e:
             return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
@@ -96,7 +100,7 @@ def create_app():
             db.session.commit()
             return jsonify(author.to_dict()), 201
         except ValidationError as e:
-            return jsonify({"errors": e.errors()}), 422
+            return jsonify({"error": e.errors()}), 422
 
     @app.route("/authors", methods=["DELETE"])
     def delete_authors():
@@ -120,7 +124,7 @@ def create_app():
                 200,
             )
         except ValidationError as e:
-            return jsonify({"errors": e.errors()}), 422
+            return jsonify({"error": e.errors()}), 422
         except EntitiesNotFoundError as e:
             return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
@@ -142,7 +146,7 @@ def create_app():
             db.session.commit()
             return jsonify(tag.to_dict()), 201
         except ValidationError as e:
-            return jsonify({"errors": e.errors()}), 422
+            return jsonify({"error": e.errors()}), 422
 
     @app.route("/tags", methods=["DELETE"])
     def delete_tags():
@@ -162,7 +166,7 @@ def create_app():
                 200,
             )
         except ValidationError as e:
-            return jsonify({"errors": e.errors()}), 422
+            return jsonify({"error": e.errors()}), 422
         except EntitiesNotFoundError as e:
             return jsonify({"error": str(e), "missing_ids": e.missing_ids}), 404
 
