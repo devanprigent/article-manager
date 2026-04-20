@@ -31,6 +31,7 @@ def create_app(test_config=None):
 
     @app.errorhandler(Exception)
     def handle_unexpected(error):
+        print("handle_unexpected", str(error))
         return jsonify({"error": "Internal server error"}), 500
 
     app.register_blueprint(articles_bp)

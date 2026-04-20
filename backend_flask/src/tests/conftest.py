@@ -67,7 +67,7 @@ def article(client, author, tag, mock_article):
 INVALID_ARTICLE_CASES = [
     (
         {
-            "url": "https://example.com/article-1",
+            "url": "https://example.com/article-2",
             "year": 2026,
             "summary": "Short summary",
             "read": False,
@@ -82,7 +82,7 @@ INVALID_ARTICLE_CASES = [
     (
         {
             "title": "My article",
-            "url": "https://example.com/article-1",
+            "url": "https://example.com/article-3",
             "year": 2026,
             "summary": "Short summary",
             "tags_id": [1],
@@ -94,7 +94,7 @@ INVALID_ARTICLE_CASES = [
     (
         {
             "title": "My article",
-            "url": "https://example.com/article-1",
+            "url": "https://example.com/article-4",
             "year": 2026,
             "summary": "Short summary",
             "read": False,
@@ -109,14 +109,29 @@ INVALID_ARTICLE_CASES = [
     (
         {
             "title": "My article",
-            "url": "https://example.com/article-1",
+            "url": "https://example.com/article-5",
             "year": 2026,
             "summary": "Short summary",
             "read": False,
             "read_again": False,
             "favorite": False,
-            "tags_id": [1, 999],
+            "tags_id": [1, 99],
             "author_id": 1,
+        },
+        404,
+        None,
+    ),
+    (
+        {
+            "title": "My article",
+            "url": "https://example.com/article-6",
+            "year": 2026,
+            "summary": "Short summary",
+            "read": False,
+            "read_again": False,
+            "favorite": False,
+            "tags_id": [1],
+            "author_id": 99,
         },
         404,
         None,

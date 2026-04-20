@@ -3,9 +3,9 @@ from sqlalchemy import select
 
 from app.database import db
 from app.decorators import validate_json
-from app.models import Article, Tag
+from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, IDSchema
-from app.services import get_entities
+from app.services import get_entities, get_entity
 
 articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 
@@ -23,6 +23,8 @@ def add_article(data):
     schema = ArticleSchema.model_validate(data)
     tags_id = schema.tags_id
     tags = get_entities(tags_id, Tag)
+    author = get_entity(schema.author_id, Author)
+
     article = Article(
         title=schema.title,
         url=schema.url,
@@ -31,7 +33,7 @@ def add_article(data):
         read=schema.read,
         read_again=schema.read_again,
         favorite=schema.favorite,
-        author_id=schema.author_id,
+        author_id=author.id,
         tags=tags,
     )
     db.session.add(article)

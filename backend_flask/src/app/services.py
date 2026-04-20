@@ -9,6 +9,15 @@ from app.types import EntitiesNotFoundError
 ModelType = TypeVar("ModelType", bound=Base)
 
 
+def get_entity(id: int, model: type[ModelType]) -> ModelType:
+    entity = db.session.get(model, id)
+    if entity is None:
+        raise EntitiesNotFoundError(
+            [id], f"{model.__name__} with id {id} was not found"
+        )
+    return entity
+
+
 def get_entities(ids: list[int], model: type[ModelType]) -> list[ModelType]:
     dedup_ids = set(ids)
     stmt = select(model).where(model.id.in_(dedup_ids))
