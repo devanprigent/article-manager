@@ -23,8 +23,101 @@ def client(app):
 
 
 @pytest.fixture()
-def author(client):
-    r = client.post("/authors", json={"name": "J.R.R Tolkien"})
+def list_authors():
+    return [
+        {"name": "J.R.R Tolkien"},
+        {"name": "Mark Manson"},
+        {"name": "Cal Newport"},
+        {"name": "Brandon Sanderson"},
+        {"name": "Scott Alexander"},
+    ]
+
+
+@pytest.fixture()
+def list_articles():
+    return [
+        {
+            "title": "Deep Work",
+            "url": "https://example.com/deep-work",
+            "year": 2016,
+            "summary": "Rules for focused success in a distracted world.",
+            "read": True,
+            "read_again": True,
+            "favorite": True,
+            "author_id": 3,
+            "tags_id": [],
+        },
+        {
+            "title": "So Good They Can't Ignore You",
+            "url": "https://example.com/so-good",
+            "year": 2012,
+            "summary": "Why skills trump passion in the quest for work you love.",
+            "read": True,
+            "read_again": False,
+            "favorite": False,
+            "author_id": 3,
+            "tags_id": [],
+        },
+        {
+            "title": "Digital Minimalism",
+            "url": "https://example.com/digital-minimalism",
+            "year": 2019,
+            "summary": "Choosing a focused life in a noisy world.",
+            "read": False,
+            "read_again": False,
+            "favorite": True,
+            "author_id": 3,
+            "tags_id": [],
+        },
+        {
+            "title": "The Way of Kings",
+            "url": "https://example.com/way-of-kings",
+            "year": 2010,
+            "summary": "Book 1 of The Stormlight Archive.",
+            "read": True,
+            "read_again": True,
+            "favorite": True,
+            "author_id": 4,
+            "tags_id": [],
+        },
+        {
+            "title": "Mistborn: The Final Empire",
+            "url": "https://example.com/mistborn",
+            "year": 2006,
+            "summary": "A heist in a world where ash falls from the sky.",
+            "read": True,
+            "read_again": False,
+            "favorite": True,
+            "author_id": 4,
+            "tags_id": [],
+        },
+        {
+            "title": "Meditations on Moloch",
+            "url": "https://example.com/meditations-on-moloch",
+            "year": 2014,
+            "summary": "On coordination failures and the forces that shape society.",
+            "read": True,
+            "read_again": False,
+            "favorite": True,
+            "author_id": 5,
+            "tags_id": [],
+        },
+    ]
+
+
+@pytest.fixture()
+def create_list_authors_articles(client, list_authors, list_articles):
+    for author in list_authors:
+        r = client.post("/authors", json=author)
+        assert r.status_code == 201
+    for article in list_articles:
+        r = client.post("/articles", json=article)
+        assert r.status_code == 201
+
+
+@pytest.fixture()
+def author(client, list_authors):
+    r = client.post("/authors", json=list_authors[0])
     assert r.status_code == 201
     return r.get_json()
 
@@ -50,8 +143,8 @@ def mock_article():
 
 
 @pytest.fixture()
-def article(client, author, tag, mock_article):
-    r_author = client.post("/authors", json={"name": "Mark Manson"})
+def article(client, author, tag, mock_article, list_authors):
+    r_author = client.post("/authors", json=list_authors[1])
     r_tags = client.post("/tags", json={"name": "Personal Development"})
     assert r_author.status_code == 201
     assert r_tags.status_code == 201

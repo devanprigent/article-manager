@@ -81,3 +81,19 @@ def test_add_invalid_articles(
         actual_locs = [e["loc"] for e in payload["error"]]
         for loc in expected_error_locs:
             assert loc in actual_locs, (loc, actual_locs)
+
+
+def test_top_authors(client, create_list_authors_articles):
+    res = client.get("/authors/top")
+    assert res.status_code == 200
+    payload = res.get_json()
+    expected_responses = [
+        ("Cal Newport", 3),
+        ("Brandon Sanderson", 2),
+        ("Scott Alexander", 1),
+        ("J.R.R Tolkien", 0),
+        ("Mark Manson", 0),
+    ]
+    for i in range(len(expected_responses)):
+        assert payload[i]["author"]["name"] == expected_responses[i][0]
+        assert payload[i]["count"] == expected_responses[i][1]

@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.database import db
 from app.decorators import validate_json
-from app.models import Author
+from app.models import Article, Author
 from app.schemas import BasicSchema, IDSchema
 from app.services import get_articles_by_author, get_entities
 
@@ -15,6 +15,24 @@ def list_authors():
     stmt = select(Author)
     authors = db.session.execute(stmt).scalars().all()
     return jsonify([author.to_dict() for author in authors]), 200
+
+
+@authors_bp.route("/top")
+def list_top_authors():
+    nb_articles = func.count(Article.id).label("nb_articles")
+    stmt = (
+        select(Author, nb_articles)
+        .join(Article, Article.author_id == Author.id, isouter=True)
+        .group_by(Author.id)
+        .order_by(nb_articles.desc())
+    )
+    rows = db.session.execute(stmt).all()
+    return (
+        jsonify(
+            [{"author": author.to_dict(), "count": count} for author, count in rows]
+        ),
+        200,
+    )
 
 
 @authors_bp.route("", methods=["POST"])
