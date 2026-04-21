@@ -1,12 +1,12 @@
-// Libraries
 import { useState, type ChangeEvent } from 'react';
 import * as yup from 'yup';
 import { Input } from 'reactstrap';
 import CreatableSelect from 'react-select/creatable';
 import TagsForm from './TagsForm';
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import { FormProps, Tag, Article } from '../../constants/types';
-import { useArticles, useIsDarkMode } from '../../redux/selectors';
+import { FormProps, Entity } from '../../constants/types';
+import { useIsDarkMode } from '../../theme/ThemeContext';
+import { useAuthors } from '../../hooks/queries';
 import PopupWrapper from '../features/PopupWrapper';
 import RemoveButton from '../features/RemoveButton';
 
@@ -25,27 +25,16 @@ const validationSchema = yup.object({
   favorite: yup.boolean().required(' '),
 });
 
-function onlyUnique(value: string, index: number, array: string[]) {
-  return array.indexOf(value) === index;
-}
-
-/**
- * The goal of this component is to provide a modal form htmlFor adding or editing an article.
- */
 function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButton }: Readonly<FormProps>) {
   const currentYear = new Date().getFullYear();
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const currentArticles = useArticles();
+  const { data: authors = [] } = useAuthors();
   const isDarkMode = useIsDarkMode();
   const inputClassName =
     'border-slate-300 bg-white text-slate-900 placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400';
-  const authors = currentArticles
-    .map((article: Article) => article.author)
-    .filter(onlyUnique)
-    .sort((a, b) => a.localeCompare(b));
 
-  function handleTagChange(newTags: Tag[]): void {
+  function handleTagChange(newTags: Entity[]): void {
     setItem((prevItem) => ({ ...prevItem, tags: newTags }));
   }
 
@@ -117,8 +106,8 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   isClearable={false}
                   value={item.author ? { value: item.author, label: item.author } : null}
                   options={authors.map((author) => ({
-                    value: author,
-                    label: author,
+                    value: author.name,
+                    label: author.name,
                   }))}
                   styles={{
                     control: (base) => ({

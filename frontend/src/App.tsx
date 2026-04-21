@@ -1,29 +1,13 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/layout/NavBar';
 import FavoritesPage from './components/pages/FavoritesPage';
 import ArticlesPage from './components/pages/ArticlesPage';
 import StatsPage from './components/pages/StatsPage';
-import NotificationBox from './components/layout/NotificationBox';
-import { SET_DARK_MODE } from './redux/actionsCreators';
-import { useIsDarkMode } from './redux/selectors';
+import { Toaster } from 'sonner';
+import { useIsDarkMode } from './theme/ThemeContext';
 
 function App() {
-  const dispatch = useDispatch();
   const isDarkMode = useIsDarkMode();
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const initialIsDarkMode = savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    dispatch(SET_DARK_MODE(initialIsDarkMode));
-  }, [dispatch]);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 text-slate-900 transition-colors dark:from-slate-900 dark:via-slate-900 dark:to-slate-800 dark:text-slate-100">
@@ -37,7 +21,7 @@ function App() {
           <Route path="*" element={<ArticlesPage />} />
         </Routes>
       </div>
-      <NotificationBox />
+      <Toaster position="top-center" theme={isDarkMode ? 'dark' : 'light'} richColors closeButton />
     </div>
   );
 }

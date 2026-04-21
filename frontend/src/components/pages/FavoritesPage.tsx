@@ -1,6 +1,6 @@
 import { Article } from '../../constants/types';
 import { useArticles } from '../../hooks/queries';
-import { useIsDarkMode } from '../../redux/selectors';
+import { useIsDarkMode } from '../../theme/ThemeContext';
 import Card from '../features/Card';
 import PageHeader from '../layout/PageHeader';
 
