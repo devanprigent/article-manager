@@ -28,6 +28,10 @@ def create_app(test_config=None):
     with app.app_context():
         db.create_all()
 
+    @app.route("/favicon.ico")
+    def favicon():
+        return "", 204
+
     @app.errorhandler(ValidationError)
     def handle_validation_error(error):
         return jsonify({"error": error.errors()}), 422
