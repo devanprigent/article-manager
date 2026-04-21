@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify
+from flask_cors import CORS
 from pydantic import ValidationError
 
 from app.blueprints.articles import articles_bp
@@ -19,6 +20,13 @@ def create_app(test_config=None):
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
     app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+
+    frontend_origin = os.environ.get("FRONTEND_ORIGIN")
+    CORS(
+        app,
+        resources={r"/*": {"origins": [frontend_origin]}},
+        supports_credentials=True,
+    )
 
     if test_config is not None:
         app.config.update(test_config)
@@ -39,6 +47,10 @@ def create_app(test_config=None):
     @app.errorhandler(EntitiesNotFoundError)
     def handle_entities_not_found_error(error):
         return jsonify({"error": str(error), "missing_ids": error.missing_ids}), 404
+
+    @app.errorhandler(404)
+    def handle_404(error):
+        return jsonify({"error": "Not found"}), 404
 
     @app.errorhandler(Exception)
     def handle_unexpected(error):
