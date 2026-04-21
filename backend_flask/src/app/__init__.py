@@ -1,3 +1,7 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from pydantic import ValidationError
 
@@ -7,11 +11,14 @@ from app.blueprints.tags import tags_bp
 from app.database import db
 from app.types import EntitiesNotFoundError
 
+BASE_DIR = Path(__file__).resolve().parents[2]
+load_dotenv(BASE_DIR / ".env")
+
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
-    app.config["SECRET_KEY"] = "dev-secret-key-change-in-production"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
+    app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
 
     if test_config is not None:
         app.config.update(test_config)
