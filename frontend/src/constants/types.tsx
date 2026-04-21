@@ -1,4 +1,4 @@
-import { severityTypes } from "./constants";
+import { severityTypes } from './constants';
 
 export interface Article {
   id: number;
@@ -10,12 +10,12 @@ export interface Article {
   read: boolean;
   read_again: boolean;
   favorite: boolean;
-  tags: Tag[];
+  tags: Entity[];
   date_creation: string;
   date_modification: string;
 }
 
-export interface Tag {
+export interface Entity {
   id: number;
   name: string;
 }

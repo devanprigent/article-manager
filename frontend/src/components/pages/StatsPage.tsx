@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageHeader from '../layout/PageHeader';
 import { useArticles, useIsDarkMode } from '../../redux/selectors';
-import StatsGraphWidget from './StatsGraphWidget';
+import StatsGraphWidget from '../features/StatsGraphWidget';
 
 type AuthorStat = {
   author: string;

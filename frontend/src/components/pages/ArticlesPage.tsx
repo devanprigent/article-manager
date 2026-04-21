@@ -3,11 +3,11 @@ import { GridColDef } from '@mui/x-data-grid';
 import Checkbox from '@mui/material/Checkbox';
 // Configuration Files
 import { Article } from '../../constants/types';
-import { useArticles } from '../../redux/selectors';
+import { useArticles } from '../../hooks/queries';
 // Components
-import AddButton from './AddButton';
+import AddButton from '../features/AddButton';
 import DataTable from '../layout/DataTable';
-import EditButton from './EditButton';
+import EditButton from '../features/EditButton';
 import ArticleForm from '../forms/ArticleForm';
 import PageHeader from '../layout/PageHeader';
 
@@ -15,9 +15,9 @@ import PageHeader from '../layout/PageHeader';
  * This component generates the Article page.
  */
 function ArticlesPage() {
-  const currentArticles = useArticles();
-  const readCount = currentArticles.filter((article) => article.read).length;
-  const favoriteCount = currentArticles.filter((article) => article.favorite).length;
+  const { data: articles = [] } = useArticles();
+  const readCount = articles.filter((article) => article.read).length;
+  const favoriteCount = articles.filter((article) => article.favorite).length;
 
   const TITLE_ADD_FORM: string = 'Add article';
   const newArticle: Article = {
@@ -94,7 +94,7 @@ function ArticlesPage() {
     <div className="flex flex-col gap-5">
       <PageHeader title="Articles" description="Manage your library and track your reading at a glance.">
         <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-200">
-          <span className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-700">{currentArticles.length} total</span>
+          <span className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-700">{articles.length} total</span>
           <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
             {readCount} read
           </span>
@@ -109,7 +109,7 @@ function ArticlesPage() {
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
-        <DataTable data={currentArticles} columns={COLUMNS} />
+        <DataTable data={articles} columns={COLUMNS} />
       </div>
     </div>
   );

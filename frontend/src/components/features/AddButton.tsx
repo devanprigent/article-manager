@@ -2,7 +2,7 @@
 import { useState, type FunctionComponent } from 'react';
 import { Plus } from 'react-feather';
 import { FormProps, Article } from '../../constants/types';
-import useCreateArticle from '../../hooks/useCreateArticle';
+import { useCreateArticle } from '../../hooks/mutations';
 
 interface PropsType {
   FormComponent: FunctionComponent<FormProps>;
@@ -17,7 +17,7 @@ interface PropsType {
  * fetchData to update the datatable.
  */
 function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
-  const create = useCreateArticle();
+  const { mutate: createArticle, isPending } = useCreateArticle();
   const [modalCreate, setModalCreate] = useState<boolean>(false);
 
   function toggleModalCreate() {
@@ -29,6 +29,7 @@ function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
       <button
         className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
         onClick={toggleModalCreate}
+        disabled={isPending}
       >
         <Plus size={16} />
         Add
@@ -38,7 +39,7 @@ function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
         <FormComponent
           isOpen={modalCreate}
           toggle={toggleModalCreate}
-          onSave={create}
+          onSave={createArticle}
           title={title}
           activeItem={activeItem}
           showDeleteButton={false}

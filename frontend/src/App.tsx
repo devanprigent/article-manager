@@ -2,16 +2,14 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/layout/NavBar';
-import FavoritesPage from './components/features/FavoritesPage';
-import ArticlesPage from './components/features/ArticlesPage';
-import StatsPage from './components/features/StatsPage';
-import useLoadConfig from './hooks/useLoadConfig';
+import FavoritesPage from './components/pages/FavoritesPage';
+import ArticlesPage from './components/pages/ArticlesPage';
+import StatsPage from './components/pages/StatsPage';
 import NotificationBox from './components/layout/NotificationBox';
 import { SET_DARK_MODE } from './redux/actionsCreators';
 import { useIsDarkMode } from './redux/selectors';
 
 function App() {
-  useLoadConfig();
   const dispatch = useDispatch();
   const isDarkMode = useIsDarkMode();
 

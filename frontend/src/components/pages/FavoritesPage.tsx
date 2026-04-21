@@ -1,10 +1,11 @@
 import { Article } from '../../constants/types';
-import { useArticles, useIsDarkMode } from '../../redux/selectors';
-import Card from './Card';
+import { useArticles } from '../../hooks/queries';
+import { useIsDarkMode } from '../../redux/selectors';
+import Card from '../features/Card';
 import PageHeader from '../layout/PageHeader';
 
 function FavoritesPage() {
-  const articles = useArticles();
+  const { data: articles = [] } = useArticles();
   const isDarkMode = useIsDarkMode();
   const favoris = articles.filter((article: Article) => article.favorite === true);
 

@@ -1,9 +1,9 @@
 const baseURL: string = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:5000';
 
 export const API_URLS = {
-  GET_ARTICLES: `${baseURL}/articles`,
-  GET_WEBSITES: `${baseURL}/websites`,
-  GET_TAGS: `${baseURL}/tags`,
+  ARTICLES: `${baseURL}/articles`,
+  AUTHORS: `${baseURL}/authors`,
+  TAGS: `${baseURL}/tags`,
 };
 
 export const buttonStyle = {
