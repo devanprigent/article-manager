@@ -1,18 +1,13 @@
-// Libraries
 import { useState, type KeyboardEvent } from 'react';
-import { Tag } from '../../constants/types';
+import { Entity } from '../../constants/types';
 
 interface TagsProps {
-  onChange: (newTags: Tag[]) => void;
-  currentTags: Tag[];
+  onChange: (newTags: Entity[]) => void;
+  currentTags: Entity[];
 }
 
-/**
- * The goal of this component is to provide a user interface for managing tags.
- * It allows users to input tags through an input field.
- */
 function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
-  const [tags, setTags] = useState<Tag[]>(currentTags);
+  const [tags, setTags] = useState<Entity[]>(currentTags);
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
@@ -27,7 +22,7 @@ function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
 
   function addTag(name: string) {
     if (tags.some((tag) => tag.name === name)) return;
-    const newTag: Tag = {
+    const newTag: Entity = {
       id: 0,
       name: name,
     };

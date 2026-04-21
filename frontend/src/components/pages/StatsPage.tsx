@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageHeader from '../layout/PageHeader';
-import { useArticles, useIsDarkMode } from '../../redux/selectors';
+import { useIsDarkMode } from '../../theme/ThemeContext';
+import { useArticles } from '../../hooks/queries';
 import StatsGraphWidget from '../features/StatsGraphWidget';
 
 type AuthorStat = {
@@ -16,7 +17,7 @@ type ReadByMonthStat = {
 };
 
 function StatsPage() {
-  const articles = useArticles();
+  const { data: articles = [] } = useArticles();
   const isDarkMode = useIsDarkMode();
   const axisColor = isDarkMode ? '#cbd5e1' : '#475569';
   const gridColor = isDarkMode ? '#334155' : '#e2e8f0';

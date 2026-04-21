@@ -1,20 +1,29 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { toast } from 'sonner';
 import { articlesApi, authorsApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
-import { useDispatch } from 'react-redux';
-import { SET_NOTIFICATION } from '../redux/actionsCreators';
+
+function extractErrorMessage(err: unknown): string {
+  if (axios.isAxiosError(err)) {
+    return err.response?.data?.message ?? err.message;
+  }
+  if (err instanceof Error) {
+    return err.message;
+  }
+  return 'Unknown error';
+}
 
 function useEntitiesMutation<TArgs, TResult>(mutationFn: (args: TArgs) => Promise<TResult>, queryKey: readonly string[], successMessage: string) {
   const qc = useQueryClient();
-  const dispatch = useDispatch();
   return useMutation({
     mutationFn,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey });
-      dispatch(SET_NOTIFICATION(successMessage, 'success'));
+      toast.success(successMessage);
     },
-    onError: (err: Error) => {
-      dispatch(SET_NOTIFICATION(err.message, 'error'));
+    onError: (err: unknown) => {
+      toast.error(extractErrorMessage(err));
     },
   });
 }

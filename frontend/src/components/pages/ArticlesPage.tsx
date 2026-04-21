@@ -1,19 +1,13 @@
-// Libraries
 import { GridColDef } from '@mui/x-data-grid';
 import Checkbox from '@mui/material/Checkbox';
-// Configuration Files
 import { Article } from '../../constants/types';
 import { useArticles } from '../../hooks/queries';
-// Components
 import AddButton from '../features/AddButton';
 import DataTable from '../layout/DataTable';
 import EditButton from '../features/EditButton';
 import ArticleForm from '../forms/ArticleForm';
 import PageHeader from '../layout/PageHeader';
 
-/**
- * This component generates the Article page.
- */
 function ArticlesPage() {
   const { data: articles = [] } = useArticles();
   const readCount = articles.filter((article) => article.read).length;

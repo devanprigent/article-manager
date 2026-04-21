@@ -22,17 +22,3 @@ export const buttonSize = {
 export const pageStyle = {
   bgColor: 'bg-gray-100',
 };
-
-export const severityTypes = {
-  ERROR: 'error',
-  WARNING: 'warning',
-  INFO: 'info',
-  SUCCESS: 'success',
-};
-
-export const severityColors = {
-  [severityTypes.ERROR]: '#FE5531', // Soft red
-  [severityTypes.WARNING]: '#FEAD28', // Soft orange
-  [severityTypes.INFO]: '#31AAFE', // Soft blue
-  [severityTypes.SUCCESS]: '#6FCC62', // Soft green
-};

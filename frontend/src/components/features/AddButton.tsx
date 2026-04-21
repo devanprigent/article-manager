@@ -1,4 +1,3 @@
-// Libraries
 import { useState, type FunctionComponent } from 'react';
 import { Plus } from 'react-feather';
 import { FormProps, Article } from '../../constants/types';
@@ -10,12 +9,6 @@ interface PropsType {
   activeItem: Article;
 }
 
-/***
- * The goal of this component is to provide a button to add an entity. The component takes
- * in a method named fetchData and a string named urlToFetch as props. The component triggers
- * a modal form and send the data in a POST request to the urlToFetch. Then it calls the callback
- * fetchData to update the datatable.
- */
 function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
   const { mutate: createArticle, isPending } = useCreateArticle();
   const [modalCreate, setModalCreate] = useState<boolean>(false);

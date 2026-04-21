@@ -1,22 +1,10 @@
-// Libraries
 import { NavLink } from 'react-router-dom';
 import { Moon, Sun } from 'react-feather';
-import { useDispatch } from 'react-redux';
-import { SET_DARK_MODE } from '../../redux/actionsCreators';
-import { useIsDarkMode } from '../../redux/selectors';
+import { useTheme, useIsDarkMode } from '../../theme/ThemeContext';
 
-/**
- * The role of this component is to create a navigation bar.
- * The navigation bar uses the react-router-dom library to handle navigation
- * between the various pages of the application.
- */
 function NavBar() {
-  const dispatch = useDispatch();
+  const { toggle } = useTheme();
   const isDarkMode = useIsDarkMode();
-
-  function toggleDarkMode() {
-    dispatch(SET_DARK_MODE(!isDarkMode));
-  }
 
   return (
     <nav className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur-md transition-colors dark:border-slate-700/70 dark:bg-slate-900/80">
@@ -24,7 +12,7 @@ function NavBar() {
         <h1 className="text-lg font-semibold tracking-tight text-slate-800 dark:text-slate-100">Article Manager</h1>
         <div className="flex items-center gap-2">
           <button
-            onClick={toggleDarkMode}
+            onClick={toggle}
             className="rounded-lg border border-slate-300 p-2 text-slate-600 transition bg-slate-100 hover:text-slate-800 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
             aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             title={isDarkMode ? 'Light mode' : 'Dark mode'}
