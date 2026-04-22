@@ -4,7 +4,7 @@ import { Input } from 'reactstrap';
 import CreatableSelect from 'react-select/creatable';
 import TagsForm from './TagsForm';
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import { FormProps, Entity } from '../../constants/types';
+import { FormProps } from '../../constants/types';
 import { useAuthors } from '../../hooks/queries';
 import PopupWrapper from '../features/PopupWrapper';
 import RemoveButton from '../features/RemoveButton';
@@ -38,7 +38,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
     setItem((prev) => ({ ...prev, ...patch }));
   }
 
-  function handleTagChange(newTags: Entity[]): void {
+  function handleTagChange(newTags: string[]): void {
     setItem((prevItem) => ({ ...prevItem, tags: newTags }));
   }
 
@@ -96,7 +96,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   placeholder="Author"
                   onChange={handleAuthorsChange}
                   isClearable={false}
-                  value={item.author ? { value: item.author.name, label: item.author.name } : null}
+                  value={item.author ? { value: item.author, label: item.author } : null}
                   options={authors.map((author) => ({
                     value: author.name,
                     label: author.name,

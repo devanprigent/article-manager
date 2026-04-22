@@ -1,13 +1,12 @@
 import { useState, type KeyboardEvent } from 'react';
-import { Entity } from '../../constants/types';
 
 interface TagsProps {
-  onChange: (newTags: Entity[]) => void;
-  currentTags: Entity[];
+  onChange: (newTags: string[]) => void;
+  currentTags: string[];
 }
 
 function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
-  const [tags, setTags] = useState<Entity[]>(currentTags);
+  const [tags, setTags] = useState<string[]>(currentTags);
 
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     const value: string = e.currentTarget.value;
@@ -21,12 +20,8 @@ function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
   }
 
   function addTag(name: string) {
-    if (tags.some((tag) => tag.name === name)) return;
-    const newTag: Entity = {
-      id: 0,
-      name: name,
-    };
-    const newTags = [...tags, newTag];
+    if (tags.includes(name)) return;
+    const newTags = [...tags, name];
     onChange(newTags);
     setTags(newTags);
   }
@@ -44,9 +39,9 @@ function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
       </label>
       <div className="tags-input-wrapper flex flex-wrap items-center gap-2 rounded border border-gray-300 bg-white p-2 dark:border-slate-600 dark:bg-slate-800">
         {tags.map((tag, index) => (
-          <div className="tag-chip flex flex-row items-center space-x-2 rounded-full px-3 py-2 dark:bg-slate-700" key={tag.name}>
+          <div className="tag-chip flex flex-row items-center space-x-2 rounded-full px-3 py-2 dark:bg-slate-700" key={tag}>
             <span className="text-slate-800 dark:text-slate-100" onKeyDown={() => removeTag(index)}>
-              {tag.name}
+              {tag}
             </span>
             <span
               className="bg-red-600 text-white rounded-full w-4 h-4 flex items-center justify-center"

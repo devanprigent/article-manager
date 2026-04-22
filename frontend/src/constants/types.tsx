@@ -8,7 +8,7 @@ export interface Article {
   read: boolean;
   read_again: boolean;
   favorite: boolean;
-  tags: Entity[];
+  tags: string[];
   date_creation: string;
   date_modification: string;
 }

@@ -86,7 +86,7 @@ class Article(db.Model):
             "read": self.read,
             "read_again": self.read_again,
             "favorite": self.favorite,
-            "tags": [{"id": t.id, "name": t.name} for t in self.tags],
+            "tags": [t.name for t in self.tags],
             "date_creation": self.date_creation.isoformat(),
             "date_modification": self.date_modification.isoformat(),
         }
