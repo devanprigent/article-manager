@@ -67,7 +67,11 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
   return (
     <PopupWrapper popup={isOpen} setPopup={toggle} status="neutral">
       <div className="article-form flex w-100 flex-col space-y-8">
-        <h1 className="text-center text-3xl font-bold text-red-600 dark:text-red-400">{title}</h1>
+        <div className="flex items-start justify-between">
+          <div className="w-8" />
+          <h1 className="text-center text-3xl font-bold dark:text-white">{title}</h1>
+          <div className="w-8 text-right">{showDeleteButton && <RemoveButton itemId={activeItem.id} />}</div>
+        </div>
         <form>
           <div className="flex flex-col space-y-2 text-slate-800 dark:text-slate-100">
             <div>
@@ -182,14 +186,10 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
             </div>
           </div>
         </form>
-        <div className="grid w-full grid-cols-3 items-center">
-          <div className="justify-self-start">{showDeleteButton && <RemoveButton itemId={activeItem.id} />}</div>
-          <div className="justify-self-center">
-            <button className={`${buttonStyle.success} ${buttonSize.medium}`} onClick={() => validateForm()}>
-              Save
-            </button>
-          </div>
-          <div />
+        <div className="flex w-full justify-center">
+          <button className={`${buttonStyle.success} ${buttonSize.medium}`} onClick={() => validateForm()}>
+            Save
+          </button>
         </div>
       </div>
     </PopupWrapper>
