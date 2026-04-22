@@ -9,6 +9,13 @@ export function useArticles() {
   });
 }
 
+export function useTopAuthors() {
+  return useQuery({
+    queryKey: queryKeys.authors.list_top(),
+    queryFn: authorsApi.list_top,
+  });
+}
+
 export function useTags() {
   return useQuery({
     queryKey: queryKeys.tags.list(),

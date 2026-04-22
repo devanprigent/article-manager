@@ -11,5 +11,6 @@ export const queryKeys = {
   authors: {
     all: ['authors'],
     list: () => [...queryKeys.authors.all, 'list'],
+    list_top: () => [...queryKeys.authors.all, 'list_top'],
   },
 } as const;

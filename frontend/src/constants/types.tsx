@@ -18,6 +18,11 @@ export interface Entity {
   name: string;
 }
 
+export type AuthorStat = {
+  author: string;
+  count: number;
+};
+
 export interface FormProps {
   isOpen: boolean;
   toggle: () => void;
