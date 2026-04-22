@@ -2,13 +2,8 @@ import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageHeader from '../layout/PageHeader';
 import { useIsDarkMode } from '../../theme/ThemeContext';
-import { useArticles } from '../../hooks/queries';
+import { useArticles, useTopAuthors } from '../../hooks/queries';
 import StatsGraphWidget from '../features/StatsGraphWidget';
-
-type AuthorStat = {
-  author: string;
-  count: number;
-};
 
 type ReadByMonthStat = {
   monthKey: string;
@@ -18,6 +13,7 @@ type ReadByMonthStat = {
 
 function StatsPage() {
   const { data: articles = [] } = useArticles();
+  const { data: topAuthors = [] } = useTopAuthors();
   const isDarkMode = useIsDarkMode();
   const axisColor = isDarkMode ? '#cbd5e1' : '#475569';
   const gridColor = isDarkMode ? '#334155' : '#e2e8f0';
@@ -27,20 +23,6 @@ function StatsPage() {
     borderRadius: '0.75rem',
     color: isDarkMode ? '#e2e8f0' : '#0f172a',
   };
-
-  const topAuthors = useMemo<AuthorStat[]>(() => {
-    const counts = new Map<string, number>();
-
-    articles.forEach((article) => {
-      const author = article.author?.trim() || 'Unknown';
-      counts.set(author, (counts.get(author) || 0) + 1);
-    });
-
-    return Array.from(counts.entries())
-      .map(([author, count]) => ({ author, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 7);
-  }, [articles]);
 
   const readPerMonth = useMemo<ReadByMonthStat[]>(() => {
     const counts = new Map<string, ReadByMonthStat>();

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URLS } from '../constants/constants';
-import type { Article, Entity } from '../constants/types';
+import type { Article, Entity, AuthorStat } from '../constants/types';
 
 export const articlesApi = {
   list: async (): Promise<Article[]> => {
@@ -23,6 +23,10 @@ export const articlesApi = {
 export const authorsApi = {
   list: async (): Promise<Entity[]> => {
     const { data } = await axios.get(API_URLS.AUTHORS);
+    return data;
+  },
+  list_top: async (): Promise<AuthorStat[]> => {
+    const { data } = await axios.get(API_URLS.TOP_AUTHORS);
     return data;
   },
   create: async (author: Entity): Promise<Entity> => {
