@@ -5,7 +5,7 @@ from app.database import db
 from app.decorators import validate_json
 from app.models import Article, Author
 from app.schemas import BasicSchema, IDSchema
-from app.services import get_articles_by_author, get_entities
+from app.services import get_articles_by_author, get_entities, get_or_create_by_name
 
 authors_bp = Blueprint("authors", __name__, url_prefix="/authors")
 
@@ -39,8 +39,7 @@ def list_top_authors():
 @validate_json
 def add_author(data):
     schema = BasicSchema.model_validate(data)
-    author = Author(name=schema.name)
-    db.session.add(author)
+    author = get_or_create_by_name(Author, schema.name)
     db.session.commit()
     return jsonify(author.to_dict()), 201
 

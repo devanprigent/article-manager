@@ -1,3 +1,5 @@
+import re
+import unicodedata
 from typing import TypeVar
 
 from sqlalchemy import select
@@ -8,13 +10,20 @@ from app.types import EntitiesNotFoundError
 
 ModelType = TypeVar("ModelType", bound=Base)
 
+def normalize_name(raw: str) -> str:
+    s = unicodedata.normalize("NFKC", raw or "")
+    s = re.sub(r"\s+", " ", s).strip()
+    return s.casefold()
 
-def get_entity(id: int, model: type[ModelType]) -> ModelType:
-    entity = db.session.get(model, id)
+def get_or_create_by_name(model: type[ModelType], name: str) -> ModelType:
+    normalized_name = normalize_name(name)
+    stmt = select(model).where(model.normalized_name == normalized_name)
+    entity = db.session.execute(stmt).scalars().first()
     if entity is None:
-        raise EntitiesNotFoundError(
-            [id], f"{model.__name__} with id {id} was not found"
-        )
+        new_entity = model(name=name,normalized_name=normalized_name)
+        db.session.add(new_entity)
+        db.session.flush()
+        return new_entity
     return entity
 
 

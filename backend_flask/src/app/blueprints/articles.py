@@ -5,7 +5,7 @@ from app.database import db
 from app.decorators import validate_json
 from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, IDSchema
-from app.services import get_entities, get_entity
+from app.services import get_entities, get_or_create_by_name, normalize_name
 
 articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 
@@ -21,9 +21,17 @@ def list_articles():
 @validate_json
 def add_article(data):
     schema = ArticleSchema.model_validate(data)
-    tags_id = schema.tags_id
-    tags = get_entities(tags_id, Tag)
-    author = get_entity(schema.author_id, Author)
+
+    seen = set()
+    tags = []
+    for raw_tag in schema.tags:
+        key = normalize_name(raw_tag)
+        if key in seen:
+            continue
+        seen.add(key)
+        tags.append(get_or_create_by_name(Tag, raw_tag))
+
+    author = get_or_create_by_name(Author, schema.author)
 
     article = Article(
         title=schema.title,

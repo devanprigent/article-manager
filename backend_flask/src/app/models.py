@@ -9,7 +9,8 @@ from app.database import db
 
 class Tag(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    normalized_name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(nullable=False)
     date_creation: Mapped[datetime] = mapped_column(
         default=lambda: datetime.now(timezone.utc), nullable=False
     )
@@ -25,7 +26,8 @@ class Tag(db.Model):
 
 class Author(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(unique=True, nullable=False)
+    normalized_name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(nullable=False)
     articles: Mapped[list["Article"]] = relationship(back_populates="author")
     date_creation: Mapped[datetime] = mapped_column(
         default=lambda: datetime.now(timezone.utc), nullable=False
@@ -77,12 +79,7 @@ class Article(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "author_id": self.author_id,
-            "author": (
-                {"id": self.author.id, "name": self.author.name}
-                if self.author is not None
-                else None
-            ),
+            "author": self.author.name,
             "url": self.url,
             "year": self.year,
             "summary": self.summary,

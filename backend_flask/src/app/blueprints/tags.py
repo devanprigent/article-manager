@@ -5,7 +5,7 @@ from app.database import db
 from app.decorators import validate_json
 from app.models import Tag
 from app.schemas import BasicSchema, IDSchema
-from app.services import get_entities
+from app.services import get_entities, get_or_create_by_name
 
 tags_bp = Blueprint("tags", __name__, url_prefix="/tags")
 
@@ -21,8 +21,7 @@ def list_tags():
 @validate_json
 def add_tag(data):
     schema = BasicSchema.model_validate(data)
-    tag = Tag(name=schema.name)
-    db.session.add(tag)
+    tag = get_or_create_by_name(Tag, schema.name)
     db.session.commit()
     return jsonify(tag.to_dict()), 201
 

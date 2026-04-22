@@ -50,7 +50,6 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
     validationSchema
       .validate(item, { abortEarly: false })
       .then(() => {
-        console.log('item', item);
         onSave(item);
         toggle();
       })
@@ -97,7 +96,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   placeholder="Author"
                   onChange={handleAuthorsChange}
                   isClearable={false}
-                  value={item.author ? { value: item.author, label: item.author } : null}
+                  value={item.author ? { value: item.author.name, label: item.author.name } : null}
                   options={authors.map((author) => ({
                     value: author.name,
                     label: author.name,
