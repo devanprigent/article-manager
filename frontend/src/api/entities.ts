@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URLS } from '../constants/constants';
-import type { Article, Entity, AuthorStat } from '../constants/types';
+import type { Article, AuthorStat } from '../constants/types';
 
 export const articlesApi = {
   list: async (): Promise<Article[]> => {
@@ -23,7 +23,7 @@ export const articlesApi = {
 };
 
 export const authorsApi = {
-  list: async (): Promise<Entity[]> => {
+  list: async (): Promise<string[]> => {
     const { data } = await axios.get(API_URLS.AUTHORS);
     return data;
   },
@@ -31,11 +31,11 @@ export const authorsApi = {
     const { data } = await axios.get(API_URLS.TOP_AUTHORS);
     return data;
   },
-  create: async (author: Entity): Promise<Entity> => {
+  create: async (author: string): Promise<string> => {
     const { data } = await axios.post(API_URLS.AUTHORS, author);
     return data;
   },
-  update: async (author: Entity): Promise<Entity> => {
+  update: async (author: string): Promise<string> => {
     const { data } = await axios.put(API_URLS.AUTHORS, author);
     return data;
   },
@@ -47,15 +47,15 @@ export const authorsApi = {
 };
 
 export const tagsApi = {
-  list: async (): Promise<Entity[]> => {
+  list: async (): Promise<string[]> => {
     const { data } = await axios.get(API_URLS.TAGS);
     return data;
   },
-  create: async (tag: Entity): Promise<Entity> => {
+  create: async (tag: string): Promise<string> => {
     const { data } = await axios.post(API_URLS.TAGS, tag);
     return data;
   },
-  update: async (tag: Entity): Promise<Entity> => {
+  update: async (tag: string): Promise<string> => {
     const { data } = await axios.put(API_URLS.TAGS, tag);
     return data;
   },

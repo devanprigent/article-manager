@@ -2,6 +2,7 @@ import { useState, type ChangeEvent } from 'react';
 import * as yup from 'yup';
 import { Input } from 'reactstrap';
 import CreatableSelect from 'react-select/creatable';
+import type { SingleValue } from 'react-select';
 import TagsForm from './TagsForm';
 import { buttonSize, buttonStyle } from '../../constants/constants';
 import { FormProps } from '../../constants/types';
@@ -29,6 +30,8 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { data: authors = [] } = useAuthors();
+  const authorOptions = authors.map((author) => ({ value: author, label: author }));
+  const selectedAuthor = authorOptions.find((option) => option.value === item.author) ?? null;
   const inputClassName =
     'border-slate-300 bg-white text-slate-900 placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400';
 
@@ -42,8 +45,8 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
     setItem((prevItem) => ({ ...prevItem, tags: newTags }));
   }
 
-  function handleAuthorsChange(newValue: any) {
-    setItem((prevItem) => ({ ...prevItem, author: newValue.value }));
+  function handleAuthorsChange(newValue: SingleValue<{ value: string; label: string }>) {
+    setItem((prevItem) => ({ ...prevItem, author: newValue?.value ?? '' }));
   }
 
   function validateForm() {
@@ -100,11 +103,8 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   placeholder="Author"
                   onChange={handleAuthorsChange}
                   isClearable={false}
-                  value={item.author ? { value: item.author, label: item.author } : null}
-                  options={authors.map((author) => ({
-                    value: author.name,
-                    label: author.name,
-                  }))}
+                  value={selectedAuthor}
+                  options={authorOptions}
                 />
                 {errors.author && <div className="text-sm text-red-500">{errors.author}</div>}
               </div>
