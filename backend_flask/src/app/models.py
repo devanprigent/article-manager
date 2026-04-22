@@ -21,7 +21,7 @@ class Tag(db.Model):
     )
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name}
+        return self.name
 
 
 class Author(db.Model):
@@ -39,7 +39,7 @@ class Author(db.Model):
     )
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name}
+        return self.name
 
 
 article_tag = db.Table(

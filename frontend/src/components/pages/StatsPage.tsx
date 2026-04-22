@@ -83,7 +83,7 @@ function StatsPage() {
           hasData={topAuthors.length > 0}
           isDarkMode={isDarkMode}
         >
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={320} minWidth={280}>
             <BarChart data={topAuthors} margin={{ top: 8, right: 12, left: 0, bottom: 20 }}>
               <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
               <XAxis dataKey="author" tick={false} />
@@ -101,7 +101,7 @@ function StatsPage() {
           hasData={readPerMonth.length > 0}
           isDarkMode={isDarkMode}
         >
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height={320} minWidth={280}>
             <LineChart data={readPerMonth} margin={{ top: 8, right: 12, left: 0, bottom: 20 }}>
               <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
               <XAxis dataKey="monthLabel" tick={{ fill: axisColor }} />
