@@ -12,11 +12,13 @@ export const articlesApi = {
     return data;
   },
   update: async (article: Article): Promise<Article> => {
-    const { data } = await axios.put(`${API_URLS.ARTICLES}${article.id}/`, article);
+    const { data } = await axios.put(API_URLS.ARTICLES, article);
     return data;
   },
-  remove: async (id: number): Promise<void> => {
-    await axios.delete(`${API_URLS.ARTICLES}${id}/`);
+  remove: async (ids: number[]): Promise<void> => {
+    await axios.delete(API_URLS.ARTICLES, {
+      data: { ids },
+    });
   },
 };
 
@@ -34,11 +36,13 @@ export const authorsApi = {
     return data;
   },
   update: async (author: Entity): Promise<Entity> => {
-    const { data } = await axios.put(`${API_URLS.AUTHORS}${author.id}/`, author);
+    const { data } = await axios.put(API_URLS.AUTHORS, author);
     return data;
   },
-  remove: async (id: number): Promise<void> => {
-    await axios.delete(`${API_URLS.AUTHORS}${id}/`);
+  remove: async (ids: number[]): Promise<void> => {
+    await axios.delete(API_URLS.AUTHORS, {
+      data: { ids },
+    });
   },
 };
 
@@ -52,10 +56,12 @@ export const tagsApi = {
     return data;
   },
   update: async (tag: Entity): Promise<Entity> => {
-    const { data } = await axios.put(`${API_URLS.TAGS}${tag.id}/`, tag);
+    const { data } = await axios.put(API_URLS.TAGS, tag);
     return data;
   },
-  remove: async (id: number): Promise<void> => {
-    await axios.delete(`${API_URLS.TAGS}${id}/`);
+  remove: async (ids: number[]): Promise<void> => {
+    await axios.delete(API_URLS.TAGS, {
+      data: { ids },
+    });
   },
 };

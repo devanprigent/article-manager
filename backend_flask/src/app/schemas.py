@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field, PositiveInt
 
 
 class ArticleSchema(BaseModel):
+    id: Optional[int]
     title: str = Field(..., min_length=1)
     author: str = Field(..., min_length=1)
     url: str = Field(..., min_length=1)

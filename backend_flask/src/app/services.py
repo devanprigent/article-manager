@@ -5,7 +5,7 @@ from typing import TypeVar
 from sqlalchemy import select
 
 from app.database import Base, db
-from app.models import Article
+from app.models import Article, Tag
 from app.types import EntitiesNotFoundError
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -26,6 +26,28 @@ def get_or_create_by_name(model: type[ModelType], name: str) -> ModelType:
         return new_entity
     return entity
 
+def associate_tags(raw_tags: list[str]):
+    seen = set()
+    tags = []
+    for raw_tag in raw_tags:
+        key = normalize_name(raw_tag)
+        if key in seen:
+            continue
+        seen.add(key)
+        tags.append(get_or_create_by_name(Tag, raw_tag))
+    return tags
+
+def update_model_fields(instance, payload: dict, allowed_fields: set[str]) -> None:
+    for field, value in payload.items():
+        if field in allowed_fields:
+            setattr(instance, field, value)
+
+def get_entity(entity_id: int, model: type[ModelType]) -> ModelType:
+    stmt = select(model).where(model.id == entity_id)
+    entity = db.session.execute(stmt).scalars().first()
+    if entity is None:
+        raise EntitiesNotFoundError([entity_id], "Entity not found")
+    return entity
 
 def get_entities(ids: list[int], model: type[ModelType]) -> list[ModelType]:
     dedup_ids = set(ids)
