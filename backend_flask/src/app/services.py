@@ -26,6 +26,13 @@ def get_or_create_by_name(model: type[ModelType], name: str) -> ModelType:
         return new_entity
     return entity
 
+
+def check_url_uniqueness(url: str, existing_id: int | None = None):
+    stmt = select(Article).where(Article.url == url)
+    entity = db.session.execute(stmt).scalars().first()
+    return entity is None or entity.id == existing_id 
+
+
 def associate_tags(raw_tags: list[str]):
     seen = set()
     tags = []
