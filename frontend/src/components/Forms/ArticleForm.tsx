@@ -5,7 +5,6 @@ import CreatableSelect from 'react-select/creatable';
 import TagsForm from './TagsForm';
 import { buttonSize, buttonStyle } from '../../constants/constants';
 import { FormProps, Entity } from '../../constants/types';
-import { useIsDarkMode } from '../../theme/ThemeContext';
 import { useAuthors } from '../../hooks/queries';
 import PopupWrapper from '../features/PopupWrapper';
 import RemoveButton from '../features/RemoveButton';
@@ -30,22 +29,17 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { data: authors = [] } = useAuthors();
-  const isDarkMode = useIsDarkMode();
   const inputClassName =
     'border-slate-300 bg-white text-slate-900 placeholder:text-slate-500 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400';
 
+  function handleFieldChange(e: ChangeEvent<HTMLInputElement>): void {
+    const el = e.currentTarget;
+    const patch = el.type === 'checkbox' ? { [el.name]: el.checked } : { [el.name]: el.name === 'year' ? Number(el.value) : el.value };
+    setItem((prev) => ({ ...prev, ...patch }));
+  }
+
   function handleTagChange(newTags: Entity[]): void {
     setItem((prevItem) => ({ ...prevItem, tags: newTags }));
-  }
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>): void {
-    let { name, value } = e.currentTarget;
-    setItem((prevItem) => ({ ...prevItem, [name]: value }));
-  }
-
-  function handleCheckBoxChange(e: ChangeEvent<HTMLInputElement>): void {
-    let { name, checked } = e.currentTarget;
-    setItem((prevItem) => ({ ...prevItem, [name]: checked }));
   }
 
   function handleAuthorsChange(newValue: any) {
@@ -56,14 +50,13 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
     validationSchema
       .validate(item, { abortEarly: false })
       .then(() => {
+        console.log('item', item);
         onSave(item);
         toggle();
       })
       .catch((error: yup.ValidationError) => {
-        console.log(error);
         const newErrors: Record<string, string> = {};
         error.inner.forEach((err) => {
-          console.log(err.path, err.message);
           if (err.path !== undefined) {
             newErrors[err.path] = err.message;
           }
@@ -87,7 +80,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                 placeholder="Title"
                 name="title"
                 value={item.title}
-                onChange={handleChange}
+                onChange={handleFieldChange}
                 className={inputClassName}
                 invalid={errors.title !== undefined && errors.title !== ''}
               />
@@ -109,58 +102,6 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                     value: author.name,
                     label: author.name,
                   }))}
-                  styles={{
-                    control: (base) => ({
-                      ...base,
-                      backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-                      borderColor: isDarkMode ? '#475569' : '#cbd5e1',
-                      color: isDarkMode ? '#e2e8f0' : '#0f172a',
-                      boxShadow: 'none',
-                    }),
-                    singleValue: (base) => ({
-                      ...base,
-                      color: isDarkMode ? '#e2e8f0' : '#0f172a',
-                    }),
-                    input: (base) => ({
-                      ...base,
-                      color: isDarkMode ? '#e2e8f0' : '#0f172a',
-                    }),
-                    menu: (base) => ({
-                      ...base,
-                      backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-                      color: isDarkMode ? '#e2e8f0' : '#0f172a',
-                      border: `1px solid ${isDarkMode ? '#334155' : '#cbd5e1'}`,
-                    }),
-                    menuList: (base) => ({
-                      ...base,
-                      backgroundColor: isDarkMode ? '#1e293b' : '#ffffff',
-                    }),
-                    option: (base, state) => ({
-                      ...base,
-                      backgroundColor: state.isFocused ? (isDarkMode ? '#334155' : '#f1f5f9') : isDarkMode ? '#1e293b' : '#ffffff',
-                      color: isDarkMode ? '#e2e8f0' : '#0f172a',
-                    }),
-                    indicatorSeparator: (base) => ({
-                      ...base,
-                      backgroundColor: isDarkMode ? '#475569' : '#cbd5e1',
-                    }),
-                    dropdownIndicator: (base) => ({
-                      ...base,
-                      color: isDarkMode ? '#cbd5e1' : '#64748b',
-                    }),
-                    clearIndicator: (base) => ({
-                      ...base,
-                      color: isDarkMode ? '#cbd5e1' : '#64748b',
-                    }),
-                    placeholder: (base) => ({
-                      ...base,
-                      color: isDarkMode ? '#94a3b8' : '#64748b',
-                    }),
-                    noOptionsMessage: (base) => ({
-                      ...base,
-                      color: isDarkMode ? '#94a3b8' : '#64748b',
-                    }),
-                  }}
                 />
                 {errors.author && <div className="text-sm text-red-500">{errors.author}</div>}
               </div>
@@ -175,7 +116,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   max={currentYear}
                   placeholder="Year"
                   value={item.year}
-                  onChange={handleChange}
+                  onChange={handleFieldChange}
                   className={inputClassName}
                   invalid={errors.year !== undefined && errors.year !== ''}
                 />
@@ -191,7 +132,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                 name="url"
                 placeholder="Url"
                 value={item.url}
-                onChange={handleChange}
+                onChange={handleFieldChange}
                 className={inputClassName}
                 invalid={errors.url !== undefined && errors.url !== ''}
               />
@@ -206,7 +147,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   <b>Consulted</b>
                 </label>
                 <br />
-                <Input type="checkbox" name="read" checked={item.read} onChange={handleCheckBoxChange} className="h-4 w-4 accent-blue-500" />
+                <Input type="checkbox" name="read" checked={item.read} onChange={handleFieldChange} className="h-4 w-4 accent-blue-500" />
                 {errors.read && <div className="text-sm text-red-500">{errors.read}</div>}
               </div>
               <div>
@@ -214,13 +155,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   <b>Review</b>
                 </label>
                 <br />
-                <Input
-                  type="checkbox"
-                  name="read_again"
-                  checked={item.read_again}
-                  onChange={handleCheckBoxChange}
-                  className="h-4 w-4 accent-blue-500"
-                />
+                <Input type="checkbox" name="read_again" checked={item.read_again} onChange={handleFieldChange} className="h-4 w-4 accent-blue-500" />
                 {errors.read_again && <div className="text-sm text-red-500">{errors.read_again}</div>}
               </div>
               <div>
@@ -228,7 +163,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                   <b>Favorite</b>
                 </label>
                 <br />
-                <Input type="checkbox" name="favorite" checked={item.favorite} onChange={handleCheckBoxChange} className="h-4 w-4 accent-blue-500" />
+                <Input type="checkbox" name="favorite" checked={item.favorite} onChange={handleFieldChange} className="h-4 w-4 accent-blue-500" />
                 {errors.favorite && <div className="text-sm text-red-500">{errors.favorite}</div>}
               </div>
             </div>
@@ -240,7 +175,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
                 type="textarea"
                 name="summary"
                 value={item.summary}
-                onChange={handleChange}
+                onChange={handleFieldChange}
                 className={inputClassName}
                 invalid={errors.summary !== undefined && errors.summary !== ''}
               />

@@ -40,14 +40,27 @@ body {
   background-color: #ffffff;
 }
 
-.dark .app-data-grid {
-  background-color: #0f172a;
-  color: #e2e8f0;
+.dark .app-data-grid.MuiDataGrid-root,
+.dark .app-data-grid .MuiDataGrid-main,
+.dark .app-data-grid .MuiDataGrid-virtualScroller,
+.dark .app-data-grid .MuiDataGrid-virtualScrollerContent,
+.dark .app-data-grid .MuiDataGrid-virtualScrollerRenderZone,
+.dark .app-data-grid .MuiDataGrid-overlayWrapper,
+.dark .app-data-grid .MuiDataGrid-overlayWrapperInner,
+.dark .app-data-grid .MuiDataGrid-overlay,
+.dark .app-data-grid .MuiDataGrid-filler,
+.dark .app-data-grid .MuiDataGrid-footerContainer {
+  background-color: #0f172a !important;
+  color: #e2e8f0 !important;
 }
 
-.dark .app-data-grid .MuiDataGrid-columnHeaders {
-  background-color: #1e293b;
-  border-bottom-color: #334155;
+.dark .app-data-grid .MuiDataGrid-columnHeaders,
+.dark .app-data-grid .MuiDataGrid-columnHeader,
+.dark .app-data-grid .MuiDataGrid-columnHeader--filler,
+.dark .app-data-grid .MuiDataGrid-scrollbarFiller,
+.dark .app-data-grid .MuiDataGrid-scrollbarFiller--header {
+  background-color: #1e293b !important;
+  border-bottom-color: #334155 !important;
 }
 
 .dark .app-data-grid .MuiDataGrid-columnHeaderTitle {
@@ -182,4 +195,51 @@ body {
   -webkit-text-fill-color: #e2e8f0;
   -webkit-box-shadow: 0 0 0 1000px #1e293b inset;
   transition: background-color 9999s ease-out 0s;
+}
+
+/* Light mode */
+.author-select__control {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: none !important;
+}
+
+.author-select__single-value,
+.author-select__input-container,
+.author-select__placeholder,
+.author-select__menu,
+.author-select__option {
+  color: #0f172a !important;
+}
+
+.author-select__menu {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+.author-select__option--is-focused {
+  background-color: #f1f5f9 !important;
+}
+
+/* Dark mode (Tailwind's .dark root class) */
+.dark .author-select__control {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+}
+
+.dark .author-select__single-value,
+.dark .author-select__input-container,
+.dark .author-select__placeholder,
+.dark .author-select__menu,
+.dark .author-select__option {
+  color: #e2e8f0 !important;
+}
+
+.dark .author-select__menu {
+  background-color: #1e293b !important;
+  border: 1px solid #334155 !important;
+}
+
+.dark .author-select__option--is-focused {
+  background-color: #334155 !important;
 }
