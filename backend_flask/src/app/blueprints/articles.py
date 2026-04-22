@@ -5,7 +5,7 @@ from app.database import db
 from app.decorators import validate_json
 from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, IDSchema
-from app.services import associate_tags, update_model_fields, get_entity, get_entities, get_or_create_by_name, normalize_name
+from app.services import check_url_uniqueness, associate_tags, update_model_fields, get_entity, get_entities, get_or_create_by_name, normalize_name
 
 articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 
@@ -21,6 +21,9 @@ def list_articles():
 @validate_json
 def add_article(data):
     schema = ArticleSchema.model_validate(data)
+    if not check_url_uniqueness(schema.url):
+        return jsonify({"error": "URL already exists"}), 409
+
     tags = associate_tags(schema.tags)
     author = get_or_create_by_name(Author, schema.author)
 
@@ -46,6 +49,8 @@ def edit_article(data):
     schema = ArticleSchema.model_validate(data)
     if schema.id is None:
         return jsonify({"error": "Missing id"}), 400
+    if not check_url_uniqueness(schema.url, schema.id):
+        return jsonify({"error": "URL already exists"}), 409
     article = get_entity(schema.id, Article)
     tags = associate_tags(schema.tags)
     author = get_or_create_by_name(Author, schema.author)
