@@ -45,8 +45,8 @@ def list_articles():
             "read": True,
             "read_again": True,
             "favorite": True,
-            "author_id": 3,
-            "tags_id": [],
+            "author": "Cal Newport",
+            "tags": [],
         },
         {
             "title": "So Good They Can't Ignore You",
@@ -56,8 +56,8 @@ def list_articles():
             "read": True,
             "read_again": False,
             "favorite": False,
-            "author_id": 3,
-            "tags_id": [],
+            "author": "Cal Newport",
+            "tags": [],
         },
         {
             "title": "Digital Minimalism",
@@ -67,8 +67,8 @@ def list_articles():
             "read": False,
             "read_again": False,
             "favorite": True,
-            "author_id": 3,
-            "tags_id": [],
+            "author": "Cal Newport",
+            "tags": [],
         },
         {
             "title": "The Way of Kings",
@@ -78,8 +78,8 @@ def list_articles():
             "read": True,
             "read_again": True,
             "favorite": True,
-            "author_id": 4,
-            "tags_id": [],
+            "author": "Brandon Sanderson",
+            "tags": [],
         },
         {
             "title": "Mistborn: The Final Empire",
@@ -89,8 +89,8 @@ def list_articles():
             "read": True,
             "read_again": False,
             "favorite": True,
-            "author_id": 4,
-            "tags_id": [],
+            "author": "Brandon Sanderson",
+            "tags": [],
         },
         {
             "title": "Meditations on Moloch",
@@ -100,8 +100,8 @@ def list_articles():
             "read": True,
             "read_again": False,
             "favorite": True,
-            "author_id": 5,
-            "tags_id": [],
+            "author": "Scott Alexander",
+            "tags": [],
         },
     ]
 
@@ -113,6 +113,7 @@ def create_list_authors_articles(client, list_authors, list_articles):
         assert r.status_code == 201
     for article in list_articles:
         r = client.post("/articles", json=article)
+        print(r.get_json())
         assert r.status_code == 201
 
 
@@ -151,8 +152,8 @@ def article(client, author, tag, mock_article, list_authors):
     assert r_tags.status_code == 201
 
     new_article = mock_article.copy()
-    new_article["author_id"] = r_author.get_json()["id"]
-    new_article["tags_id"] = [r_tags.get_json()["id"]]
+    new_article["author"] = r_author.get_json()["name"]
+    new_article["tags"] = [r_tags.get_json()["name"]]
     r = client.post("/articles", json=new_article)
     assert r.status_code == 201
     return r.get_json()
@@ -167,8 +168,8 @@ INVALID_ARTICLE_CASES = [
             "read": False,
             "read_again": False,
             "favorite": False,
-            "tags_id": [1],
-            "author_id": 1,
+            "tags": ["Literature"],
+            "author": "Test",
         },
         422,
         [["title"]],
@@ -179,8 +180,8 @@ INVALID_ARTICLE_CASES = [
             "url": "https://example.com/article-3",
             "year": 2026,
             "summary": "Short summary",
-            "tags_id": [1],
-            "author_id": 1,
+            "tags": ["Politics"],
+            "author": "Test 2",
         },
         422,
         [["read"], ["read_again"], ["favorite"]],
@@ -194,11 +195,11 @@ INVALID_ARTICLE_CASES = [
             "read": False,
             "read_again": False,
             "favorite": False,
-            "tags_id": [99],
-            "author_id": 1,
+            "tags": [""],
+            "author": "Test 3",
         },
-        404,
-        None,
+        422,
+        [["tags", 0]],
     ),
     (
         {
@@ -209,11 +210,11 @@ INVALID_ARTICLE_CASES = [
             "read": False,
             "read_again": False,
             "favorite": False,
-            "tags_id": [1, 99],
-            "author_id": 1,
+            "tags": ["War", ""],
+            "author": "Test 4",
         },
-        404,
-        None,
+        422,
+       [["tags", 1]],
     ),
     (
         {
@@ -224,10 +225,10 @@ INVALID_ARTICLE_CASES = [
             "read": False,
             "read_again": False,
             "favorite": False,
-            "tags_id": [1],
-            "author_id": 99,
+            "tags": ["Science"],
+            "author": "",
         },
-        404,
-        None,
+        422,
+       [["author"]],
     ),
 ]

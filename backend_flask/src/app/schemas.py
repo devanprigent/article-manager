@@ -1,10 +1,10 @@
-from typing import Literal, Optional
+from typing import Literal, Optional, Annotated
 
 from pydantic import BaseModel, Field, PositiveInt
 
 
 class ArticleSchema(BaseModel):
-    id: Optional[int]
+    id: Optional[int] = None
     title: str = Field(..., min_length=1)
     author: str = Field(..., min_length=1)
     url: str = Field(..., min_length=1)
@@ -13,7 +13,7 @@ class ArticleSchema(BaseModel):
     read: bool
     read_again: bool
     favorite: bool
-    tags: list[str]
+    tags: list[Annotated[str, Field(min_length=1)]]
 
 
 class BasicSchema(BaseModel):
