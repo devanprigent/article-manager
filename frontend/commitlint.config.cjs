@@ -36,7 +36,7 @@ module.exports = {
     'type-empty': [2, 'never'],
     'type-case': [2, 'always', 'lower-case'],
     'type-enum': [2, 'always', ALLOWED_TYPES],
-    'scope-empty': [2, 'never'],
+    'scope-empty': [0],
     'scope-enum': [0],
     'repo-scope-enum': [2, 'always'],
     'subject-empty': [2, 'never'],
