@@ -25,6 +25,7 @@ def test_logout(auth_client):
     payload = res.get_json()
     assert payload["msg"] == "Successfully logged out"
 
+
 def test_add_valid_tag(auth_client, tag):
     res = auth_client.get("/tags")
     assert res.status_code == 200

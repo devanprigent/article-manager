@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from sqlalchemy import select
 
 from app.database import db
@@ -22,7 +22,8 @@ articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 @articles_bp.route("")
 @jwt_required()
 def list_articles():
-    stmt = select(Article)
+    user_id = int(get_jwt_identity())
+    stmt = select(Article).where(Article.user_id == user_id)
     articles = db.session.execute(stmt).scalars().all()
     return jsonify([article.to_dict() for article in articles]), 200
 
@@ -31,14 +32,16 @@ def list_articles():
 @jwt_required()
 @validate_json
 def add_article(data):
+    user_id = int(get_jwt_identity())
     schema = ArticleSchema.model_validate(data)
-    if not check_url_uniqueness(schema.url):
+    if not check_url_uniqueness(schema.url, user_id):
         return jsonify({"error": "URL already exists"}), 409
 
     tags = associate_tags(schema.tags)
     author = get_or_create_by_name(Author, schema.author)
 
     article = Article(
+        user_id=user_id,
         title=schema.title,
         url=schema.url,
         year=schema.year,
@@ -58,12 +61,13 @@ def add_article(data):
 @jwt_required()
 @validate_json
 def edit_article(data):
+    user_id = int(get_jwt_identity())
     schema = ArticleSchema.model_validate(data)
     if schema.id is None:
         return jsonify({"error": "Missing id"}), 400
-    if not check_url_uniqueness(schema.url, schema.id):
+    if not check_url_uniqueness(schema.url, user_id, schema.id):
         return jsonify({"error": "URL already exists"}), 409
-    article = get_entity(schema.id, Article)
+    article = get_entity(schema.id, Article, user_id)
     tags = associate_tags(schema.tags)
     author = get_or_create_by_name(Author, schema.author)
     payload = schema.model_dump()
@@ -92,9 +96,10 @@ def edit_article(data):
 @jwt_required()
 @validate_json
 def delete_articles(data):
+    user_id = int(get_jwt_identity())
     schema = IDSchema.model_validate(data)
     article_ids = schema.ids
-    articles = get_entities(article_ids, Article)
+    articles = get_entities(article_ids, Article, user_id)
     articles_dict = [article.to_dict() for article in articles]
     for article in articles:
         db.session.delete(article)

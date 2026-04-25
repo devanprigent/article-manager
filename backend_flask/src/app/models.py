@@ -74,6 +74,7 @@ article_tag = db.Table(
 class Article(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
     author_id: Mapped[int] = mapped_column(ForeignKey("author.id"), nullable=False)
     author: Mapped["Author"] = relationship(back_populates="articles")
     url: Mapped[str] = mapped_column(nullable=False, unique=True)
