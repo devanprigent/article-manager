@@ -3,62 +3,84 @@ import pytest
 from tests.conftest import INVALID_ARTICLE_CASES
 
 
-def test_add_valid_tag(client, tag):
-    res = client.get("/tags")
+def test_register(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    assert res.status_code == 201
+    payload = res.get_json()
+    assert "access_token" in payload
+
+
+def test_login(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    assert res.status_code == 201
+    res2 = client.post("/auth/login", json={"name": "Test", "password": "Test"})
+    assert res.status_code == 201
+    payload = res.get_json()
+    assert "access_token" in payload
+
+
+def test_logout(auth_client):
+    res = auth_client.post("/auth/logout")
+    assert res.status_code == 200
+    payload = res.get_json()
+    assert payload["msg"] == "Successfully logged out"
+
+def test_add_valid_tag(auth_client, tag):
+    res = auth_client.get("/tags")
     assert res.status_code == 200
     payload = res.get_json()
     assert len(payload) == 1
     assert payload[0]["name"] == tag["name"]
 
 
-def test_add_invalid_tag(client):
-    res = client.post("/tags", json={"name": ""})
+def test_add_invalid_tag(auth_client):
+    res = auth_client.post("/tags", json={"name": ""})
     assert res.status_code == 422
 
 
 @pytest.mark.usefixtures("tag", "author")
 @pytest.mark.parametrize("endpoint", ["/tags", "/authors"])
-def test_delete_entity(client, endpoint):
-    res = client.get(endpoint)
+def test_delete_entity(auth_client, endpoint):
+    res = auth_client.get(endpoint)
     payload = res.get_json()
     assert len(payload) == 1
     entity_id = int(payload[0]["id"])
-    res_delete = client.delete(endpoint, json={"ids": [entity_id]})
+    res_delete = auth_client.delete(endpoint, json={"ids": [entity_id]})
     assert res_delete.status_code == 200
     assert res_delete.get_json()["count"] == 1
-    new_res = client.get(endpoint)
+    new_res = auth_client.get(endpoint)
     new_payload = new_res.get_json()
     assert len(new_payload) == 0
 
 
-def test_delete_article(client, article):
-    res = client.get("/articles")
+def test_delete_article(auth_client, article):
+    res = auth_client.get("/articles")
     payload = res.get_json()
     assert len(payload) == 1
     article_id = int(payload[0]["id"])
-    res_delete = client.delete("/articles", json={"ids": [article_id]})
+    res_delete = auth_client.delete("/articles", json={"ids": [article_id]})
     assert res_delete.status_code == 200
     assert res_delete.get_json()["count"] == 1
-    new_res = client.get("/articles")
+    new_res = auth_client.get("/articles")
     new_payload = new_res.get_json()
     assert len(new_payload) == 0
 
 
-def test_add_valid_author(client, author):
-    res = client.get("/authors")
+def test_add_valid_author(auth_client, author):
+    res = auth_client.get("/authors")
     assert res.status_code == 200
     payload = res.get_json()
     assert len(payload) == 1
     assert payload[0]["name"] == author["name"]
 
 
-def test_add_invalid_author(client):
-    res = client.post("/authors", json={"name": ""})
+def test_add_invalid_author(auth_client):
+    res = auth_client.post("/authors", json={"name": ""})
     assert res.status_code == 422
 
 
-def test_add_valid_article(client, article):
-    res = client.get("/articles")
+def test_add_valid_article(auth_client, article):
+    res = auth_client.get("/articles")
     assert res.status_code == 200
     payload = res.get_json()
     assert len(payload) == 1
@@ -71,9 +93,9 @@ def test_add_valid_article(client, article):
     INVALID_ARTICLE_CASES,
 )
 def test_add_invalid_articles(
-    client, invalid_article, expected_status, expected_error_locs
+    auth_client, invalid_article, expected_status, expected_error_locs
 ):
-    res = client.post("/articles", json=invalid_article)
+    res = auth_client.post("/articles", json=invalid_article)
     assert res.status_code == expected_status
     payload = res.get_json()
     assert "error" in payload
@@ -83,8 +105,8 @@ def test_add_invalid_articles(
             assert loc in actual_locs, (loc, actual_locs)
 
 
-def test_top_authors(client, create_list_authors_articles):
-    res = client.get("/authors/top")
+def test_top_authors(auth_client, create_list_authors_articles):
+    res = auth_client.get("/authors/top")
     assert res.status_code == 200
     payload = res.get_json()
     expected_responses = [

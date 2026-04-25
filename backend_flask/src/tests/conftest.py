@@ -24,6 +24,36 @@ def client(app):
 
 
 @pytest.fixture()
+def auth_headers(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    assert res.status_code == 201
+    payload = res.get_json()
+    token = payload["access_token"]
+    return {"Authorization": f"Bearer {token}"}
+
+
+@pytest.fixture()
+def auth_client(client, auth_headers):
+    class AuthClient:
+        def get(self, *args, **kwargs):
+            headers = kwargs.pop("headers", {})
+            headers = {**auth_headers, **headers}
+            return client.get(*args, headers=headers, **kwargs)
+
+        def post(self, *args, **kwargs):
+            headers = kwargs.pop("headers", {})
+            headers = {**auth_headers, **headers}
+            return client.post(*args, headers=headers, **kwargs)
+
+        def delete(self, *args, **kwargs):
+            headers = kwargs.pop("headers", {})
+            headers = {**auth_headers, **headers}
+            return client.delete(*args, headers=headers, **kwargs)
+
+    return AuthClient()
+
+
+@pytest.fixture()
 def list_authors():
     return [
         {"name": "J.R.R Tolkien"},
@@ -107,26 +137,26 @@ def list_articles():
 
 
 @pytest.fixture()
-def create_list_authors_articles(client, list_authors, list_articles):
+def create_list_authors_articles(auth_client, list_authors, list_articles):
     for author in list_authors:
-        r = client.post("/authors", json=author)
+        r = auth_client.post("/authors", json=author)
         assert r.status_code == 201
     for article in list_articles:
-        r = client.post("/articles", json=article)
+        r = auth_client.post("/articles", json=article)
         print(r.get_json())
         assert r.status_code == 201
 
 
 @pytest.fixture()
-def author(client, list_authors):
-    r = client.post("/authors", json=list_authors[0])
+def author(auth_client, list_authors):
+    r = auth_client.post("/authors", json=list_authors[0])
     assert r.status_code == 201
     return r.get_json()
 
 
 @pytest.fixture()
-def tag(client):
-    r = client.post("/tags", json={"name": "Nature"})
+def tag(auth_client):
+    r = auth_client.post("/tags", json={"name": "Nature"})
     assert r.status_code == 201
     return r.get_json()
 
@@ -145,16 +175,16 @@ def mock_article():
 
 
 @pytest.fixture()
-def article(client, author, tag, mock_article, list_authors):
-    r_author = client.post("/authors", json=list_authors[1])
-    r_tags = client.post("/tags", json={"name": "Personal Development"})
+def article(auth_client, author, tag, mock_article, list_authors):
+    r_author = auth_client.post("/authors", json=list_authors[1])
+    r_tags = auth_client.post("/tags", json={"name": "Personal Development"})
     assert r_author.status_code == 201
     assert r_tags.status_code == 201
 
     new_article = mock_article.copy()
     new_article["author"] = r_author.get_json()["name"]
     new_article["tags"] = [r_tags.get_json()["name"]]
-    r = client.post("/articles", json=new_article)
+    r = auth_client.post("/articles", json=new_article)
     assert r.status_code == 201
     return r.get_json()
 
