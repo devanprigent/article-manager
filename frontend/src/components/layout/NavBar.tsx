@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { Moon, Sun } from 'react-feather';
-import { useTheme, useIsDarkMode } from '../../theme/ThemeContext';
+import { useTheme, useIsDarkMode } from '../../contexts/ThemeContext';
 
 function NavBar() {
   const { toggle } = useTheme();

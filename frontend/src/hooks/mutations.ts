@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { articlesApi, authorsApi, tagsApi, authApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
 import { Token, Message } from '../constants/types';
+import { useAuth } from '../contexts/AuthContext';
 
 function extractErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
@@ -41,11 +42,12 @@ export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.
 export const useEditTag = () => useEntitiesMutation(tagsApi.update, queryKeys.tags.all, 'Tag successfully edited');
 export const useRemoveTag = () => useEntitiesMutation(tagsApi.remove, queryKeys.tags.all, 'Tag successfully deleted');
 
-function useAuth<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, onSuccess: (res: Token) => void, successMessage: string) {
+function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, successMessage: string) {
+  const { login } = useAuth();
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      onSuccess(res);
+      login(res.access_token);
       toast.success(successMessage);
     },
     onError: (err) => {
@@ -54,16 +56,17 @@ function useAuth<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, onSuccess: 
   });
 }
 
-export const useRegister = () =>
-  useAuth(authApi.register, (res: Token) => localStorage.setItem('access_token', res.access_token), 'Successfully registered');
-export const useLogin = () => useAuth(authApi.login, (res) => localStorage.setItem('access_token', res.access_token), 'Successfully logged in');
+export const useRegister = () => useAuthMutation(authApi.register, 'Successfully registered');
+
+export const useLogin = () => useAuthMutation(authApi.login, 'Successfully logged in');
 
 export const useLogout = () => {
   const qc = useQueryClient();
+  const { logout } = useAuth();
   return useMutation({
     mutationFn: authApi.logout,
     onSuccess: (res: Message) => {
-      localStorage.removeItem('access_token');
+      logout();
       qc.clear();
       toast.success(res.msg);
     },

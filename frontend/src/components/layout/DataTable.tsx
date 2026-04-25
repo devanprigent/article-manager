@@ -1,6 +1,6 @@
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 import { Article } from '../../constants/types';
-import { useIsDarkMode } from '../../theme/ThemeContext';
+import { useIsDarkMode } from '../../contexts/ThemeContext';
 
 interface TableauProps {
   data: Article[];

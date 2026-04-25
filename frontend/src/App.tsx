@@ -4,7 +4,7 @@ import FavoritesPage from './components/pages/FavoritesPage';
 import ArticlesPage from './components/pages/ArticlesPage';
 import StatsPage from './components/pages/StatsPage';
 import { Toaster } from 'sonner';
-import { useIsDarkMode } from './theme/ThemeContext';
+import { useIsDarkMode } from './contexts/ThemeContext';
 
 function App() {
   const isDarkMode = useIsDarkMode();
