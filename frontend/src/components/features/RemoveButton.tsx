@@ -26,7 +26,7 @@ function RemoveButton({ itemId }: Readonly<PropsType>) {
       >
         <Trash2 size={18} strokeWidth={2.2} />
       </button>
-      <ConfirmationForm isOpen={modalRemove} toggle={toggleModalRemove} onSave={() => remove(itemId)} />
+      <ConfirmationForm isOpen={modalRemove} toggle={toggleModalRemove} onSave={() => remove([itemId])} />
     </>
   );
 }

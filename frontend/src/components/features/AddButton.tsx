@@ -20,7 +20,7 @@ function AddButton({ FormComponent, title, activeItem }: Readonly<PropsType>) {
   return (
     <>
       <button
-        className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+        className="inline-flex items-center gap-2 rounded-xl bg-emerald-100 px-4 py-2.5 text-sm font-semibold text-emerald-700 shadow-sm transition hover:opacity-90 dark:bg-emerald-900/40 dark:text-emerald-300"
         onClick={toggleModalCreate}
         disabled={isPending}
       >
