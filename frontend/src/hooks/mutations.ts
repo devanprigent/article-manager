@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { articlesApi, authorsApi, tagsApi } from '../api/entities';
+import { articlesApi, authorsApi, tagsApi, authApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
+import { Token, Message } from '../constants/types';
 
 function extractErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
@@ -39,3 +40,35 @@ export const useRemoveAuthor = () => useEntitiesMutation(authorsApi.remove, quer
 export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.tags.all, 'Tag successfully added');
 export const useEditTag = () => useEntitiesMutation(tagsApi.update, queryKeys.tags.all, 'Tag successfully edited');
 export const useRemoveTag = () => useEntitiesMutation(tagsApi.remove, queryKeys.tags.all, 'Tag successfully deleted');
+
+function useAuth<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, onSuccess: (res: Token) => void, successMessage: string) {
+  return useMutation({
+    mutationFn,
+    onSuccess: (res) => {
+      onSuccess(res);
+      toast.success(successMessage);
+    },
+    onError: (err) => {
+      toast.error(extractErrorMessage(err));
+    },
+  });
+}
+
+export const useRegister = () =>
+  useAuth(authApi.register, (res: Token) => localStorage.setItem('access_token', res.access_token), 'Successfully registered');
+export const useLogin = () => useAuth(authApi.login, (res) => localStorage.setItem('access_token', res.access_token), 'Successfully logged in');
+
+export const useLogout = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: authApi.logout,
+    onSuccess: (res: Message) => {
+      localStorage.removeItem('access_token');
+      qc.clear();
+      toast.success(res.msg);
+    },
+    onError: (err) => {
+      toast.error(extractErrorMessage(err));
+    },
+  });
+};

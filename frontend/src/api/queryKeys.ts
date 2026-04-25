@@ -13,4 +13,7 @@ export const queryKeys = {
     list: () => [...queryKeys.authors.all, 'list'],
     list_top: () => [...queryKeys.authors.all, 'list_top'],
   },
+  auth: {
+    all: ['auth'],
+  },
 } as const;

@@ -13,6 +13,19 @@ export interface Article {
   date_modification: string;
 }
 
+export interface Credentials {
+  name: string;
+  password: string;
+}
+
+export interface Token {
+  access_token: string;
+}
+
+export interface Message {
+  msg: string;
+}
+
 export interface Entity {
   id: number;
   name: string;
