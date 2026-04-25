@@ -7,6 +7,11 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+      FRONTEND_ORIGIN: ${{ vars.FRONTEND_ORIGIN }}
     defaults:
       run:
         working-directory: backend_flask
