@@ -1,4 +1,7 @@
 # Article Manager
+[![CI](https://github.com/devanprigent/article-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/devanprigent/article-manager/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Web app to **save and search articles** easily. Browse all articles or open your favorite.
 
 ## Screenshots
