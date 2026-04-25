@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Annotated
+from typing import Annotated, Literal, Optional
 
 from pydantic import BaseModel, Field, PositiveInt
 
@@ -22,3 +22,8 @@ class BasicSchema(BaseModel):
 
 class IDSchema(BaseModel):
     ids: list[PositiveInt]
+
+
+class UserSchema(BaseModel):
+    name: str = Field(..., min_length=1)
+    password: str = Field(..., min_length=1)

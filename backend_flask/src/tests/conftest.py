@@ -214,7 +214,7 @@ INVALID_ARTICLE_CASES = [
             "author": "Test 4",
         },
         422,
-       [["tags", 1]],
+        [["tags", 1]],
     ),
     (
         {
@@ -229,6 +229,6 @@ INVALID_ARTICLE_CASES = [
             "author": "",
         },
         422,
-       [["author"]],
+        [["author"]],
     ),
 ]

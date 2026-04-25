@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 from sqlalchemy import func, select
 
 from app.database import db
@@ -11,6 +12,7 @@ authors_bp = Blueprint("authors", __name__, url_prefix="/authors")
 
 
 @authors_bp.route("")
+@jwt_required()
 def list_authors():
     stmt = select(Author)
     authors = db.session.execute(stmt).scalars().all()
@@ -18,6 +20,7 @@ def list_authors():
 
 
 @authors_bp.route("/top")
+@jwt_required()
 def list_top_authors():
     nb_articles = func.count(Article.id).label("nb_articles")
     stmt = (
@@ -36,6 +39,7 @@ def list_top_authors():
 
 
 @authors_bp.route("", methods=["POST"])
+@jwt_required()
 @validate_json
 def add_author(data):
     schema = BasicSchema.model_validate(data)
@@ -45,6 +49,7 @@ def add_author(data):
 
 
 @authors_bp.route("", methods=["DELETE"])
+@jwt_required()
 @validate_json
 def delete_authors(data):
     schema = IDSchema.model_validate(data)

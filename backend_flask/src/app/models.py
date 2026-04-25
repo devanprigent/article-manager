@@ -7,6 +7,23 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import db
 
 
+class User(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    password_hash: Mapped[str] = mapped_column(nullable=False)
+    date_creation: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+    date_modification: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name}
+
+
 class Tag(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     normalized_name: Mapped[str] = mapped_column(nullable=False, unique=True)

@@ -1,16 +1,26 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 from sqlalchemy import select
 
 from app.database import db
 from app.decorators import validate_json
 from app.models import Article, Author, Tag
 from app.schemas import ArticleSchema, IDSchema
-from app.services import check_url_uniqueness, associate_tags, update_model_fields, get_entity, get_entities, get_or_create_by_name, normalize_name
+from app.services import (
+    associate_tags,
+    check_url_uniqueness,
+    get_entities,
+    get_entity,
+    get_or_create_by_name,
+    normalize_name,
+    update_model_fields,
+)
 
 articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 
 
 @articles_bp.route("")
+@jwt_required()
 def list_articles():
     stmt = select(Article)
     articles = db.session.execute(stmt).scalars().all()
@@ -18,6 +28,7 @@ def list_articles():
 
 
 @articles_bp.route("", methods=["POST"])
+@jwt_required()
 @validate_json
 def add_article(data):
     schema = ArticleSchema.model_validate(data)
@@ -44,6 +55,7 @@ def add_article(data):
 
 
 @articles_bp.route("", methods=["PUT"])
+@jwt_required()
 @validate_json
 def edit_article(data):
     schema = ArticleSchema.model_validate(data)
@@ -60,12 +72,24 @@ def edit_article(data):
     update_model_fields(
         article,
         payload,
-        {"title", "author_id", "tags", "url", "year", "summary", "read", "read_again", "favorite"},
+        {
+            "title",
+            "author_id",
+            "tags",
+            "url",
+            "year",
+            "summary",
+            "read",
+            "read_again",
+            "favorite",
+        },
     )
     db.session.commit()
     return (jsonify(article.to_dict()), 200)
 
+
 @articles_bp.route("", methods=["DELETE"])
+@jwt_required()
 @validate_json
 def delete_articles(data):
     schema = IDSchema.model_validate(data)

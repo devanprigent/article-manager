@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 from sqlalchemy import select
 
 from app.database import db
@@ -11,6 +12,7 @@ tags_bp = Blueprint("tags", __name__, url_prefix="/tags")
 
 
 @tags_bp.route("")
+@jwt_required()
 def list_tags():
     stmt = select(Tag)
     tags = db.session.execute(stmt).scalars().all()
@@ -18,6 +20,7 @@ def list_tags():
 
 
 @tags_bp.route("", methods=["POST"])
+@jwt_required()
 @validate_json
 def add_tag(data):
     schema = BasicSchema.model_validate(data)
@@ -27,6 +30,7 @@ def add_tag(data):
 
 
 @tags_bp.route("", methods=["DELETE"])
+@jwt_required()
 @validate_json
 def delete_tags(data):
     schema = IDSchema.model_validate(data)
