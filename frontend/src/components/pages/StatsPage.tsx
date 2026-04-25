@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import PageHeader from '../layout/PageHeader';
-import { useIsDarkMode } from '../../theme/ThemeContext';
+import { useIsDarkMode } from '../../contexts/ThemeContext';
 import { useArticles, useTopAuthors } from '../../hooks/queries';
 import StatsGraphWidget from '../features/StatsGraphWidget';
 
