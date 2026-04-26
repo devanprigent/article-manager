@@ -118,7 +118,7 @@ def test_top_authors(auth_client, create_list_authors_articles):
         ("Mark Manson", 0),
     ]
     for i in range(len(expected_responses)):
-        assert payload[i]["author"]["name"] == expected_responses[i][0]
+        assert payload[i]["author"] == expected_responses[i][0]
         assert payload[i]["count"] == expected_responses[i][1]
 
 
