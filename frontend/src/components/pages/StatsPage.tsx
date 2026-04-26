@@ -70,7 +70,7 @@ function StatsPage() {
             {readCount} read
           </span>
           <span className="rounded-full bg-indigo-100 px-3 py-1 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">
-            {topAuthors.length} top author entries
+            {topAuthors.length} authors
           </span>
         </div>
       </PageHeader>
@@ -84,7 +84,7 @@ function StatsPage() {
           isDarkMode={isDarkMode}
         >
           <ResponsiveContainer width="100%" height={320} minWidth={280}>
-            <BarChart data={topAuthors} margin={{ top: 8, right: 12, left: 0, bottom: 20 }}>
+            <BarChart data={topAuthors.slice(0, 10)} margin={{ top: 8, right: 12, left: 0, bottom: 20 }}>
               <CartesianGrid stroke={gridColor} strokeDasharray="3 3" />
               <XAxis dataKey="author" tick={false} />
               <YAxis allowDecimals={false} tick={{ fill: axisColor }} />

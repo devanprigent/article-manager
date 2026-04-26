@@ -32,7 +32,7 @@ def list_top_authors():
     rows = db.session.execute(stmt).all()
     return (
         jsonify(
-            [{"author": author.to_dict(), "count": count} for author, count in rows]
+            [{"author": author.to_dict()["name"], "count": count} for author, count in rows]
         ),
         200,
     )
