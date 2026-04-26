@@ -1,0 +1,28 @@
+# Render Blueprint: https://render.com/docs/infrastructure-as-code
+# Deploy: Render Dashboard → New → Blueprint → connect this repo.
+# After the web service is live, set FRONTEND_ORIGIN to your Vercel URL (and redeploy if needed).
+# Create a Vercel project with Root Directory = frontend; set VITE_API_BASE_URL to the Render API URL (no trailing slash).
+
+databases:
+  - name: article-manager-db
+    databaseName: article_manager
+    user: article_manager
+
+services:
+  - type: web
+    name: article-manager-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir src "app:create_app()" --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: article-manager-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_ORIGIN
+        sync: false

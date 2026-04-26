@@ -18,16 +18,28 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(BASE_DIR / ".env")
 
 
+def _normalize_database_url(url: str) -> str:
+    """Render and others often use postgres:// or postgresql://; SQLAlchemy needs the psycopg3 driver prefix."""
+    if url.startswith("postgresql+psycopg://"):
+        return url
+    if url.startswith("postgres://"):
+        return "postgresql+psycopg://" + url.removeprefix("postgres://")
+    if url.startswith("postgresql://"):
+        return "postgresql+psycopg://" + url.removeprefix("postgresql://")
+    return url
+
+
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
+    app.config["SQLALCHEMY_DATABASE_URI"] = _normalize_database_url(os.environ["DATABASE_URL"])
     app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     app.config["JWT_SECRET_KEY"] = os.environ["JWT_SECRET_KEY"]
 
-    frontend_origin = os.environ.get("FRONTEND_ORIGIN")
+    _origins_raw = os.environ.get("FRONTEND_ORIGIN", "http://localhost:5173")
+    frontend_origins = [o.strip() for o in _origins_raw.split(",") if o.strip()]
     CORS(
         app,
-        resources={r"/*": {"origins": [frontend_origin]}},
+        resources={r"/*": {"origins": frontend_origins}},
         supports_credentials=True,
     )
 
