@@ -5,7 +5,7 @@
 [![CI](https://github.com/devanprigent/article-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/devanprigent/article-manager/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Web app to **save and search articles** easily. Browse all articles or open your favorite.
+Web app to save, organize, and revisit articles. Create an account, manage a personal article library, mark articles as read or favorite, and track reading trends.
 
 ## Screenshots
 
@@ -18,49 +18,66 @@ Web app to **save and search articles** easily. Browse all articles or open your
 ## Stack
 
 
-| Layer    | Technology                                                                                                                                |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Frontend | React 18 (Vite), React Router, Redux Toolkit, MUI X Data Grid, Bootstrap / Reactstrap, Tailwind, Axios, Yup |
-| Backend  | Django 5, Django REST Framework, django-cors-headers                                                                                      |
-| Database | MySQL                                                                                                                                     |
+| Layer    | Technology                                                                                                      |
+| -------- | --------------------------------------------------------------------------------------------------------------- |
+| Frontend | React 18, Vite, TypeScript, React Router, TanStack Query, MUI X Data Grid, Tailwind, Bootstrap, Recharts, Axios |
+| Backend  | Flask 3, Flask-JWT-Extended, Flask-SQLAlchemy, Pydantic, flask-cors                                            |
+| Database | PostgreSQL                                                                                                      |
+| Tooling  | Pytest, Ruff, ESLint, Prettier, Vitest, Husky                                                                  |
 
 
-REST API is mounted at `/api/` (Django router: `articles`, `tags`, `websites`).
+The API exposes JWT-protected resources at `/articles`, `/authors`, `/authors/top`, and `/tags`, plus auth routes under `/auth`.
+
+## Features
+
+- Register, login, and logout with JWT authentication.
+- Create, edit, delete, and list articles scoped to the current user.
+- Track article metadata: title, author, URL, year, summary, tags, read status, read-again status, and favorites.
+- Browse favorites separately from the main article table.
+- View stats for top authors and articles read by month.
+- Toggle light and dark themes.
 
 ## Prerequisites
 
-- Node.js and npm (for the React app)
-- Python 3.x and pip (for Django)
-- MySQL server and a database for the project
+- Python 3.12 and pip
+- Node.js 22 and npm
+- PostgreSQL database
 
 ## Getting Started
 
 ### Backend (`backend/`)
 
-1. Create a virtual environment and install dependencies:
-  ```bash
-   cd backend
-   python -m venv .venv
-   .venv\Scripts\activate   # Windows
-   pip install -r requirements.txt
-  ```
-2. Create a .env file in backend/ (same folder as manage.py) with at least:
-
-```
-DJANGO_SECRET_KEY — Django secret key
-MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_PORT — MySQL connection (see root/settings.py)
-```
-
-1. Apply migrations and start the server:
+Create a virtual environment and install dependencies:
 
 ```bash
-python manage.py migrate
-python manage.py runserver
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
 ```
+
+Create `backend/.env` from `backend/.env.example`:
+
+```
+SECRET_KEY=change-me
+JWT_SECRET_KEY=change-me
+DATABASE_URL=postgresql+psycopg://user:password@localhost:5432/article_manager
+FRONTEND_ORIGIN=http://localhost:3000
+```
+
+Start the Flask API:
+
+```bash
+python src/main.py
+```
+
+The backend creates the SQLAlchemy tables on startup. By default, Flask serves the API on `http://127.0.0.1:5000`.
+
+
 
 ### Frontend (`frontend/`)
 
-The client defaults to `http://127.0.0.1:8000/api`. Override with `VITE_API_BASE_URL` in `frontend/.env` (see `frontend/.env.example` and `src/components/Tools/Constants.ts`). Start the backend first, or point the env var at your API.
+To run the frontend, execute the following commands:
 
 ```bash
 cd frontend
@@ -68,5 +85,21 @@ npm install
 npm run dev
 ```
 
-Production build: `npm run build` (output in `frontend/dist/`). Preview locally: `npm run preview`.
+Then open your browser and go to `http://127.0.0.1:5000`. 
+
+## Checks
+
+Run backend checks:
+
+```bash
+ruff check .
+pytest
+```
+
+Run frontend checks:
+
+```bash
+npm run lint
+npm run build
+```
 
