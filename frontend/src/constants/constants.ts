@@ -8,6 +8,7 @@ export const API_URLS = {
   LOGIN: `${baseURL}/auth/login`,
   LOGOUT: `${baseURL}/auth/logout`,
   REGISTER: `${baseURL}/auth/register`,
+  REFRESH: `${baseURL}/auth/refresh`,
 };
 
 export const buttonStyle = {

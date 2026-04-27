@@ -47,7 +47,7 @@ function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, suc
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      login(res.access_token);
+      login(res.access_token, res.refresh_token);
       toast.success(successMessage);
     },
     onError: (err) => {

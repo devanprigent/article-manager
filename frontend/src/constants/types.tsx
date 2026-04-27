@@ -18,8 +18,13 @@ export interface Credentials {
   password: string;
 }
 
+export interface RefreshToken {
+  refresh_token: string;
+}
+
 export interface Token {
   access_token: string;
+  refresh_token: string;
 }
 
 export interface Message {
