@@ -62,7 +62,7 @@ def add_author(data, user_id):
 def delete_authors(data, user_id):
     schema = IDSchema.model_validate(data)
     author_ids = schema.ids
-    authors = get_entities(author_ids, Author)
+    authors = get_entities(author_ids, Author, user_id)
     authors_dict = [author.to_dict() for author in authors]
     for author in authors:
         articles = get_articles_by_author(author.id, user_id)
