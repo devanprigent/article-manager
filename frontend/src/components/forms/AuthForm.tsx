@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { Eye, EyeOff } from 'react-feather';
 import { Input } from 'reactstrap';
 import { buttonSize, buttonStyle } from '../../constants/constants';
 import type { Credentials } from '../../constants/types';
@@ -15,6 +16,7 @@ interface AuthFormProps {
 
 function AuthForm({ isOpen, mode, onClose }: Readonly<AuthFormProps>) {
   const [credentials, setCredentials] = useState<Credentials>({ name: '', password: '' });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const loginMutation = useLogin();
   const registerMutation = useRegister();
   const isRegister = mode === 'register';
@@ -53,16 +55,27 @@ function AuthForm({ isOpen, mode, onClose }: Readonly<AuthFormProps>) {
             <label htmlFor="auth-password" className="text-slate-800 dark:text-slate-100">
               <b>Password</b>
             </label>
-            <Input
-              id="auth-password"
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={credentials.password}
-              onChange={(event) => setCredentials((prev) => ({ ...prev, password: event.target.value }))}
-              className={inputClassName}
-              required
-            />
+            <div className="relative">
+              <Input
+                id="auth-password"
+                type={isPasswordVisible ? 'text' : 'password'}
+                name="password"
+                placeholder="Password"
+                value={credentials.password}
+                onChange={(event) => setCredentials((prev) => ({ ...prev, password: event.target.value }))}
+                className={`${inputClassName} pr-10`}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setIsPasswordVisible((prev) => !prev)}
+                className="absolute inset-y-0 right-3 flex items-center text-slate-500 transition hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
+                aria-pressed={isPasswordVisible}
+              >
+                {isPasswordVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex w-full justify-center">
