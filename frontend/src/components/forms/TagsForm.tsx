@@ -39,7 +39,7 @@ function TagsForm({ onChange, currentTags }: Readonly<TagsProps>) {
       </label>
       <div className="tags-input-wrapper flex flex-wrap items-center gap-2 rounded border border-gray-300 bg-white p-2 dark:border-slate-600 dark:bg-slate-800">
         {tags.map((tag, index) => (
-          <div className="tag-chip flex flex-row items-center space-x-2 rounded-full px-3 py-2 dark:bg-slate-700" key={tag}>
+          <div className="tag-chip flex flex-row items-center space-x-2 rounded-full bg-slate-200 px-3 py-2 dark:bg-slate-700" key={tag}>
             <span className="text-slate-800 dark:text-slate-100" onKeyDown={() => removeTag(index)}>
               {tag}
             </span>
