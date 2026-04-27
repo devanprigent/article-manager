@@ -8,15 +8,25 @@ def test_register(client):
     assert res.status_code == 201
     payload = res.get_json()
     assert "access_token" in payload
+    assert "refresh_token" in payload
 
 
 def test_login(client):
-    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
-    assert res.status_code == 201
+    client.post("/auth/register", json={"name": "Test", "password": "Test"})
     res2 = client.post("/auth/login", json={"name": "Test", "password": "Test"})
     assert res2.status_code == 200
-    payload = res2.get_json()
-    assert "access_token" in payload
+    payload2 = res2.get_json()
+    assert "access_token" in payload2
+    assert "refresh_token" in payload2
+
+
+def test_refresh(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    payload = res.get_json()
+    token = payload["refresh_token"]
+    res2 = client.post("/auth/refresh", headers={"Authorization": f"Bearer {token}"})
+    payload2 = res2.get_json()
+    assert "access_token" in payload2
 
 
 def test_logout(auth_client):

@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required
 from sqlalchemy import select
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
-from app.decorators import validate_json
+from app.decorators import get_user_id, validate_json
 from app.models import User
 from app.schemas import UserSchema
 
@@ -29,7 +29,8 @@ def register(data):
     db.session.commit()
 
     access_token = create_access_token(identity=str(user.id))
-    return jsonify(access_token=access_token), 201
+    refresh_token = create_refresh_token(identity=str(user.id))
+    return jsonify(access_token=access_token, refresh_token=refresh_token), 201
 
 
 @auth_bp.route("/login", methods=["POST"])
@@ -46,7 +47,16 @@ def login(data):
         return jsonify({"error": "Wrong username or password"}), 401
 
     access_token = create_access_token(identity=str(user.id))
-    return jsonify(access_token=access_token), 200
+    refresh_token = create_refresh_token(identity=str(user.id))
+    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+
+
+@auth_bp.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+@get_user_id
+def refresh(user_id):
+    access_token = create_access_token(identity=str(user_id))
+    return jsonify(access_token=access_token)
 
 
 @auth_bp.route("/logout", methods=["POST"])

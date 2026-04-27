@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -31,9 +32,13 @@ def _normalize_database_url(url: str) -> str:
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = _normalize_database_url(os.environ["DATABASE_URL"])
+    app.config["SQLALCHEMY_DATABASE_URI"] = _normalize_database_url(
+        os.environ["DATABASE_URL"]
+    )
     app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     app.config["JWT_SECRET_KEY"] = os.environ["JWT_SECRET_KEY"]
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=15)
+    app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 
     _origins_raw = os.environ.get("FRONTEND_ORIGIN", "http://localhost:5173")
     frontend_origins = [o.strip() for o in _origins_raw.split(",") if o.strip()]
