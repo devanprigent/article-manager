@@ -8,13 +8,16 @@ export const API_URLS = {
   LOGIN: `${baseURL}/auth/login`,
   LOGOUT: `${baseURL}/auth/logout`,
   REGISTER: `${baseURL}/auth/register`,
+  REFRESH: `${baseURL}/auth/refresh`,
 };
 
 export const buttonStyle = {
   error: 'focus:outline-none text-white bg-red-500 hover:bg-red-700 rounded-lg',
   warning: 'focus:outline-none text-black bg-yellow-400 hover:bg-yellow-600 rounded-lg',
-  neutral: 'focus:outline-none text-black bg-gray-200 hover:bg-gray-400 rounded p-2',
-  success: 'focus:outline-none rounded-lg bg-emerald-100 text-emerald-700 hover:opacity-90 dark:bg-emerald-900/40 dark:text-emerald-300',
+  neutral:
+    'focus:outline-none rounded-lg border border-slate-300 bg-slate-100 p-2 font-semibold tracking-wide text-slate-900 hover:bg-slate-200 hover:border-slate-400 dark:border-slate-400 dark:bg-slate-500 dark:text-white dark:hover:border-slate-300 dark:hover:bg-slate-700',
+  success:
+    'focus:outline-none rounded-lg border border-emerald-500/80 bg-emerald-100 p-2 font-semibold tracking-wide text-emerald-900 hover:border-emerald-600 hover:bg-emerald-200 dark:border-emerald-500 dark:bg-emerald-600/55 dark:text-emerald-50 dark:hover:border-emerald-400 dark:hover:bg-emerald-800/70',
 };
 
 export const buttonSize = {

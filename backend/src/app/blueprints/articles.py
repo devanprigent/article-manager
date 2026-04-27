@@ -1,9 +1,9 @@
 from flask import Blueprint, jsonify
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import jwt_required
 from sqlalchemy import select
 
 from app.database import db
-from app.decorators import validate_json
+from app.decorators import get_user_id, validate_json
 from app.models import Article, Author
 from app.schemas import ArticleSchema, IDSchema
 from app.services import (
@@ -20,8 +20,8 @@ articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 
 @articles_bp.route("")
 @jwt_required()
-def list_articles():
-    user_id = int(get_jwt_identity())
+@get_user_id
+def list_articles(user_id):
     stmt = select(Article).where(Article.user_id == user_id)
     articles = db.session.execute(stmt).scalars().all()
     return jsonify([article.to_dict() for article in articles]), 200
@@ -30,8 +30,8 @@ def list_articles():
 @articles_bp.route("", methods=["POST"])
 @jwt_required()
 @validate_json
-def add_article(data):
-    user_id = int(get_jwt_identity())
+@get_user_id
+def add_article(data, user_id):
     schema = ArticleSchema.model_validate(data)
     if not check_url_uniqueness(schema.url, user_id):
         return jsonify({"error": "URL already exists"}), 409
@@ -59,8 +59,8 @@ def add_article(data):
 @articles_bp.route("", methods=["PUT"])
 @jwt_required()
 @validate_json
-def edit_article(data):
-    user_id = int(get_jwt_identity())
+@get_user_id
+def edit_article(data, user_id):
     schema = ArticleSchema.model_validate(data)
     if schema.id is None:
         return jsonify({"error": "Missing id"}), 400
@@ -94,8 +94,8 @@ def edit_article(data):
 @articles_bp.route("", methods=["DELETE"])
 @jwt_required()
 @validate_json
-def delete_articles(data):
-    user_id = int(get_jwt_identity())
+@get_user_id
+def delete_articles(data, user_id):
     schema = IDSchema.model_validate(data)
     article_ids = schema.ids
     articles = get_entities(article_ids, Article, user_id)

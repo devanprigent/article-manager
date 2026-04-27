@@ -9,11 +9,11 @@ Web app to save, organize, and revisit articles. Create an account, manage a per
 
 ## Screenshots
 
-![Homepage](frontend/docs/img/homepage.PNG)
+![Homepage](frontend/public/screenshots/homepage.PNG)
 ----
-![Favorites](frontend/docs/img/favorites.PNG)
+![Favorites](frontend/public/screenshots/favorites.PNG)
 ----
-![Statistics](frontend/docs/img/stats.PNG)
+![Statistics](frontend/public/screenshots/stats.PNG)
 
 ## Stack
 
@@ -51,8 +51,14 @@ Create a virtual environment and install dependencies:
 
 ```bash
 cd backend
-python -m venv .venv
-.venv\Scripts\activate
+python -m venv venv
+
+# On Windows
+.\venv\Scripts\Activate.ps1
+
+# On macOS/Linux
+source venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
@@ -82,7 +88,7 @@ To run the frontend, execute the following commands:
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run start
 ```
 
 Then open your browser and go to `http://127.0.0.1:5000`. 

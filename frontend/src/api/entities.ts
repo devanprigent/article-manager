@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URLS } from '../constants/constants';
-import type { Article, AuthorStat, Credentials, Token, Message } from '../constants/types';
+import type { Article, AuthorStat, Credentials, Token, AccessToken, Message } from '../constants/types';
 
 const apiClient = axios.create();
 
@@ -14,6 +14,25 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status !== 401 || originalRequest._retry) {
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    const { access_token } = await authApi.refresh();
+
+    sessionStorage.setItem('access_token', access_token);
+    originalRequest.headers.Authorization = `Bearer ${access_token}`;
+    return apiClient(originalRequest);
+  },
+);
+
 export const authApi = {
   register: async (credentials: Credentials): Promise<Token> => {
     const { data } = await apiClient.post(API_URLS.REGISTER, credentials);
@@ -21,6 +40,24 @@ export const authApi = {
   },
   login: async (credentials: Credentials): Promise<Token> => {
     const { data } = await apiClient.post(API_URLS.LOGIN, credentials);
+    return data;
+  },
+  refresh: async (): Promise<AccessToken> => {
+    const refreshToken = sessionStorage.getItem('refresh_token');
+
+    if (!refreshToken) {
+      throw new Error('Missing refresh token');
+    }
+
+    const { data } = await axios.post(
+      API_URLS.REFRESH,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      },
+    );
     return data;
   },
   logout: async (): Promise<Message> => {

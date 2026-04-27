@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { articlesApi, authorsApi, tagsApi, authApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
-import { Token, Message } from '../constants/types';
+import { Token } from '../constants/types';
 import { useAuth } from '../contexts/AuthContext';
 
 function extractErrorMessage(err: unknown): string {
@@ -42,13 +42,12 @@ export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.
 export const useEditTag = () => useEntitiesMutation(tagsApi.update, queryKeys.tags.all, 'Tag successfully edited');
 export const useRemoveTag = () => useEntitiesMutation(tagsApi.remove, queryKeys.tags.all, 'Tag successfully deleted');
 
-function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, successMessage: string) {
+function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Token>) {
   const { login } = useAuth();
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
-      login(res.access_token);
-      toast.success(successMessage);
+      login(res.access_token, res.refresh_token);
     },
     onError: (err) => {
       toast.error(extractErrorMessage(err));
@@ -56,22 +55,21 @@ function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Token>, suc
   });
 }
 
-export const useRegister = () => useAuthMutation(authApi.register, 'Successfully registered');
+export const useRegister = () => useAuthMutation(authApi.register);
 
-export const useLogin = () => useAuthMutation(authApi.login, 'Successfully logged in');
+export const useLogin = () => useAuthMutation(authApi.login);
 
 export const useLogout = () => {
   const qc = useQueryClient();
   const { logout } = useAuth();
   return useMutation({
     mutationFn: authApi.logout,
-    onSuccess: (res: Message) => {
+    onSuccess: () => {
       logout();
       qc.clear();
-      toast.success(res.msg);
     },
-    onError: (err) => {
-      toast.error(extractErrorMessage(err));
+    onError: () => {
+      logout();
     },
   });
 };

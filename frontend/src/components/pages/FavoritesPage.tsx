@@ -22,7 +22,7 @@ function FavoritesPage() {
           No favorites yet. Add favorites from the Articles page.
         </div>
       ) : (
-        <div className={`rounded-2xl border p-4 shadow-sm ${isDarkMode ? 'border-slate-700 bg-slate-900/50' : 'border-slate-200/80 bg-white'}`}>
+        <div className={`rounded-2xl p-4 shadow-sm ${isDarkMode ? 'border-slate-700 bg-slate-900/50' : 'border-slate-200/80 bg-white'}`}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {favoris.map((article: Article) => (
               <Card key={article.id} title={article.title} author={article.author} year={article.year} url={article.url} isDarkMode={isDarkMode} />
