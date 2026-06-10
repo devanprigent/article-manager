@@ -1,15 +1,26 @@
 import { ReactNode } from 'react';
 
+import { LoadingIcon } from './LoadingIcon';
+
 interface StatsGraphWidgetProps {
   title: string;
   description: string;
   emptyMessage: string;
   hasData: boolean;
+  isLoading: boolean;
   isDarkMode: boolean;
   children: ReactNode;
 }
 
-function StatsGraphWidget({ title, description, emptyMessage, hasData, isDarkMode, children }: Readonly<StatsGraphWidgetProps>) {
+function StatsGraphWidget({ title, description, emptyMessage, hasData, isLoading, isDarkMode, children }: Readonly<StatsGraphWidgetProps>) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
+        <LoadingIcon width={32} height={32} />
+      </div>
+    );
+  }
+
   return (
     <section
       className={`min-w-0 rounded-2xl border p-5 shadow-sm ${

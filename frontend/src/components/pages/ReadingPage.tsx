@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import { useArticle } from '../../hooks/queries';
+import { LoadingIcon } from '../features/LoadingIcon';
 import { ContentVisualizer } from '../layout/ContentVisualizer';
 import { MetadataVisualizer } from '../layout/MetadataVisualizer';
 
@@ -20,8 +21,8 @@ function ReadingPage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
-        Loading article...
+      <div className="flex items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
+        <LoadingIcon width={32} height={32} />
       </div>
     );
   }

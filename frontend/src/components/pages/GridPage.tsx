@@ -18,14 +18,6 @@ interface GridPageProps {
 
 function GridPage({ title, description, emptyMessage, filter, badge, clearPatch, cardAction }: Readonly<GridPageProps>) {
   const { data: { articles = [] } = {}, error, isLoading } = useArticles();
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
-        <LoadingIcon width={32} height={32} />
-      </div>
-    );
-  }
   const filtered = articles.filter(filter);
 
   return (
@@ -34,7 +26,7 @@ function GridPage({ title, description, emptyMessage, filter, badge, clearPatch,
         {badge(filtered.length)}
       </PageHeader>
 
-      <CardGrid articles={filtered} emptyMessage={emptyMessage} clearPatch={clearPatch} cardAction={cardAction} error={error} />
+      <CardGrid articles={filtered} emptyMessage={emptyMessage} clearPatch={clearPatch} cardAction={cardAction} isLoading={isLoading} error={error} />
     </div>
   );
 }

@@ -3,21 +3,31 @@ import { useIsDarkMode } from '../../contexts/ThemeContext';
 import { useEditArticle } from '../../hooks/mutations';
 import { Card } from '../features/Card';
 import { ErrorMessage } from '../features/ErrorMessage';
+import { LoadingIcon } from '../features/LoadingIcon';
 
 interface PropsType {
   articles: Article[];
   emptyMessage: string;
   clearPatch: (article: Article) => Article;
   cardAction: GridPageCardAction;
+  isLoading: boolean;
   error: Error | null;
 }
 
-export function CardGrid({ articles, emptyMessage, clearPatch, cardAction, error }: Readonly<PropsType>) {
+export function CardGrid({ articles, emptyMessage, clearPatch, cardAction, isLoading, error }: Readonly<PropsType>) {
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
 
   function handleClear(article: Article): void {
     editArticle(clearPatch(article));
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
+        <LoadingIcon width={32} height={32} />
+      </div>
+    );
   }
 
   if (error) {

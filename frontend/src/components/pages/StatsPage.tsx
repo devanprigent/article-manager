@@ -4,7 +4,6 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Too
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
 import { useArticles, useTopAuthors } from '../../hooks/queries';
-import { LoadingIcon } from '../features/LoadingIcon';
 import StatsGraphWidget from '../features/StatsGraphWidget';
 import PageHeader from '../layout/PageHeader';
 
@@ -17,6 +16,7 @@ type ReadByMonthStat = {
 function StatsPage() {
   const { data: { articles = [] } = {}, isLoading: isArticlesLoading } = useArticles();
   const { data: topAuthors = [], isLoading: isAuthorsLoading } = useTopAuthors();
+  const isLoading = isArticlesLoading || isAuthorsLoading;
   const isDarkMode = useIsDarkMode();
   const axisColor = isDarkMode ? '#cbd5e1' : '#475569';
   const gridColor = isDarkMode ? '#334155' : '#e2e8f0';
@@ -63,13 +63,7 @@ function StatsPage() {
   }, [articles]);
 
   const consultedCount = articles.filter((article) => article.consulted).length;
-  if (isArticlesLoading || isAuthorsLoading) {
-    return (
-      <div className="flex items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
-        <LoadingIcon width={32} height={32} />
-      </div>
-    );
-  }
+
   return (
     <div className="space-y-5">
       <PageHeader title="Stats" description="Understand reading trends across your article collection.">
@@ -90,6 +84,7 @@ function StatsPage() {
           description="Most frequently registered authors in your library."
           emptyMessage="Add articles with author names to display this chart."
           hasData={topAuthors.length > 0}
+          isLoading={isLoading}
           isDarkMode={isDarkMode}
         >
           <ResponsiveContainer width="100%" height={320} minWidth={280}>
@@ -108,6 +103,7 @@ function StatsPage() {
           description="Monthly trend of articles marked as consulted."
           emptyMessage="Mark articles as consulted to display monthly activity."
           hasData={readPerMonth.length > 0}
+          isLoading={isLoading}
           isDarkMode={isDarkMode}
         >
           <ResponsiveContainer width="100%" height={320} minWidth={280}>
