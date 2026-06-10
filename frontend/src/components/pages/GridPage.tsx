@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 
 import { Article, GridPageCardAction } from '../../constants/types';
 import { useArticles } from '../../hooks/queries';
-import { LoadingIcon } from '../features/LoadingIcon';
 import { CardGrid } from '../layout/CardGrid';
 import PageHeader from '../layout/PageHeader';
 
