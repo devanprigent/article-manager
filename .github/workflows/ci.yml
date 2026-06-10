@@ -59,6 +59,9 @@ jobs:
       - name: ESLint
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
+      - name: Prettier
+        run: npx prettier --check .
+
       - name: Type check
         run: npx tsc --noEmit
 
