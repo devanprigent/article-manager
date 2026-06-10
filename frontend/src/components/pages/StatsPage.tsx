@@ -3,6 +3,7 @@ import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Too
 import PageHeader from '../layout/PageHeader';
 import { useIsDarkMode } from '../../contexts/ThemeContext';
 import { useArticles, useTopAuthors } from '../../hooks/queries';
+import { LoadingIcon } from '../features/LoadingIcon';
 import StatsGraphWidget from '../features/StatsGraphWidget';
 
 type ReadByMonthStat = {
@@ -12,14 +13,8 @@ type ReadByMonthStat = {
 };
 
 function StatsPage() {
- const {
-  data: { articles = [] } = {},
-  isLoading: isArticlesLoading,
-} = useArticles();
-const {
-  data: topAuthors = [],
-  isLoading: isAuthorsLoading,
-} = useTopAuthors();
+  const { data: { articles = [] } = {}, isLoading: isArticlesLoading } = useArticles();
+  const { data: topAuthors = [], isLoading: isAuthorsLoading } = useTopAuthors();
   const isDarkMode = useIsDarkMode();
   const axisColor = isDarkMode ? '#cbd5e1' : '#475569';
   const gridColor = isDarkMode ? '#334155' : '#e2e8f0';
@@ -29,7 +24,6 @@ const {
     borderRadius: '0.75rem',
     color: isDarkMode ? '#e2e8f0' : '#0f172a',
   };
-
 
   const readPerMonth = useMemo<ReadByMonthStat[]>(() => {
     const counts = new Map<string, ReadByMonthStat>();
@@ -68,12 +62,12 @@ const {
 
   const consultedCount = articles.filter((article) => article.consulted).length;
   if (isArticlesLoading || isAuthorsLoading) {
-  return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
-      Loading statistics...
-    </div>
-  );
-}
+    return (
+      <div className="flex items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 p-6 text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
+        <LoadingIcon width={32} height={32} />
+      </div>
+    );
+  }
   return (
     <div className="space-y-5">
       <PageHeader title="Stats" description="Understand reading trends across your article collection.">
