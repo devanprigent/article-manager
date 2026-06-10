@@ -8,19 +8,7 @@
   "bracketSpacing": true,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "importOrder": [
-    "^react(.*)$",
-    "",
-    "^@mui/(.*)$",
-    "",
-    "^@reduxjs/(.*)$",
-    "",
-    "<THIRD_PARTY_MODULES>",
-    "",
-    "^@custom-widgets/(.*)$",
-    "",
-    "^[./]"
-  ],
+  "importOrder": ["^react(.*)$", "", "^@mui/(.*)$", "", "^@reduxjs/(.*)$", "", "<THIRD_PARTY_MODULES>", "", "^@custom-widgets/(.*)$", "", "^[./]"],
   "plugins": ["@ianvs/prettier-plugin-sort-imports"],
   "overrides": [
     {
