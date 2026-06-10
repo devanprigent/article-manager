@@ -1,8 +1,8 @@
-import { ErrorMessage } from '../features/ErrorMessage';
+import { Article, GridPageCardAction } from '../../constants/types';
 import { useIsDarkMode } from '../../contexts/ThemeContext';
 import { useEditArticle } from '../../hooks/mutations';
-import { Article, GridPageCardAction } from '../../constants/types';
 import { Card } from '../features/Card';
+import { ErrorMessage } from '../features/ErrorMessage';
 
 interface PropsType {
   articles: Article[];

@@ -1,6 +1,7 @@
 import { AlertTriangle } from 'react-feather';
-import PopupWrapper from '../features/PopupWrapper';
+
 import { buttonSize, buttonStyle } from '../../constants/constants';
+import PopupWrapper from '../features/PopupWrapper';
 
 interface FormProps {
   isOpen: boolean;

@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+
 import { useArticle } from '../../hooks/queries';
 import { ContentVisualizer } from '../layout/ContentVisualizer';
 import { MetadataVisualizer } from '../layout/MetadataVisualizer';

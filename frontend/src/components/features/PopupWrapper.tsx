@@ -1,7 +1,10 @@
 import { ReactNode } from 'react';
-import Modal from '@mui/material/Modal';
+
 import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+
 import { motion } from 'framer-motion';
+
 import { useIsDarkMode } from '../../contexts/ThemeContext';
 
 interface PropsType {

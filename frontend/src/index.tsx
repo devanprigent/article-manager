@@ -1,12 +1,16 @@
-import { scan } from 'react-scan';
 import ReactDOM from 'react-dom/client';
+import { scan } from 'react-scan';
+
 import App from './App';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style/index.css';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { SettingsProvider } from './contexts/SettingsContext';
+
 import { AuthProvider } from './contexts/AuthContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 if (import.meta.env.DEV) {
   scan();

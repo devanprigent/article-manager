@@ -1,7 +1,9 @@
 import { createContext, useContext } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
-import { useSession } from '../hooks/queries';
+
 import { User } from '../constants/types';
+import { useSession } from '../hooks/queries';
 
 interface Auth {
   user: User | undefined;

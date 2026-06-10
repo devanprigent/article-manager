@@ -1,12 +1,13 @@
 import { useState, type FormEvent } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { AlertTriangle, Eye, EyeOff } from 'react-feather';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Input } from 'reactstrap';
+
 import { buttonSize, buttonStyle } from '../../constants/constants';
 import type { Credentials } from '../../constants/types';
 import { useLogin, useRegister } from '../../hooks/mutations';
-import PopupWrapper from '../features/PopupWrapper';
 import { useHealth } from '../../hooks/queries';
+import PopupWrapper from '../features/PopupWrapper';
 
 type AuthMode = 'login' | 'register';
 

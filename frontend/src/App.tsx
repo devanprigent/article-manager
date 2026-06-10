@@ -1,13 +1,15 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { Toaster } from 'sonner';
+
 import Footer from './components/layout/Footer';
 import NavBar from './components/layout/NavBar';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
-import GridPage from './components/pages/GridPage';
 import ArticlesPage from './components/pages/ArticlesPage';
+import GridPage from './components/pages/GridPage';
+import HomePage from './components/pages/HomePage';
 import ReadingPage from './components/pages/ReadingPage';
 import StatsPage from './components/pages/StatsPage';
-import HomePage from './components/pages/HomePage';
-import { Toaster } from 'sonner';
 import { Article } from './constants/types';
 import { useAuth } from './contexts/AuthContext';
 import { useIsDarkMode } from './contexts/ThemeContext';

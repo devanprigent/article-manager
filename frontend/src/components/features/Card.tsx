@@ -1,5 +1,6 @@
-import { Heart, XCircle } from 'react-feather';
 import { useState } from 'react';
+import { Heart, XCircle } from 'react-feather';
+
 import { ArticleLink } from './ArticleLink';
 
 interface PropsType {

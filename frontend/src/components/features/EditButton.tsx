@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Edit3 } from 'react-feather';
+
 import { Article } from '../../constants/types';
-import FormArticle from '../forms/ArticleForm';
 import { useEditArticle } from '../../hooks/mutations';
+import FormArticle from '../forms/ArticleForm';
 
 interface PropsType {
   activeItem: Article;

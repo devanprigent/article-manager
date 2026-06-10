@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Bookmark, CheckCircle, ExternalLink, Heart, Tag } from 'react-feather';
+
 import { Article } from '../../constants/types';
 
 const formatDate = (value: string) =>

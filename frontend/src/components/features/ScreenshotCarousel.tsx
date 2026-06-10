@@ -1,6 +1,8 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'react-feather';
 import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'react-feather';
+
+import { AnimatePresence, motion } from 'framer-motion';
+
 import { useTheme } from '../../contexts/ThemeContext';
 
 const getScreenshots = (theme: string) => {

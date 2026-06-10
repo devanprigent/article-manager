@@ -1,16 +1,17 @@
 import { useState, type ChangeEvent } from 'react';
-import { Input } from 'reactstrap';
 import { Heart } from 'react-feather';
-import CreatableSelect from 'react-select/creatable';
 import type { SingleValue } from 'react-select';
-import TagsForm from './TagsForm';
+import CreatableSelect from 'react-select/creatable';
+import { Input } from 'reactstrap';
+
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import { ArticleFormProps } from '../../constants/types';
 import { ArticleSchema } from '../../constants/schema';
-import { useAuthors } from '../../hooks/queries';
+import { ArticleFormProps } from '../../constants/types';
 import { useSettings } from '../../contexts/SettingsContext';
+import { useAuthors } from '../../hooks/queries';
 import PopupWrapper from '../features/PopupWrapper';
 import RemoveButton from '../features/RemoveButton';
+import TagsForm from './TagsForm';
 
 type AuthorOption = { value: string; label: string };
 

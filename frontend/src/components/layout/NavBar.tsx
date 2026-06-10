@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { NavTabs } from './NavTabs';
-import { UserMenu } from './UserMenu';
-import AuthForm from '../forms/AuthForm';
 import { buttonSize, buttonStyle } from '../../constants/constants';
 import { useAuth } from '../../contexts/AuthContext';
+import AuthForm from '../forms/AuthForm';
+import { NavTabs } from './NavTabs';
+import { UserMenu } from './UserMenu';
 
 type AuthMode = 'login' | 'register';
 
