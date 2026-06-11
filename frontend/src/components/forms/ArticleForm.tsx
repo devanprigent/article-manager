@@ -15,7 +15,7 @@ import TagsForm from './TagsForm';
 
 type AuthorOption = { value: string; label: string };
 
-function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButton }: Readonly<ArticleFormProps>) {
+function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButton, isPending = false }: Readonly<ArticleFormProps>) {
   const currentYear = new Date().getFullYear();
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -66,7 +66,6 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
 
     setErrors({});
     onSave(item);
-    toggle();
   }
 
   return (
@@ -201,8 +200,8 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
           </div>
         </form>
         <div className="flex w-full justify-center">
-          <button className={`${buttonStyle.success} ${buttonSize.medium}`} onClick={() => validateForm()}>
-            Save
+          <button type="button" className={`${buttonStyle.success} ${buttonSize.medium}`} onClick={() => validateForm()} disabled={isPending}>
+            {isPending ? 'Saving…' : 'Save'}
           </button>
         </div>
       </div>
