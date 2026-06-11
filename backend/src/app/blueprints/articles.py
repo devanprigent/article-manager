@@ -176,9 +176,14 @@ def delete_articles(data: dict[str, Any], user_id: int):
 @articles_bp.route("/metadata", methods=["POST"])
 @validate_json
 @jwt_required()
-def parse_article(data: dict[str, Any]):
+@get_user_id
+def parse_article(data: dict[str, Any], user_id: int):
     schema = BasicSchema.model_validate(data)
     url = schema.name
+
+    if not check_url_uniqueness(url, user_id):
+        raise EntityDuplicatedError("Add article", user_id, "URL", url)
+
     try:
         parser = MetadataParser(url)
         parser.parse()

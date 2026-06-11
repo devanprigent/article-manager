@@ -46,3 +46,9 @@ def test_parse_metadata_returns_client_error_for_invalid_url(auth_client, monkey
         res.get_json()["error"] == "Unable to fetch metadata from the provided URL. "
         "Please check that the URL is valid and reachable."
     )
+
+
+def test_duplicated_url_on_parsing(auth_client, article):
+    res = auth_client.post("/articles/metadata", json={"name": article["url"]})
+    assert res.status_code == 409
+    assert "duplicate" in res.get_json()["error"]
