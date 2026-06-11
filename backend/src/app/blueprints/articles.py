@@ -61,8 +61,7 @@ def list_articles(user_id: int, offset: int | None = None, limit: int | None = N
 @jwt_required()
 @get_user_id
 def get_article(user_id: int, article_id: int):
-    stmt = select(Article).where(Article.user_id == user_id, Article.id == article_id)
-    article = db.session.execute(stmt).scalar_one()
+    article = get_entity(article_id, Article, user_id)
     logger.info(
         "Article fetched: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
