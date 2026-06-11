@@ -22,3 +22,13 @@ export function parseYear(date: string): number {
 
   return new Date(date).getFullYear();
 }
+
+const APP_PATHS_AFTER_LOGIN = ['/articles', '/likes', '/read-again', '/stats'] as const;
+
+export function postLoginPath(state: unknown): string {
+  const from = (state as { from?: string } | null)?.from;
+  if (from && (APP_PATHS_AFTER_LOGIN as readonly string[]).includes(from)) {
+    return from;
+  }
+  return '/articles';
+}
