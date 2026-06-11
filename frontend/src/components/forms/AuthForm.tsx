@@ -5,11 +5,10 @@ import { Input } from 'reactstrap';
 
 import { buttonSize, buttonStyle } from '../../constants/constants';
 import type { Credentials } from '../../constants/types';
+import { AuthMode } from '../../constants/types';
 import { useLogin, useRegister } from '../../hooks/mutations';
 import { useHealth } from '../../hooks/queries';
 import PopupWrapper from '../features/PopupWrapper';
-
-type AuthMode = 'login' | 'register';
 
 const APP_PATHS_AFTER_LOGIN = ['/articles', '/likes', '/read-again', '/stats'] as const;
 
