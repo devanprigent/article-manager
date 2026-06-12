@@ -145,3 +145,8 @@ def test_list_articles_rejects_negative_offset(auth_client):
 def test_list_articles_rejects_zero_limit(auth_client):
     res = auth_client.get("/articles?offset=0&limit=0")
     assert res.status_code == 400
+
+def test_list_articles_rejects_limit_above_max(auth_client):
+    res = auth_client.get("/articles?limit=1001")
+    assert res.status_code == 400
+    assert "1000" in res.get_json()["error"]    
