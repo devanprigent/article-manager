@@ -58,7 +58,7 @@ def client(app):
 
 @pytest.fixture()
 def auth_headers(client) -> dict[str, str]:
-    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    res = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     assert res.status_code == 201
     return get_csrf_header(res, "access")
 

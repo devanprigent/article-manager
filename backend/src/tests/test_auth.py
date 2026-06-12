@@ -2,7 +2,7 @@ from tests.conftest import get_cookie_value, get_csrf_header
 
 
 def test_register(client):
-    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    res = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     assert res.status_code == 201
     assert get_cookie_value(res, "access_token_cookie")
     assert get_cookie_value(res, "refresh_token_cookie")
@@ -10,9 +10,14 @@ def test_register(client):
     assert get_cookie_value(res, "csrf_refresh_token")
 
 
+def test_register_wrong_password(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "1234567"})
+    assert res.status_code == 422
+
+
 def test_login(client):
-    client.post("/auth/register", json={"name": "Test", "password": "Test"})
-    res = client.post("/auth/login", json={"name": "Test", "password": "Test"})
+    client.post("/auth/register", json={"name": "Test", "password": "12345678"})
+    res = client.post("/auth/login", json={"name": "Test", "password": "12345678"})
     assert res.status_code == 200
     assert get_cookie_value(res, "access_token_cookie")
     assert get_cookie_value(res, "refresh_token_cookie")
@@ -21,7 +26,7 @@ def test_login(client):
 
 
 def test_refresh(client):
-    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    res = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     headers = get_csrf_header(res, "refresh")
     res = client.post("/auth/refresh", headers=headers)
     assert res.status_code == 200
@@ -55,7 +60,7 @@ def test_session_rejected(client):
 
 def test_per_user_isolation(client, mock_article):
     # User A
-    res1 = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    res1 = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     assert res1.status_code == 201
     headers1 = get_csrf_header(res1, "access")
 
@@ -66,7 +71,9 @@ def test_per_user_isolation(client, mock_article):
     article_id = post1.get_json()["id"]
 
     # User B
-    res2 = client.post("/auth/register", json={"name": "Test 2", "password": "Test 2"})
+    res2 = client.post(
+        "/auth/register", json={"name": "Test 2", "password": "123456782"}
+    )
     assert res2.status_code == 201
     headers2 = get_csrf_header(res2, "access")
 
@@ -85,7 +92,7 @@ def test_per_user_isolation(client, mock_article):
     )
 
     # A still has article
-    res3 = client.post("/auth/login", json={"name": "Test", "password": "Test"})
+    res3 = client.post("/auth/login", json={"name": "Test", "password": "12345678"})
     assert res3.status_code == 200
     headers3 = get_csrf_header(res3, "access")
     payload = client.get("/articles", headers=headers3).get_json()["data"]
