@@ -76,6 +76,11 @@ def auth_client(client, auth_headers):
             headers = {**auth_headers, **headers}
             return client.post(*args, headers=headers, **kwargs)
 
+        def put(self, *args, **kwargs):
+            headers = kwargs.pop("headers", {})
+            headers = {**auth_headers, **headers}
+            return client.put(*args, headers=headers, **kwargs)
+
         def delete(self, *args, **kwargs):
             headers = kwargs.pop("headers", {})
             headers = {**auth_headers, **headers}
