@@ -13,7 +13,7 @@ export function getArticlesTab(page: Page): Locator {
 }
 
 export function getLikedTab(page: Page): Locator {
-  return page.getByRole('link', { name: 'Liked' });
+  return page.getByRole('link', { name: 'Likes' });
 }
 
 export function getReadLaterTab(page: Page): Locator {
