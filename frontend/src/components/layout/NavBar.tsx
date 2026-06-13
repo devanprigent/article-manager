@@ -2,12 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { buttonSize, buttonStyle } from '../../constants/constants';
+import { AuthMode } from '../../constants/types';
 import { useAuth } from '../../contexts/AuthContext';
 import AuthForm from '../forms/AuthForm';
 import { NavTabs } from './NavTabs';
 import { UserMenu } from './UserMenu';
-
-type AuthMode = 'login' | 'register';
 
 function NavBar() {
   const { isConnected } = useAuth();

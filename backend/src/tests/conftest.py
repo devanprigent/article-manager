@@ -1,3 +1,4 @@
+import socket
 from types import SimpleNamespace
 
 import pytest
@@ -58,7 +59,7 @@ def client(app):
 
 @pytest.fixture()
 def auth_headers(client) -> dict[str, str]:
-    res = client.post("/auth/register", json={"name": "Test", "password": "Test"})
+    res = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     assert res.status_code == 201
     return get_csrf_header(res, "access")
 
@@ -75,6 +76,11 @@ def auth_client(client, auth_headers):
             headers = kwargs.pop("headers", {})
             headers = {**auth_headers, **headers}
             return client.post(*args, headers=headers, **kwargs)
+
+        def put(self, *args, **kwargs):
+            headers = kwargs.pop("headers", {})
+            headers = {**auth_headers, **headers}
+            return client.put(*args, headers=headers, **kwargs)
 
         def delete(self, *args, **kwargs):
             headers = kwargs.pop("headers", {})
@@ -333,10 +339,29 @@ DEFAULT_PARSER_HTML = """
 
 @pytest.fixture(autouse=True)
 def mock_requests_get(monkeypatch):
-    def fake_get(url, *args, **kwargs):
+    def fake_get(url: str, *args, **kwargs):
         return SimpleNamespace(
             text=DEFAULT_PARSER_HTML,
             raise_for_status=lambda: None,
         )
 
     monkeypatch.setattr("app.parser.requests.get", fake_get)
+
+
+@pytest.fixture(autouse=True)
+def mock_getaddrinfo(request, monkeypatch):
+    if "nomocksanitizer" in request.keywords:
+        return
+
+    def fake_getaddrinfo(hostname, port):
+        return [
+            (
+                socket.AF_INET,
+                socket.SOCK_STREAM,
+                6,
+                "",
+                ("93.184.216.34", port),
+            )
+        ]
+
+    monkeypatch.setattr("app.parser.socket.getaddrinfo", fake_getaddrinfo)

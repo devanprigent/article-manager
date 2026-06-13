@@ -3,7 +3,7 @@ import { Edit3 } from 'react-feather';
 
 import { Article } from '../../constants/types';
 import { useEditArticle } from '../../hooks/mutations';
-import FormArticle from '../forms/ArticleForm';
+import ArticleForm from '../forms/ArticleForm';
 
 interface PropsType {
   activeItem: Article;
@@ -30,10 +30,11 @@ function EditButton({ activeItem }: Readonly<PropsType>) {
       </button>
 
       {modal && (
-        <FormArticle
+        <ArticleForm
           isOpen={modal}
           toggle={toggleModal}
-          onSave={editArticle}
+          onSave={(item: Article) => editArticle(item, { onSuccess: () => setModal(false) })}
+          isPending={isPending}
           title={'Article details'}
           activeItem={activeItem}
           showDeleteButton={true}

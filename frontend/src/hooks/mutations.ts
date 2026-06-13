@@ -1,3 +1,5 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -6,6 +8,7 @@ import { articlesApi, authApi, authorsApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
 import { Message } from '../constants/types';
 import { useAuth } from '../contexts/AuthContext';
+import { postLoginPath } from '../helpers/helpers';
 
 function stringifyErrorValue(value: unknown): string | undefined {
   if (typeof value === 'string') {
@@ -69,9 +72,15 @@ export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.
 
 function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Message>) {
   const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return useMutation({
     mutationFn,
-    onSuccess: () => login(),
+    onSuccess: async () => {
+      await login();
+      navigate(postLoginPath(location.state), { replace: true });
+    },
     onError: (err) => {
       toast.error(extractErrorMessage(err));
     },
@@ -86,11 +95,11 @@ export const useLogout = () => {
   const { logout } = useAuth();
   return useMutation({
     mutationFn: authApi.logout,
-    onSuccess: () => {
-      logout();
+    onSuccess: async () => {
+      await logout();
     },
-    onError: () => {
-      logout();
+    onError: async () => {
+      await logout();
     },
   });
 };

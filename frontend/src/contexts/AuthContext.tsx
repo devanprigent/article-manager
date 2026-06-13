@@ -8,28 +8,28 @@ import { useSession } from '../hooks/queries';
 interface Auth {
   user: User | undefined;
   isConnected: boolean;
-  isLoading: boolean;
-  login: () => void;
-  logout: () => void;
+  isFetching: boolean;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<Auth | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const qc = useQueryClient();
-  const { data: user, isLoading, refetch } = useSession();
+  const { data: user, isFetching, refetch } = useSession();
   const isConnected = !!user;
 
-  const login = () => {
-    refetch();
+  const login = async () => {
+    await refetch();
   };
 
-  const logout = () => {
+  const logout = async () => {
     qc.clear();
-    refetch();
+    await refetch();
   };
 
-  return <AuthContext.Provider value={{ user, isConnected, isLoading, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, isConnected, isFetching, login, logout }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

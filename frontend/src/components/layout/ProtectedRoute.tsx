@@ -3,13 +3,13 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function ProtectedRoute() {
-  const { isConnected, isLoading } = useAuth();
+  const { isConnected, isFetching } = useAuth();
 
-  if (!isConnected && !isLoading) {
+  if (!isConnected && !isFetching) {
     return <Navigate to="/" replace />;
   }
 
-  if (isLoading) {
+  if (!isConnected && isFetching) {
     return null;
   }
 

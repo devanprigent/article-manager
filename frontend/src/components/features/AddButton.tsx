@@ -80,7 +80,8 @@ function AddButton({ title }: Readonly<PropsType>) {
           activeItem={{ ...newArticle, title: metadata.title, author: metadata.author, url: metadata.url, year: parseYear(metadata.date) }}
           isOpen={modalCreate}
           toggle={toggleModalCreate}
-          onSave={createArticle}
+          onSave={(item: Article) => createArticle(item, { onSuccess: () => setModalCreate(false) })}
+          isPending={isCreationPending}
           title={title}
           showDeleteButton={false}
         />

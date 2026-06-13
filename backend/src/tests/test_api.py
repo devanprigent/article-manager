@@ -19,6 +19,11 @@ def test_get_article(auth_client, article):
     assert payload[0]["title"] == payload2["title"]
 
 
+def test_get_invalid_article(auth_client, article):
+    res = auth_client.get("/articles/999")
+    assert res.status_code == 404
+
+
 def test_add_valid_tag(auth_client, tag):
     res = auth_client.get("/tags")
     assert res.status_code == 200

@@ -44,9 +44,9 @@ export default function ArticlesPage() {
       renderHeader: () => <strong className="fs-5">{'Year'}</strong>,
     },
     {
-      field: 'date_modification',
+      field: 'date_creation',
       renderCell: (params) => {
-        const date = new Date(params.row.date_modification);
+        const date = new Date(params.row.date_creation);
         return date.toLocaleDateString('en-GB', {
           day: '2-digit',
           month: '2-digit',
