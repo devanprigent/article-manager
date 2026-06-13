@@ -10,7 +10,7 @@ type ArticleLinkProps = {
 
 export function ArticleLink({ id, children, className, style }: Readonly<ArticleLinkProps>) {
   return (
-    <Link to={`/articles/${id}`} className={className} style={style}>
+    <Link data-testid={`article-link-${id}`} to={`/articles/${id}`} className={className} style={style}>
       {children}
     </Link>
   );

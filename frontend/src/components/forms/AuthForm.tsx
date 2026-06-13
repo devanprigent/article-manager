@@ -44,11 +44,12 @@ function AuthForm({ isOpen, mode, onClose }: Readonly<AuthFormProps>) {
         <h1 className="text-center text-3xl font-bold dark:text-white">{title}</h1>
         <div className="flex flex-col space-y-3 text-slate-800 dark:text-slate-100">
           <div>
-            <label htmlFor="auth-name" className="text-slate-800 dark:text-slate-100">
+            <label htmlFor="auth-username" className="text-slate-800 dark:text-slate-100">
               <b>Name</b>
             </label>
             <Input
-              id="auth-name"
+              id="auth-username"
+              data-testid="auth-username"
               type="text"
               name="name"
               placeholder="Name"
@@ -65,6 +66,7 @@ function AuthForm({ isOpen, mode, onClose }: Readonly<AuthFormProps>) {
             <div className="relative">
               <Input
                 id="auth-password"
+                data-testid="auth-password"
                 type={isPasswordVisible ? 'text' : 'password'}
                 name="password"
                 placeholder="Password"
