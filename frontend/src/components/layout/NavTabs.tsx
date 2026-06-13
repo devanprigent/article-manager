@@ -25,7 +25,7 @@ export function NavTabs() {
         }
         to="/likes"
       >
-        Liked
+        Likes
       </NavLink>
       <NavLink
         className={({ isActive }) =>
