@@ -95,6 +95,14 @@ body {
   background-color: #1e293b;
 }
 
+.dark .app-data-grid .MuiDataGrid-row.Mui-selected {
+  background-color: #1e293b !important;
+}
+
+.dark .app-data-grid .MuiDataGrid-row.Mui-selected:hover {
+  background-color: #334155 !important;
+}
+
 .dark .app-data-grid .MuiDataGrid-cell {
   border-bottom-color: #334155;
 }
