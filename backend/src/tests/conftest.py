@@ -1,3 +1,4 @@
+import socket
 from types import SimpleNamespace
 
 import pytest
@@ -338,10 +339,29 @@ DEFAULT_PARSER_HTML = """
 
 @pytest.fixture(autouse=True)
 def mock_requests_get(monkeypatch):
-    def fake_get(url, *args, **kwargs):
+    def fake_get(url: str, *args, **kwargs):
         return SimpleNamespace(
             text=DEFAULT_PARSER_HTML,
             raise_for_status=lambda: None,
         )
 
     monkeypatch.setattr("app.parser.requests.get", fake_get)
+
+
+@pytest.fixture(autouse=True)
+def mock_getaddrinfo(request, monkeypatch):
+    if "nomocksanitizer" in request.keywords:
+        return
+
+    def fake_getaddrinfo(hostname, port):
+        return [
+            (
+                socket.AF_INET,
+                socket.SOCK_STREAM,
+                6,
+                "",
+                ("93.184.216.34", port),
+            )
+        ]
+
+    monkeypatch.setattr("app.parser.socket.getaddrinfo", fake_getaddrinfo)

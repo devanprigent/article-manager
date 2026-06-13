@@ -71,21 +71,26 @@ class MetadataParser:
 
     @staticmethod
     def sanitize_url(url):
-        parsed_url = urlsplit(url)
-        protocol = parsed_url.scheme
-        if protocol not in ["http", "https"]:
-            raise BadRequest("Invalid protocol - only http and https are permitted.")
-        hostname = parsed_url.hostname
-        if not hostname:
-            raise BadRequest("Invalid URL.")
-        port = parsed_url.port or (443 if parsed_url.scheme == "https" else 80)
-        resolved_ips = socket.getaddrinfo(hostname, port)
-        for result in resolved_ips:
-            socket_address = result[4]
-            resolved_ip = socket_address[0]
-            addr = ip_address(resolved_ip)
-            if not addr.is_global:
-                raise BadRequest("Invalid IP - the resolved IP has been rejected.")
+        try:
+            parsed_url = urlsplit(url)
+            protocol = parsed_url.scheme
+            if protocol not in ["http", "https"]:
+                raise BadRequest(
+                    "Invalid protocol - only http and https are permitted."
+                )
+            hostname = parsed_url.hostname
+            if not hostname:
+                raise BadRequest("Invalid URL.")
+            port = parsed_url.port or (443 if parsed_url.scheme == "https" else 80)
+            resolved_ips = socket.getaddrinfo(hostname, port)
+            for result in resolved_ips:
+                socket_address = result[4]
+                resolved_ip = socket_address[0]
+                addr = ip_address(resolved_ip)
+                if not addr.is_global:
+                    raise BadRequest("Invalid IP - the resolved IP has been rejected.")
+        except (ValueError, socket.gaierror) as e:
+            raise BadRequest("Unable to fetch metadata.") from e
         return url
 
     def parse(self):
@@ -131,7 +136,16 @@ class MetadataParser:
 
     def get_document(self, url: str) -> BeautifulSoup:
         headers = {"User-Agent": "ArticleManager/1.0"}
-        res = requests.get(url, headers=headers, timeout=10)
+        res = requests.get(
+            url,
+            headers=headers,
+            timeout=10,
+            allow_redirects=False,
+        )
+
+        if hasattr(res, "is_redirect") and res.is_redirect:
+            raise BadRequest("Redirects are not allowed.")
+
         res.raise_for_status()
         return BeautifulSoup(res.text, "html.parser")
 
