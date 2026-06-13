@@ -12,7 +12,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 
-if (import.meta.env.DEV) {
+if (import.meta.env.DEV && import.meta.env.VITE_REACT_SCAN !== 'false') {
   scan();
 }
 

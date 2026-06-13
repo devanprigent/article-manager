@@ -33,10 +33,10 @@ function NavBar() {
             <UserMenu />
           ) : (
             <>
-              <button className={`${buttonStyle.neutral} ${buttonSize.small}`} onClick={() => openAuthForm('login')}>
+              <button data-testid="login-btn" className={`${buttonStyle.neutral} ${buttonSize.small}`} onClick={() => openAuthForm('login')}>
                 Login
               </button>
-              <button className={`${buttonStyle.success} ${buttonSize.small}`} onClick={() => openAuthForm('register')}>
+              <button data-testid="register-btn" className={`${buttonStyle.success} ${buttonSize.small}`} onClick={() => openAuthForm('register')}>
                 Register
               </button>
             </>

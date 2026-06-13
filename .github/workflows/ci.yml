@@ -56,6 +56,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
       - name: ESLint
         run: npx eslint . --ext .js,.jsx,.ts,.tsx
 
@@ -64,6 +67,9 @@ jobs:
 
       - name: Type check
         run: npx tsc --noEmit
+
+      - name: Playwright
+        run: npm run test:e2e
 
       - name: Build
         run: npm run build

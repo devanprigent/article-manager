@@ -51,7 +51,7 @@ export function UserMenu() {
   if (!user) return null;
 
   return (
-    <div ref={menuRef} className="user-menu relative">
+    <div ref={menuRef} className="user-menu relative" data-testid="user-menu">
       <button
         type="button"
         onClick={() => setIsOpen((open) => !open)}
@@ -90,6 +90,7 @@ export function UserMenu() {
           </button>
           <div className="user-menu__divider" />
           <button
+            data-testid="logout-btn"
             type="button"
             role="menuitem"
             onClick={handleLogout}
