@@ -33,8 +33,8 @@ function App() {
                 path="likes"
                 element={
                   <GridPage
-                    title="Liked"
-                    description="Quickly find the articles you have marked as liked."
+                    title="Likes"
+                    description="Quickly find the articles you liked."
                     emptyMessage="No liked articles yet. Mark articles as liked from the Articles page."
                     filter={(article: Article) => article.liked}
                     badge={(count) => (
@@ -48,7 +48,7 @@ function App() {
                 }
               />
               <Route
-                path="read-again"
+                path="read-later"
                 element={
                   <GridPage
                     title="Read later"
