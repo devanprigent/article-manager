@@ -27,6 +27,11 @@ node_modules/
 build/
 dist/
 .DS_Store
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/playwright/.cache/
+frontend/tests/.auth/
 
 # IDE
 .idea/
