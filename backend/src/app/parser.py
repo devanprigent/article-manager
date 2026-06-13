@@ -1,9 +1,13 @@
 import re
+import socket
+from ipaddress import ip_address
 from typing import Any, Literal, NotRequired, TypedDict
+from urllib.parse import urlsplit
 
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag
+from werkzeug.exceptions import BadRequest
 
 
 class Candidate(TypedDict):
@@ -58,12 +62,31 @@ class ContentParser:
 
 class MetadataParser:
     def __init__(self, url: str):
-        self.url = url
+        self.url = MetadataParser.sanitize_url(url)
         self.doc: BeautifulSoup | None = self.get_document(self.url)
         self.title = ""
         self.author = ""
         self.date = ""
         self.content: list[dict] = []
+
+    @staticmethod
+    def sanitize_url(url):
+        parsed_url = urlsplit(url)
+        protocol = parsed_url.scheme
+        if protocol not in ["http", "https"]:
+            raise BadRequest("Invalid protocol - only http and https are permitted.")
+        hostname = parsed_url.hostname
+        if not hostname:
+            raise BadRequest("Invalid URL.")
+        port = parsed_url.port or (443 if parsed_url.scheme == "https" else 80)
+        resolved_ips = socket.getaddrinfo(hostname, port)
+        for result in resolved_ips:
+            socket_address = result[4]
+            resolved_ip = socket_address[0]
+            addr = ip_address(resolved_ip)
+            if not addr.is_global:
+                raise BadRequest("Invalid IP - the resolved IP has been rejected.")
+        return url
 
     def parse(self):
         self.get_title()

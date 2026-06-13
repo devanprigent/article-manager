@@ -52,3 +52,17 @@ def test_duplicated_url_on_parsing(auth_client, article):
     res = auth_client.post("/articles/metadata", json={"name": article["url"]})
     assert res.status_code == 409
     assert "duplicate" in res.get_json()["error"]
+
+
+@pytest.mark.parametrize(
+    "vuln_url",
+    [
+        "http://localhost:8765",
+        "https://10.0.0.0",
+        "ftp://localhost:8765",
+        "http://169.254.169.254",
+    ],
+)
+def test_ssrf_attacks(auth_client, vuln_url):
+    res = auth_client.post("/articles/metadata", json={"name": vuln_url})
+    assert res.status_code == 400
