@@ -58,7 +58,8 @@ body {
   padding-bottom: 0.5rem;
 }
 
-.app-data-grid .MuiDataGrid-toolbarContainer {
+.app-data-grid .MuiDataGrid-toolbarContainer,
+.app-data-grid .MuiDataGrid-toolbar {
   border-bottom: 1px solid #e2e8f0;
   padding: 0.5rem 0.75rem;
   background-color: #ffffff;
@@ -73,6 +74,7 @@ body {
 .dark .app-data-grid .MuiDataGrid-overlayWrapperInner,
 .dark .app-data-grid .MuiDataGrid-overlay,
 .dark .app-data-grid .MuiDataGrid-filler,
+.dark .app-data-grid .MuiDataGrid-toolbar,
 .dark .app-data-grid .MuiDataGrid-footerContainer {
   background-color: #0f172a !important;
   color: #e2e8f0 !important;
@@ -107,37 +109,44 @@ body {
   border-bottom-color: #334155;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer,
+.dark .app-data-grid .MuiDataGrid-toolbar {
   border-bottom-color: #334155;
   background-color: #0f172a;
   color: #cbd5e1;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiInputBase-root {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiInputBase-root,
+.dark .app-data-grid .MuiDataGrid-toolbar .MuiInputBase-root {
   color: #e2e8f0;
   background-color: #1e293b;
   border: 1px solid #334155;
   border-radius: 0.5rem;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiInputBase-input {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiInputBase-input,
+.dark .app-data-grid .MuiDataGrid-toolbar .MuiInputBase-input {
   color: #e2e8f0;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiInputBase-input::placeholder {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiInputBase-input::placeholder,
+.dark .app-data-grid .MuiDataGrid-toolbar .MuiInputBase-input::placeholder {
   color: #94a3b8;
   opacity: 1;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiSvgIcon-root {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiSvgIcon-root,
+.dark .app-data-grid .MuiDataGrid-toolbar .MuiSvgIcon-root {
   color: #94a3b8;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiButtonBase-root {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiButtonBase-root,
+.dark .app-data-grid .MuiDataGrid-toolbar .MuiButtonBase-root {
   color: #cbd5e1;
 }
 
-.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiButtonBase-root:hover {
+.dark .app-data-grid .MuiDataGrid-toolbarContainer .MuiButtonBase-root:hover,
+.dark .app-data-grid .MuiDataGrid-toolbar .MuiButtonBase-root:hover {
   background-color: #1e293b;
 }
 
