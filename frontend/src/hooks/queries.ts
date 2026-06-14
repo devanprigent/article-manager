@@ -18,6 +18,14 @@ export function useArticles(page?: number, pageSize?: number) {
   });
 }
 
+export function useSearch(query: string) {
+  return useQuery({
+    queryKey: queryKeys.articles.search(query),
+    queryFn: () => articlesApi.search(query),
+    enabled: query.length > 0,
+  });
+}
+
 export function useArticle(id: number) {
   return useQuery({
     queryKey: queryKeys.articles.detail(id),

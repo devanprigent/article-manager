@@ -1,4 +1,6 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useCallback } from 'react';
+
+import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 
 import { Article } from '../../constants/types';
 import { useIsDarkMode } from '../../contexts/ThemeContext';
@@ -20,10 +22,15 @@ interface DataTableProps {
       pageSize: number;
     }>
   >;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function DataTable({ rows, columns, isFetching, error, total, paginationModel, setPaginationModel }: Readonly<DataTableProps>) {
+function DataTable({ rows, columns, isFetching, error, total, paginationModel, setPaginationModel, setSearch }: Readonly<DataTableProps>) {
   const isDarkMode = useIsDarkMode();
+
+  const onFilterChange = useCallback((filterModel: GridFilterModel) => {
+    setSearch(filterModel?.quickFilterValues?.[0] || '');
+  }, []);
 
   if (error) {
     return ErrorMessage(error.message);
@@ -36,6 +43,8 @@ function DataTable({ rows, columns, isFetching, error, total, paginationModel, s
         rows={rows}
         columns={columns}
         loading={isFetching}
+        filterMode="server"
+        onFilterModelChange={onFilterChange}
         paginationMode="server"
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}

@@ -154,6 +154,13 @@ export const articlesApi = {
     const response = parseWithError(ParsedMetadataSchema, data);
     return response;
   },
+  search: async (query: string): Promise<{ articles: Article[]; total: number }> => {
+    const { data } = await apiClient.get(`${API_URLS.SEARCH}?q=${query}`);
+    const response = parseWithError(ArticlesSchema, data);
+    const articles = response['data'];
+    const total = response['total'];
+    return { articles, total };
+  },
 };
 
 export const authorsApi = {

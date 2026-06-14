@@ -48,8 +48,8 @@ export const ArticleWithContent = ArticleSchema.extend({
 export const ArticlesSchema = z.object({
   data: z.array(ArticleSchema),
   total: z.int().min(0),
-  offset: z.int().min(0).nullable(),
-  limit: z.int().min(0).nullable(),
+  offset: z.optional(z.int().min(0).nullable()),
+  limit: z.optional(z.int().min(0).nullable()),
 });
 
 export const ParsedMetadataSchema = z.object({

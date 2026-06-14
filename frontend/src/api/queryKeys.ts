@@ -4,6 +4,7 @@ export const queryKeys = {
     list: () => [...queryKeys.articles.all, 'list'],
     slice: (page: number, pageSize: number) => [...queryKeys.articles.all, page, pageSize],
     detail: (id: number) => [...queryKeys.articles.all, 'detail', id],
+    search: (query: string) => [...queryKeys.articles.all, 'search', query],
   },
   tags: {
     all: ['tags'],

@@ -39,8 +39,5 @@ def search(user_id: int):
     )
     articles = db.session.execute(stmt).scalars().all()
     return jsonify(
-        {
-            "data": [article.to_dict() for article in articles],
-            "total": len(articles),
-        }
+        {"data": [article.to_dict() for article in articles], "total": len(articles)}
     ), 200
