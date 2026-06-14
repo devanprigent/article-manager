@@ -1,4 +1,4 @@
-import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 
 import { Article } from '../../constants/types';
 import { useIsDarkMode } from '../../contexts/ThemeContext';
@@ -46,11 +46,8 @@ function DataTable({ rows, columns, isFetching, error, total, paginationModel, s
         disableColumnFilter
         disableColumnSelector
         disableDensitySelector
-        slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            printOptions: { disableToolbarButton: false },
-            csvOptions: { disableToolbarButton: true },
             showQuickFilter: true,
           },
         }}

@@ -17,12 +17,11 @@ export default function ArticlesPage() {
     pageSize: 25,
   });
   const { data: { articles = [], total = 0 } = {}, isFetching, error } = useArticles(paginationModel.page, paginationModel.pageSize);
-
-  const TITLE_ADD_FORM: string = 'Add article';
   const COLUMNS: GridColDef[] = [
     {
       field: 'title',
-      width: 300,
+      flex: 1,
+      minWidth: 200,
       renderHeader: () => <strong className="fs-5">{'Title'}</strong>,
       renderCell: (params) => (
         <ArticleLink
@@ -58,17 +57,23 @@ export default function ArticlesPage() {
     {
       field: 'consulted',
       width: 120,
+      align: 'center',
+      headerAlign: 'center',
       renderHeader: () => <strong className="fs-5">{'Consulted'}</strong>,
       renderCell: (params) => <StatusIcon active={params.row.consulted} />,
     },
     {
       field: 'read_later',
       width: 120,
+      align: 'center',
+      headerAlign: 'center',
       renderHeader: () => <strong className="fs-5">{'Read later'}</strong>,
       renderCell: (params) => <StatusIcon active={params.row.read_later} />,
     },
     {
       field: 'liked',
+      align: 'center',
+      headerAlign: 'center',
       renderHeader: () => <strong className="fs-5">{'Liked'}</strong>,
       renderCell: (params) => (
         <span
@@ -84,13 +89,10 @@ export default function ArticlesPage() {
     },
     {
       field: 'actions',
-      headerName: 'Actions',
+      align: 'center',
+      headerAlign: 'center',
       renderHeader: () => <strong className="fs-5">{'Edit'}</strong>,
-      renderCell: (params) => (
-        <div className="d-flex justify-content-center align-items-center">
-          <EditButton activeItem={params.row} />
-        </div>
-      ),
+      renderCell: (params) => <EditButton activeItem={params.row} />,
     },
   ];
 
@@ -103,7 +105,7 @@ export default function ArticlesPage() {
       </PageHeader>
 
       <div className="flex justify-end">
-        <AddButton title={TITLE_ADD_FORM} />
+        <AddButton title={'Add article'} />
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
