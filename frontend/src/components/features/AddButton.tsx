@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Loader, Plus } from 'react-feather';
 
-import { Article } from '../../constants/types';
+import { Article, ParsedMetadata } from '../../constants/types';
 import { parseYear } from '../../helpers/helpers';
 import { useCreateArticle, useParsing } from '../../hooks/mutations';
 import ArticleForm from '../forms/ArticleForm';
@@ -10,6 +10,13 @@ import UrlForm from '../forms/UrlForm';
 interface PropsType {
   title: string;
 }
+
+const newMetadata: ParsedMetadata = {
+  title: '',
+  author: '',
+  url: '',
+  date: '',
+};
 
 const newArticle: Article = {
   id: 0,
@@ -46,6 +53,11 @@ function AddButton({ title }: Readonly<PropsType>) {
     parseArticle(url, {
       onSuccess: (data) => {
         setMetadata(data);
+        setModalParse(false);
+        setModalCreate(true);
+      },
+      onError() {
+        setMetadata(newMetadata);
         setModalParse(false);
         setModalCreate(true);
       },
