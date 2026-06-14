@@ -49,8 +49,6 @@ function DataTable({ rows, columns, isFetching, error, total, paginationModel, s
         slots={{ toolbar: GridToolbar }}
         slotProps={{
           toolbar: {
-            printOptions: { disableToolbarButton: false },
-            csvOptions: { disableToolbarButton: true },
             showQuickFilter: true,
           },
         }}
