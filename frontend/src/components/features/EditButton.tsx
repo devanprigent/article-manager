@@ -18,7 +18,7 @@ function EditButton({ activeItem }: Readonly<PropsType>) {
   }
 
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-center">
       <button
         onClick={toggleModal}
         className="rounded-lg p-1.5 text-emerald-600 transition hover:bg-emerald-50 hover:text-emerald-700"
