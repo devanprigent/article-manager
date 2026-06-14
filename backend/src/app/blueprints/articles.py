@@ -27,7 +27,7 @@ logger = logging.getLogger("article_manager.articles")
 articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 
 
-@articles_bp.route("")
+@articles_bp.route("", methods=["GET"])
 @jwt_required()
 @get_user_id
 @get_pagination
@@ -57,7 +57,7 @@ def list_articles(user_id: int, offset: int | None = None, limit: int | None = N
     ), 200
 
 
-@articles_bp.route("/<int:article_id>")
+@articles_bp.route("/<int:article_id>", methods=["GET"])
 @jwt_required()
 @get_user_id
 def get_article(user_id: int, article_id: int):
