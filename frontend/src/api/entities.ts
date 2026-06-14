@@ -155,7 +155,8 @@ export const articlesApi = {
     return response;
   },
   search: async (query: string): Promise<{ articles: Article[]; total: number }> => {
-    const { data } = await apiClient.get(`${API_URLS.SEARCH}?q=${query}`);
+    const encodedQuery = encodeURIComponent(query);
+    const { data } = await apiClient.get(`${API_URLS.SEARCH}?q=${encodedQuery}`);
     const response = parseWithError(ArticlesSchema, data);
     const articles = response['data'];
     const total = response['total'];

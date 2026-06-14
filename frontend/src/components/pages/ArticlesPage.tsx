@@ -22,7 +22,6 @@ export default function ArticlesPage() {
   const isSearching = debouncedSearchQuery.length > 0;
   const articlesQuery = useArticles(paginationModel.page, paginationModel.pageSize);
   const searchQueryResult = useSearch(debouncedSearchQuery);
-
   const { data: { articles = [], total = 0 } = {}, isFetching, error } = isSearching ? searchQueryResult : articlesQuery;
 
   const COLUMNS: GridColDef[] = [
