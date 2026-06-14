@@ -25,8 +25,8 @@ const TagStructureSchema = z.object({
 
 export const ArticleSchema = z.object({
   id: z.int(),
-  title: z.string().min(1, ' '),
-  author: z.string().min(1, ' '),
+  title: z.string().trim().min(3, 'Title should have at least 3 characters'),
+  author: z.string().trim().min(2, 'Author should have at least 2 characters'),
   url: z.url(' '),
   year: z
     .int('Year must be an integer')
