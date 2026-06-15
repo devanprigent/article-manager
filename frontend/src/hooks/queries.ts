@@ -3,7 +3,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { articlesApi, authApi, authorsApi, healthApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
 
-export function useArticles(isSearching: boolean, page?: number, pageSize?: number) {
+export function useArticles(isSearching?: boolean, page?: number, pageSize?: number) {
   return useQuery({
     queryKey: page != undefined && pageSize != undefined ? queryKeys.articles.slice(page, pageSize) : queryKeys.articles.list(),
     queryFn: async () => {

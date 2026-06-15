@@ -26,13 +26,25 @@ interface DataTableProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function DataTable({ rows, columns, isFetching, error, total, paginationModel, setPaginationModel, setSearch }: Readonly<DataTableProps>) {
+export default function DataTable({
+  rows,
+  columns,
+  isFetching,
+  error,
+  total,
+  paginationModel,
+  setPaginationModel,
+  setSearch,
+}: Readonly<DataTableProps>) {
   const isDarkMode = useIsDarkMode();
 
-  const onFilterChange = useCallback((filterModel: GridFilterModel) => {
-    setSearch(filterModel?.quickFilterValues?.[0] || '');
-    setPaginationModel({ page: 0, pageSize: pageSize });
-  }, []);
+  const onFilterChange = useCallback(
+    (filterModel: GridFilterModel) => {
+      setSearch(filterModel?.quickFilterValues?.[0] || '');
+      setPaginationModel({ page: 0, pageSize: pageSize });
+    },
+    [setSearch, setPaginationModel],
+  );
 
   if (error) {
     return ErrorMessage(error.message);
@@ -80,6 +92,3 @@ function DataTable({ rows, columns, isFetching, error, total, paginationModel, s
     </div>
   );
 }
-
-// Exportation
-export default DataTable;

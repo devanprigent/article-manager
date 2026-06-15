@@ -20,7 +20,7 @@ export default function ArticlesPage() {
   });
   const [search, setSearch] = useState('');
   const debouncedSearchQuery = useDebounce(search.trim(), 500);
-  const isSearching = debouncedSearchQuery.length > 0;
+  const isSearching = debouncedSearchQuery?.length > 0;
   const articlesQuery = useArticles(isSearching, paginationModel.page, paginationModel.pageSize);
   const searchQueryResult = useSearch(debouncedSearchQuery, paginationModel.page, paginationModel.pageSize);
   const { data: { articles = [], total = 0 } = {}, isFetching, error } = isSearching ? searchQueryResult : articlesQuery;
