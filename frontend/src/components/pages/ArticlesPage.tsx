@@ -18,10 +18,10 @@ export default function ArticlesPage() {
     pageSize: 25,
   });
   const [search, setSearch] = useState('');
-  const debouncedSearchQuery = useDebounce(search.trim(), 300);
+  const debouncedSearchQuery = useDebounce(search.trim(), 500);
   const isSearching = debouncedSearchQuery.length > 0;
-  const articlesQuery = useArticles(paginationModel.page, paginationModel.pageSize);
-  const searchQueryResult = useSearch(debouncedSearchQuery);
+  const articlesQuery = useArticles(debouncedSearchQuery, paginationModel.page, paginationModel.pageSize);
+  const searchQueryResult = useSearch(debouncedSearchQuery, paginationModel.page, paginationModel.pageSize);
   const { data: { articles = [], total = 0 } = {}, isFetching, error } = isSearching ? searchQueryResult : articlesQuery;
 
   const COLUMNS: GridColDef[] = [

@@ -154,8 +154,11 @@ export const articlesApi = {
     const response = parseWithError(ParsedMetadataSchema, data);
     return response;
   },
-  search: async (query: string): Promise<{ articles: Article[]; total: number }> => {
-    const encodedQuery = encodeURIComponent(query);
+  search: async (query: string, offset: number, limit: number): Promise<{ articles: Article[]; total: number }> => {
+    let encodedQuery = encodeURIComponent(query);
+    if (offset != undefined && limit != undefined) {
+      encodedQuery = `${encodedQuery}&offset=${offset}&limit=${limit}`;
+    }
     const { data } = await apiClient.get(`${API_URLS.SEARCH}?q=${encodedQuery}`);
     const response = parseWithError(ArticlesSchema, data);
     const articles = response['data'];
