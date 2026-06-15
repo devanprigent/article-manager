@@ -23,6 +23,32 @@ export function parseYear(date: string): number {
   return new Date(date).getFullYear();
 }
 
+function isSameCalendarDay(firstDate: Date, secondDate: Date): boolean {
+  return (
+    firstDate.getFullYear() === secondDate.getFullYear() &&
+    firstDate.getMonth() === secondDate.getMonth() &&
+    firstDate.getDate() === secondDate.getDate()
+  );
+}
+
+export function formatCreatedDate(dateCreation: string): string {
+  const createdAt = new Date(dateCreation);
+
+  if (Number.isNaN(createdAt.getTime())) {
+    return dateCreation;
+  }
+
+  if (isSameCalendarDay(createdAt, new Date())) {
+    return 'Today';
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(createdAt);
+}
+
 const APP_PATHS_AFTER_LOGIN = ['/articles', '/likes', '/read-again', '/stats'] as const;
 
 export function postLoginPath(state: unknown): string {

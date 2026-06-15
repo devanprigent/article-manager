@@ -9,6 +9,7 @@ import ArticlesPage from './components/pages/ArticlesPage';
 import GridPage from './components/pages/GridPage';
 import HomePage from './components/pages/HomePage';
 import ReadingPage from './components/pages/ReadingPage';
+import ReadLaterPage from './components/pages/ReadLaterPage';
 import StatsPage from './components/pages/StatsPage';
 import { Article } from './constants/types';
 import { useAuth } from './contexts/AuthContext';
@@ -47,24 +48,7 @@ function App() {
                   />
                 }
               />
-              <Route
-                path="read-later"
-                element={
-                  <GridPage
-                    title="Read later"
-                    description="Articles you plan to revisit—clear the flag when you are done."
-                    emptyMessage="No read-later articles yet. Enable it when editing an article from the Articles page."
-                    filter={(article: Article) => article.read_later}
-                    badge={(count) => (
-                      <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-800 dark:bg-violet-900/40 dark:text-violet-200">
-                        {count} marked
-                      </span>
-                    )}
-                    clearPatch={(article) => ({ ...article, read_later: false })}
-                    cardAction="readLater"
-                  />
-                }
-              />
+              <Route path="read-later" element={<ReadLaterPage />} />
               <Route path="stats" element={<StatsPage />} />
             </Route>
             <Route path="*" element={<HomePage />} />
