@@ -31,3 +31,5 @@ export const buttonSize = {
   medium: 'w-32 h-16 text-md',
   large: 'w-40 h-20 text-lg',
 };
+
+export const pageSize = 25;

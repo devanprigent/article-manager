@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
 
+import { pageSize } from '../../constants/constants';
 import { Article } from '../../constants/types';
 import { useIsDarkMode } from '../../contexts/ThemeContext';
 import { ErrorMessage } from '../features/ErrorMessage';
@@ -30,6 +31,7 @@ function DataTable({ rows, columns, isFetching, error, total, paginationModel, s
 
   const onFilterChange = useCallback((filterModel: GridFilterModel) => {
     setSearch(filterModel?.quickFilterValues?.[0] || '');
+    setPaginationModel({ page: 0, pageSize: pageSize });
   }, []);
 
   if (error) {

@@ -3,6 +3,7 @@ import { Heart } from 'react-feather';
 
 import { GridColDef } from '@mui/x-data-grid';
 
+import { pageSize } from '../../constants/constants';
 import { useArticles, useSearch } from '../../hooks/queries';
 import { useDebounce } from '../../hooks/useDebounce';
 import AddButton from '../features/AddButton';
@@ -15,12 +16,12 @@ import PageHeader from '../layout/PageHeader';
 export default function ArticlesPage() {
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 25,
+    pageSize: pageSize,
   });
   const [search, setSearch] = useState('');
   const debouncedSearchQuery = useDebounce(search.trim(), 500);
   const isSearching = debouncedSearchQuery.length > 0;
-  const articlesQuery = useArticles(debouncedSearchQuery, paginationModel.page, paginationModel.pageSize);
+  const articlesQuery = useArticles(isSearching, paginationModel.page, paginationModel.pageSize);
   const searchQueryResult = useSearch(debouncedSearchQuery, paginationModel.page, paginationModel.pageSize);
   const { data: { articles = [], total = 0 } = {}, isFetching, error } = isSearching ? searchQueryResult : articlesQuery;
 
