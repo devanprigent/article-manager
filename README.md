@@ -64,7 +64,7 @@ The project includes automated checks for both frontend and backend code through
 | Frontend | React 18 | To have a dynamic UI and fast interactions when browsing and filtering articles                      |
 | Backend  | Flask 3 | To have a lightweight API, easy to extend                                                             |
 | Database | PostgreSQL | A relational database that works cleanly with SQLAlchemy and SQL                                   |
-| Tooling  | Pytest, Ruff, ESLint, Prettier, Vitest, Husky | Automated tests, linting, and formatting for fast feedback      |
+| Tooling  | Pytest, Ruff, ESLint, Prettier, Vitest, pre-commit | Automated tests, linting, and formatting for fast feedback      |
 
 
 ## Technical Decisions
@@ -103,6 +103,14 @@ python -m venv venv
 source venv/bin/activate
 
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
+```
+
+From the repository root, install Git hooks (run once per clone):
+
+```bash
+pre-commit install
+pre-commit install --hook-type commit-msg
 ```
 
 Create `backend/.env` from `backend/.env.example`:

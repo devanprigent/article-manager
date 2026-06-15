@@ -4,3 +4,4 @@ mypy==2.1.0
 types-requests==2.33.0.20260518
 types-Flask-Migrate==4.1.0.20260508
 types-Flask-Cors==6.0.3.20260609
+pre-commit==4.6.0

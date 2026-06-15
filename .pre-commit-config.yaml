@@ -1,0 +1,28 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.12
+    hooks:
+      - id: ruff-check
+        files: ^backend/
+      - id: ruff-format
+        files: ^backend/
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: python scripts/precommit/eslint.py
+        language: system
+        files: ^frontend/.*\.(js|jsx|ts|tsx)$
+
+      - id: prettier
+        name: prettier
+        entry: python scripts/precommit/prettier.py
+        language: system
+        files: ^frontend/.*\.(js|jsx|ts|tsx|cjs|mjs|json|css|md)$
+
+      - id: commitlint
+        name: commitlint
+        entry: python scripts/precommit/commitlint.py
+        language: system
+        stages: [commit-msg]

@@ -26,7 +26,9 @@ def get_user_id(fn):
 
     return wrapper
 
+
 MAX_LIMIT = 1000
+
 
 def get_pagination(fn):
     @wraps(fn)
@@ -37,8 +39,8 @@ def get_pagination(fn):
             raise BadRequest("Offset should be greater than or equal to 0.")
         if limit is not None and limit <= 0:
             raise BadRequest("Limit should be greater than 0.")
-        if limit is not None and limit > MAX_LIMIT:                          # 👈 new
-            raise BadRequest(f"Limit should not exceed {MAX_LIMIT}.")        # 👈 new
+        if limit is not None and limit > MAX_LIMIT:
+            raise BadRequest(f"Limit should not exceed {MAX_LIMIT}.")
         return fn(*args, offset=offset, limit=limit, **kwargs)
 
     return wrapper

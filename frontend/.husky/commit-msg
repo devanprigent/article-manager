@@ -1,1 +1,0 @@
-npx --prefix frontend --no -- commitlint -d frontend --edit "$1"
