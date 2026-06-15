@@ -3,6 +3,7 @@ const baseURL: string = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:5
 export const API_URLS = {
   ARTICLES: `${baseURL}/articles`,
   PARSE: `${baseURL}/articles/metadata`,
+  SEARCH: `${baseURL}/search`,
   AUTHORS: `${baseURL}/authors`,
   TOP_AUTHORS: `${baseURL}/authors/top`,
   TAGS: `${baseURL}/tags`,
@@ -30,3 +31,5 @@ export const buttonSize = {
   medium: 'w-32 h-16 text-md',
   large: 'w-40 h-20 text-lg',
 };
+
+export const pageSize = 25;

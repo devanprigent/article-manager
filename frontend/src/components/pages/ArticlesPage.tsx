@@ -3,7 +3,9 @@ import { Heart } from 'react-feather';
 
 import { GridColDef } from '@mui/x-data-grid';
 
-import { useArticles } from '../../hooks/queries';
+import { pageSize } from '../../constants/constants';
+import { useArticles, useSearch } from '../../hooks/queries';
+import { useDebounce } from '../../hooks/useDebounce';
 import AddButton from '../features/AddButton';
 import { ArticleLink } from '../features/ArticleLink';
 import EditButton from '../features/EditButton';
@@ -14,9 +16,15 @@ import PageHeader from '../layout/PageHeader';
 export default function ArticlesPage() {
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 25,
+    pageSize: pageSize,
   });
-  const { data: { articles = [], total = 0 } = {}, isFetching, error } = useArticles(paginationModel.page, paginationModel.pageSize);
+  const [search, setSearch] = useState('');
+  const debouncedSearchQuery = useDebounce(search.trim(), 500);
+  const isSearching = debouncedSearchQuery?.length > 0;
+  const articlesQuery = useArticles(isSearching, paginationModel.page, paginationModel.pageSize);
+  const searchQueryResult = useSearch(debouncedSearchQuery, paginationModel.page, paginationModel.pageSize);
+  const { data: { articles = [], total = 0 } = {}, isFetching, error } = isSearching ? searchQueryResult : articlesQuery;
+
   const COLUMNS: GridColDef[] = [
     {
       field: 'title',
@@ -117,6 +125,7 @@ export default function ArticlesPage() {
           error={error}
           paginationModel={paginationModel}
           setPaginationModel={setPaginationModel}
+          setSearch={setSearch}
         />
       </div>
     </div>

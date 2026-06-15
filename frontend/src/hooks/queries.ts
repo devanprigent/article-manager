@@ -3,7 +3,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { articlesApi, authApi, authorsApi, healthApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
 
-export function useArticles(page?: number, pageSize?: number) {
+export function useArticles(isSearching?: boolean, page?: number, pageSize?: number) {
   return useQuery({
     queryKey: page != undefined && pageSize != undefined ? queryKeys.articles.slice(page, pageSize) : queryKeys.articles.list(),
     queryFn: async () => {
@@ -15,6 +15,19 @@ export function useArticles(page?: number, pageSize?: number) {
       return articlesApi.list(offset, limit);
     },
     placeholderData: keepPreviousData,
+    enabled: !isSearching,
+  });
+}
+
+export function useSearch(query: string, page: number, pageSize: number) {
+  return useQuery({
+    queryKey: queryKeys.articles.search(query, page, pageSize),
+    queryFn: async () => {
+      const offset = page * pageSize;
+      const limit = pageSize;
+      return articlesApi.search(query, offset, limit);
+    },
+    enabled: query.length > 0 && page != undefined && pageSize != undefined,
   });
 }
 

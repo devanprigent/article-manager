@@ -14,6 +14,7 @@ from app.blueprints.articles import articles_bp
 from app.blueprints.auth import auth_bp
 from app.blueprints.authors import authors_bp
 from app.blueprints.health import health_bp
+from app.blueprints.search import search_bp
 from app.blueprints.tags import tags_bp
 from app.database import db
 from app.exceptions import EntitiesNotFoundError, EntityDuplicatedError
@@ -114,6 +115,7 @@ def create_app(test_config=None):
     app.register_blueprint(articles_bp)
     app.register_blueprint(authors_bp)
     app.register_blueprint(tags_bp)
+    app.register_blueprint(search_bp)
 
     logger.info("App created — blueprints registered, DB ready")
     return app
