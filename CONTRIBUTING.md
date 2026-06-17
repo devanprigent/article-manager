@@ -32,16 +32,8 @@ Then launch the development server:
 
 ```
 cd backend
-python -m venv venv
-
-# On Windows
-.\venv\Scripts\Activate.ps1
-
-# On macOS/Linux
-source venv/bin/activate
-
-pip install -r requirements.txt
-python ./src/main.py
+poetry install
+poetry run python ./src/main.py
 ```
 
 ### 3. Frontend setup (React)

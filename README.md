@@ -86,7 +86,7 @@ For the record, here's the justification for some technical decisions I made dur
 
 ## Prerequisites
 
-- Python 3.12 and pip
+- Python 3.12 and [Poetry](https://python-poetry.org/docs/#installation)
 - Node.js 22 and npm
 - PostgreSQL database
 
@@ -95,20 +95,11 @@ For the record, here's the justification for some technical decisions I made dur
 
 ### Backend (`backend/`)
 
-Create a virtual environment and install dependencies:
+Install dependencies:
 
 ```bash
 cd backend
-python -m venv venv
-
-# On Windows
-.\venv\Scripts\Activate.ps1
-
-# On macOS/Linux
-source venv/bin/activate
-
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
+poetry install
 ```
 
 From the repository root, install Git hooks (run once per clone):
@@ -144,13 +135,13 @@ CREATE DATABASE article_manager;
 Apply the existing database migrations:
 
 ```bash
-flask --app src/main.py db upgrade
+poetry run flask --app src/main.py db upgrade
 ```
 
 Start the Flask API:
 
 ```bash
-python src/main.py
+poetry run python src/main.py
 ```
 
 
@@ -171,8 +162,8 @@ Then open your browser and go to `http://127.0.0.1:3000`.
 Run backend checks:
 
 ```bash
-ruff check .
-pytest
+poetry run ruff check .
+poetry run pytest
 ```
 
 Run frontend checks:
