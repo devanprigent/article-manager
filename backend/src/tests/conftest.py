@@ -6,6 +6,7 @@ from werkzeug import Response
 
 from app import create_app
 from app.database import db as _db
+from app.settings import Settings
 
 
 def parse_cookies(cookies: list[str], name: str) -> str | None:
@@ -40,11 +41,13 @@ def get_csrf_header(res: Response, csrf_type: str):
 @pytest.fixture()
 def app():
     app = create_app(
-        {
-            "TESTING": True,
-            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-            "SECRET_KEY": "test-key",
-        }
+        settings=Settings(
+            database_url="sqlite:///:memory:",
+            secret_key="test-key",
+            jwt_secret_key="very-very-very-long-test-jwt-key",
+            testing=True,
+            _env_file=None,
+        )
     )
     with app.app_context():
         _db.create_all()
