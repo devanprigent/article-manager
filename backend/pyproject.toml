@@ -14,7 +14,7 @@ files = ["src/app"]
 strict = false
 warn_return_any = true
 warn_unused_ignores = true
-plugins = ["sqlalchemy.ext.mypy.plugin"]
+plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
 
 [[tool.mypy.overrides]]
 module = "app.models"

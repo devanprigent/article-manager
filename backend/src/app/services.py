@@ -2,8 +2,9 @@ import re
 import unicodedata
 from collections.abc import Sequence
 
+from flask_sqlalchemy.session import Session as FlaskSession
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, scoped_session
 
 from app.exceptions import EntitiesNotFoundError
 from app.models import Article, Tag
@@ -16,8 +17,11 @@ def normalize_name(raw: str) -> str:
     return s.casefold()
 
 
+DbSession = Session | scoped_session[FlaskSession]
+
+
 def get_or_create_by_name[T: NamedEntity](
-    session: Session, model: type[T], name: str, user_id: int
+    session: DbSession, model: type[T], name: str, user_id: int
 ) -> T:
     normalized_name = normalize_name(name)
     stmt = select(model).where(
@@ -33,14 +37,14 @@ def get_or_create_by_name[T: NamedEntity](
 
 
 def check_url_uniqueness(
-    session: Session, url: str, user_id: int, existing_id: int | None = None
+    session: DbSession, url: str, user_id: int, existing_id: int | None = None
 ) -> bool:
     stmt = select(Article).where(Article.url == url, Article.user_id == user_id)
     entity = session.execute(stmt).scalars().first()
     return entity is None or entity.id == existing_id
 
 
-def associate_tags(session: Session, raw_tags: list[str], user_id: int) -> list[Tag]:
+def associate_tags(session: DbSession, raw_tags: list[str], user_id: int) -> list[Tag]:
     seen = set()
     tags = []
     for raw_tag in raw_tags:
@@ -59,7 +63,7 @@ def update_model_fields(instance, payload: dict, allowed_fields: set[str]) -> No
 
 
 def get_entity[T: NamedEntity](
-    session: Session, entity_id: int, model: type[T], user_id: int | None = None
+    session: DbSession, entity_id: int, model: type[T], user_id: int | None = None
 ) -> T:
     stmt = select(model).where(model.id == entity_id)
     if user_id is not None:
@@ -71,7 +75,7 @@ def get_entity[T: NamedEntity](
 
 
 def get_entities[T: UserScoped](
-    session: Session, ids: Sequence[int], model: type[T], user_id: int | None = None
+    session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]:
     dedup_ids = set(ids)
     stmt = select(model).where(model.id.in_(dedup_ids))
@@ -91,7 +95,7 @@ def get_entities[T: UserScoped](
 
 
 def get_articles_by_author(
-    session: Session, author_id: int, user_id: int
+    session: DbSession, author_id: int, user_id: int
 ) -> Sequence[Article]:
     stmt = select(Article).where(
         Article.author_id == author_id, Article.user_id == user_id
