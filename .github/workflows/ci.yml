@@ -32,13 +32,13 @@ jobs:
         run: poetry install
 
       - name: Ruff
-        run: ruff check .
+        run: poetry run ruff check .
 
       - name: Mypy
-        run: mypy
+        run: poetry run mypy
 
       - name: Pytest
-        run: pytest
+        run: poetry run pytest
 
   frontend:
     runs-on: ubuntu-latest
