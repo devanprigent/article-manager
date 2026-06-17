@@ -2,22 +2,17 @@ import re
 import unicodedata
 from collections.abc import Sequence
 
-from flask_sqlalchemy.session import Session as FlaskSession
 from sqlalchemy import select
-from sqlalchemy.orm import Session, scoped_session
 
 from app.exceptions import EntitiesNotFoundError
-from app.models import Article, Tag
-from app.types import NamedEntity, UserScoped
+from app.models import Article
+from app.types import DbSession, NamedEntity, UserScoped
 
 
 def normalize_name(raw: str) -> str:
     s = unicodedata.normalize("NFKC", raw or "")
     s = re.sub(r"\s+", " ", s).strip()
     return s.casefold()
-
-
-DbSession = Session | scoped_session[FlaskSession]
 
 
 def get_or_create_by_name[T: NamedEntity](
@@ -42,18 +37,6 @@ def check_url_uniqueness(
     stmt = select(Article).where(Article.url == url, Article.user_id == user_id)
     entity = session.execute(stmt).scalars().first()
     return entity is None or entity.id == existing_id
-
-
-def associate_tags(session: DbSession, raw_tags: list[str], user_id: int) -> list[Tag]:
-    seen = set()
-    tags = []
-    for raw_tag in raw_tags:
-        key = normalize_name(raw_tag)
-        if key in seen:
-            continue
-        seen.add(key)
-        tags.append(get_or_create_by_name(session, Tag, raw_tag, user_id))
-    return tags
 
 
 def update_model_fields(instance, payload: dict, allowed_fields: set[str]) -> None:
@@ -92,13 +75,3 @@ def get_entities[T: UserScoped](
     raise EntitiesNotFoundError(
         missing_ids, "One or several entities weren't found based on the provided ids"
     )
-
-
-def get_articles_by_author(
-    session: DbSession, author_id: int, user_id: int
-) -> Sequence[Article]:
-    stmt = select(Article).where(
-        Article.author_id == author_id, Article.user_id == user_id
-    )
-    articles = session.execute(stmt).scalars().all()
-    return articles
