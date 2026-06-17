@@ -61,7 +61,7 @@ def list_articles(user_id: int, offset: int | None = None, limit: int | None = N
 @jwt_required()
 @get_user_id
 def get_article(user_id: int, article_id: int):
-    article = get_entity(article_id, Article, user_id)
+    article = get_entity(db.session, article_id, Article, user_id)
     logger.info(
         "Article fetched: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
@@ -74,14 +74,14 @@ def get_article(user_id: int, article_id: int):
 @get_user_id
 def add_article(data: dict[str, Any], user_id: int):
     schema = ArticleSchema.model_validate(data)
-    if not check_url_uniqueness(schema.url, user_id):
+    if not check_url_uniqueness(db.session, schema.url, user_id):
         raise EntityDuplicatedError("Add article", user_id, "URL", schema.url)
 
     parser = MetadataParser(schema.url)
     content = parser.get_content()
 
-    tags = associate_tags(schema.tags, user_id)
-    author = get_or_create_by_name(Author, schema.author, user_id)
+    tags = associate_tags(db.session, schema.tags, user_id)
+    author = get_or_create_by_name(db.session, Author, schema.author, user_id)
 
     article = Article(
         user_id=user_id,
@@ -113,11 +113,11 @@ def edit_article(data: dict[str, Any], user_id: int):
     if schema.id is None:
         logger.warning("Edit article failed — missing id for user_id=%d", user_id)
         return jsonify({"error": "Missing id"}), 400
-    if not check_url_uniqueness(schema.url, user_id, schema.id):
+    if not check_url_uniqueness(db.session, schema.url, user_id, schema.id):
         raise EntityDuplicatedError("Edit article", user_id, "URL", schema.url)
-    article = get_entity(schema.id, Article, user_id)
-    tags = associate_tags(schema.tags, user_id)
-    author = get_or_create_by_name(Author, schema.author, user_id)
+    article = get_entity(db.session, schema.id, Article, user_id)
+    tags = associate_tags(db.session, schema.tags, user_id)
+    author = get_or_create_by_name(db.session, Author, schema.author, user_id)
     payload = schema.model_dump()
     payload["author_id"] = author.id
     payload["tags"] = tags
@@ -150,7 +150,7 @@ def edit_article(data: dict[str, Any], user_id: int):
 def delete_articles(data: dict[str, Any], user_id: int):
     schema = IDSchema.model_validate(data)
     article_ids = schema.ids
-    articles = get_entities(article_ids, Article, user_id)
+    articles = get_entities(db.session, article_ids, Article, user_id)
     articles_dict = [article.to_dict() for article in articles]
     for article in articles:
         db.session.delete(article)
@@ -180,7 +180,7 @@ def parse_article(data: dict[str, Any], user_id: int):
     schema = BasicSchema.model_validate(data)
     url = schema.name
 
-    if not check_url_uniqueness(url, user_id):
+    if not check_url_uniqueness(db.session, url, user_id):
         raise EntityDuplicatedError("Add article", user_id, "URL", url)
 
     try:

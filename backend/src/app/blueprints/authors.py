@@ -57,7 +57,7 @@ def list_top_authors(user_id: int):
 @get_user_id
 def add_author(data: dict[str, Any], user_id: int):
     schema = BasicSchema.model_validate(data)
-    author = get_or_create_by_name(Author, schema.name, user_id)
+    author = get_or_create_by_name(db.session, Author, schema.name, user_id)
     db.session.commit()
     logger.info(
         "Author created/retrieved: id=%d name=%r user_id=%d",
@@ -75,10 +75,10 @@ def add_author(data: dict[str, Any], user_id: int):
 def delete_authors(data: dict[str, Any], user_id: int):
     schema = IDSchema.model_validate(data)
     author_ids = schema.ids
-    authors = get_entities(author_ids, Author, user_id)
+    authors = get_entities(db.session, author_ids, Author, user_id)
     authors_dict = [author.to_dict() for author in authors]
     for author in authors:
-        articles = get_articles_by_author(author.id, user_id)
+        articles = get_articles_by_author(db.session, author.id, user_id)
         if articles:
             logger.warning(
                 "Delete author blocked — has articles: author_id=%d user_id=%d",

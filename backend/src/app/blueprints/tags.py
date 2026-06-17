@@ -32,7 +32,7 @@ def list_tags(user_id: int):
 @get_user_id
 def add_tag(data: dict[str, Any], user_id: int):
     schema = BasicSchema.model_validate(data)
-    tag = get_or_create_by_name(Tag, schema.name, user_id)
+    tag = get_or_create_by_name(db.session, Tag, schema.name, user_id)
     db.session.commit()
     logger.info(
         "Tag created/retrieved: id=%d name=%r user_id=%d", tag.id, tag.name, user_id
@@ -46,7 +46,7 @@ def add_tag(data: dict[str, Any], user_id: int):
 @get_user_id
 def delete_tags(data: dict[str, Any], user_id: int):
     schema = IDSchema.model_validate(data)
-    tags = get_entities(schema.ids, Tag, user_id)
+    tags = get_entities(db.session, schema.ids, Tag, user_id)
     for tag in tags:
         db.session.delete(tag)
     db.session.commit()
