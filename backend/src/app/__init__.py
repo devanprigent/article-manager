@@ -3,12 +3,10 @@ from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
-from pydantic import ValidationError
-from werkzeug.exceptions import HTTPException
 
 from app.blueprints.articles import articles_bp
 from app.blueprints.auth import auth_bp
@@ -17,8 +15,8 @@ from app.blueprints.health import health_bp
 from app.blueprints.search import search_bp
 from app.blueprints.tags import tags_bp
 from app.database import db
-from app.exceptions import EntitiesNotFoundError, EntityDuplicatedError
-from app.log_config import configure_logging, register_logging
+from app.handlers import register_error_handlers
+from app.logger import configure_logging, register_logging
 from app.services import _normalize_database_url
 
 BASE_DIR = Path(__file__).resolve().parents[2]
@@ -67,55 +65,15 @@ def create_app(test_config=None):
     JWTManager(app)
 
     register_logging(app, logger)
+    register_error_handlers(app, logger)
 
     @app.route("/favicon.ico")
     def favicon():
         return "", 204
 
-    @app.errorhandler(EntityDuplicatedError)
-    def handle_duplicated_error(error: EntityDuplicatedError):
-        logger.warning(
-            f"{error.action} failed — duplicate {error.entity_name} for user_id={error.user_id}: {error.entity_id}"
-        )
-        return jsonify({"error": str(error)}), 409
-
-    @app.errorhandler(ValidationError)
-    def handle_validation_error(error: ValidationError):
-        logger.warning(
-            "Validation error on %s %s: %s",
-            request.method,
-            request.path,
-            error.errors(),
-        )
-        return jsonify({"error": error.errors()}), 422
-
-    @app.errorhandler(EntitiesNotFoundError)
-    def handle_entities_not_found_error(error: EntitiesNotFoundError):
-        logger.warning(
-            "Entities not found on %s %s: missing_ids=%s",
-            request.method,
-            request.path,
-            error.missing_ids,
-        )
-        return jsonify({"error": str(error), "missing_ids": error.missing_ids}), 404
-
-    @app.errorhandler(HTTPException)
-    def handle_http_exception(error: HTTPException):
-        logger.warning(
-            "HTTP %d on %s %s: %s",
-            error.code,
-            request.method,
-            request.path,
-            error.description,
-        )
-        return jsonify({"error": error.description}), error.code
-
-    app.register_blueprint(health_bp)
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(articles_bp)
-    app.register_blueprint(authors_bp)
-    app.register_blueprint(tags_bp)
-    app.register_blueprint(search_bp)
+    blueprints = [health_bp, auth_bp, articles_bp, authors_bp, tags_bp, search_bp]
+    for bp in blueprints:
+        app.register_blueprint(bp)
 
     logger.info("App created — blueprints registered, DB ready")
     return app
