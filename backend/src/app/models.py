@@ -19,9 +19,6 @@ class User(db.Model):
         nullable=False,
     )
 
-    def to_dict(self):
-        return {"id": self.id, "name": self.name}
-
 
 class Tag(db.Model):
     __table_args__ = (
@@ -42,9 +39,6 @@ class Tag(db.Model):
         onupdate=lambda: datetime.now(UTC),
         nullable=False,
     )
-
-    def to_dict(self):
-        return {"id": self.id, "name": self.name}
 
 
 class Author(db.Model):
@@ -67,9 +61,6 @@ class Author(db.Model):
         onupdate=lambda: datetime.now(UTC),
         nullable=False,
     )
-
-    def to_dict(self):
-        return {"id": self.id, "name": self.name}
 
 
 article_tag = db.Table(
@@ -108,22 +99,3 @@ class Article(db.Model):
         onupdate=lambda: datetime.now(UTC),
         nullable=False,
     )
-
-    def to_dict(self, include_content=False):
-        data = {
-            "id": self.id,
-            "title": self.title,
-            "author": self.author.name,
-            "url": self.url,
-            "year": self.year,
-            "summary": self.summary,
-            "consulted": self.consulted,
-            "read_later": self.read_later,
-            "liked": self.liked,
-            "tags": [t.name for t in self.tags],
-            "date_creation": self.date_creation.isoformat(),
-            "date_modification": self.date_modification.isoformat(),
-        }
-        if include_content:
-            data["content"] = self.content
-        return data

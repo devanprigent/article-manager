@@ -5,6 +5,7 @@ from flask_jwt_extended import jwt_required
 from werkzeug.exceptions import BadRequest
 
 from app.decorators import get_pagination, get_user_id
+from app.schemas import ArticleResponse, PaginatedArticlesResponse
 from app.services import search_query
 
 logger = logging.getLogger("article_manager.search")
@@ -30,5 +31,10 @@ def search(user_id: int, offset: int | None = None, limit: int | None = None):
         query,
     )
     return jsonify(
-        {"data": [article.to_dict() for article in articles], "total": total}
+        PaginatedArticlesResponse(
+            data=[ArticleResponse.from_model(a) for a in articles],
+            total=total,
+            offset=offset,
+            limit=limit,
+        ).model_dump(mode="json")
     ), 200

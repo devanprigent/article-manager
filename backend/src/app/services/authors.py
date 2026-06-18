@@ -45,9 +45,10 @@ def get_articles_by_author(
     return articles
 
 
-def remove_authors(session: DbSession, author_ids: list[int], user_id: int):
-    authors = get_entities(session, author_ids, Author, user_id)
-    authors_dict = [author.to_dict() for author in authors]
+def remove_authors(
+    session: DbSession, author_ids: list[int], user_id: int
+) -> Sequence[Author]:
+    authors = list(get_entities(session, author_ids, Author, user_id))
     for author in authors:
         articles = get_articles_by_author(session, author.id, user_id)
         if articles:
@@ -59,4 +60,4 @@ def remove_authors(session: DbSession, author_ids: list[int], user_id: int):
             )
         session.delete(author)
     session.commit()
-    return authors_dict
+    return authors

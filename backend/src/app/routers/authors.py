@@ -6,7 +6,13 @@ from flask_jwt_extended import jwt_required
 
 from app.database import db
 from app.decorators import get_user_id, validate_json
-from app.schemas import BasicSchema, IDSchema, NamedEntityResponse
+from app.schemas import (
+    BasicSchema,
+    DeleteResponse,
+    IDSchema,
+    NamedEntityResponse,
+    TopAuthorResponse,
+)
 from app.services import (
     create_author,
     get_authors,
@@ -26,7 +32,10 @@ def list_authors(user_id: int):
     authors = get_authors(db.session, user_id)
     logger.debug("Listed %d authors for user_id=%d", len(authors), user_id)
     return jsonify(
-        [NamedEntityResponse.model_validate(author).model_dump() for author in authors]
+        [
+            NamedEntityResponse.model_validate(author).model_dump(mode="json")
+            for author in authors
+        ]
     ), 200
 
 
@@ -41,7 +50,9 @@ def list_top_authors(user_id: int):
     return (
         jsonify(
             [
-                {"author": author.to_dict()["name"], "count": count}
+                TopAuthorResponse(author=author.name, count=count).model_dump(
+                    mode="json"
+                )
                 for author, count in authors_count
             ]
         ),
@@ -62,7 +73,9 @@ def add_author(data: dict[str, Any], user_id: int):
         author.name,
         user_id,
     )
-    return jsonify(NamedEntityResponse.model_validate(author).model_dump()), 201
+    return jsonify(
+        NamedEntityResponse.model_validate(author).model_dump(mode="json")
+    ), 201
 
 
 @authors_bp.route("", methods=["DELETE"])
@@ -81,13 +94,10 @@ def delete_authors(data: dict[str, Any], user_id: int):
     )
     return (
         jsonify(
-            {
-                "deleted": [
-                    NamedEntityResponse.model_validate(author).model_dump()
-                    for author in authors
-                ],
-                "count": authors_count,
-            }
+            DeleteResponse[NamedEntityResponse](
+                deleted=[NamedEntityResponse.model_validate(a) for a in authors],
+                count=authors_count,
+            ).model_dump(mode="json")
         ),
         200,
     )

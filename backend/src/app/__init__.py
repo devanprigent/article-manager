@@ -2,15 +2,15 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
-from app.blueprints.articles import articles_bp
-from app.blueprints.auth import auth_bp
-from app.blueprints.authors import authors_bp
-from app.blueprints.health import health_bp
-from app.blueprints.search import search_bp
-from app.blueprints.tags import tags_bp
 from app.database import db
 from app.handlers import register_error_handlers
 from app.logger import configure_logging, register_logging
+from app.routers.articles import articles_bp
+from app.routers.auth import auth_bp
+from app.routers.authors import authors_bp
+from app.routers.health import health_bp
+from app.routers.search import search_bp
+from app.routers.tags import tags_bp
 from app.settings import Settings
 
 logger = configure_logging()
@@ -22,7 +22,7 @@ def create_app(settings: Settings | None = None):
     app.config.update(settings.to_flask_config())
     CORS(
         app,
-        resources={r"/*": {"origins": settings.frontend_origins}},
+        resources={r"/*": {"origins": settings.frontend_origins_list}},
         supports_credentials=True,
     )
 
@@ -36,9 +36,9 @@ def create_app(settings: Settings | None = None):
     def favicon():
         return "", 204
 
-    blueprints = [health_bp, auth_bp, articles_bp, authors_bp, tags_bp, search_bp]
-    for bp in blueprints:
-        app.register_blueprint(bp)
+    routers = [health_bp, auth_bp, articles_bp, authors_bp, tags_bp, search_bp]
+    for r in routers:
+        app.register_blueprint(r)
 
-    logger.info("App created — blueprints registered, DB ready")
+    logger.info("App created — routers registered, DB ready")
     return app

@@ -95,12 +95,15 @@ def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
 
 
 def remove_articles(session: DbSession, article_ids: list[int], user_id: int):
-    articles = get_entities(session, article_ids, Article, user_id)
-    articles_dict = [article.to_dict() for article in articles]
+    articles = list(get_entities(session, article_ids, Article, user_id))
+
     for article in articles:
+        _ = article.author.name
+        _ = [t.name for t in article.tags]
         session.delete(article)
+
     session.commit()
-    return articles_dict
+    return articles
 
 
 def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataParser:
