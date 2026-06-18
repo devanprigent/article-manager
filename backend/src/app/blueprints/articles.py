@@ -83,17 +83,18 @@ def edit_article(data: dict[str, Any], user_id: int):
 def delete_articles(data: dict[str, Any], user_id: int):
     schema = IDSchema.model_validate(data)
     articles = remove_articles(db.session, schema.ids, user_id)
+    articles_count = len(articles)
     logger.info(
         "Articles deleted: ids=%s user_id=%d count=%d",
         schema.ids,
         user_id,
-        len(articles),
+        articles_count,
     )
     return (
         jsonify(
             {
                 "deleted": articles,
-                "count": len(articles),
+                "count": articles_count,
             }
         ),
         200,

@@ -19,16 +19,6 @@ from app.services.tags import associate_tags
 from app.types import DbSession
 
 
-def get_articles_by_author(
-    session: DbSession, author_id: int, user_id: int
-) -> Sequence[Article]:
-    stmt = select(Article).where(
-        Article.author_id == author_id, Article.user_id == user_id
-    )
-    articles = session.execute(stmt).scalars().all()
-    return articles
-
-
 def get_articles(
     session: DbSession, offset: int | None, limit: int | None, user_id: int
 ) -> tuple[Sequence[Article], int]:

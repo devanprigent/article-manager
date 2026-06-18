@@ -65,6 +65,13 @@ def test_delete_entity(auth_client, endpoint):
     assert len(new_payload) == 0
 
 
+def test_delete_author_with_article(auth_client, author, mock_article):
+    mock_article = {**mock_article, "author": author["name"]}
+    auth_client.post("/articles", json=mock_article)
+    res_delete = auth_client.delete("/authors", json={"ids": [author["id"]]})
+    assert res_delete.status_code == 409
+
+
 def test_delete_article(auth_client, article):
     res = auth_client.get("/articles")
     payload = res.get_json()["data"]

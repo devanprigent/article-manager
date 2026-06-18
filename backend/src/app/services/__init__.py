@@ -3,12 +3,18 @@
 from app.services.articles import (
     create_article,
     get_articles,
-    get_articles_by_author,
     get_metadata,
     remove_articles,
     update_article,
 )
 from app.services.auth import login_user, register_user
+from app.services.authors import (
+    create_author,
+    get_articles_by_author,
+    get_authors,
+    get_top_authors,
+    remove_authors,
+)
 from app.services.common import (
     check_url_uniqueness,
     get_entities,
@@ -35,4 +41,8 @@ __all__ = [
     "update_model_fields",
     "register_user",
     "login_user",
+    "get_authors",
+    "get_top_authors",
+    "create_author",
+    "remove_authors",
 ]
