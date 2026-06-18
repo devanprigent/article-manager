@@ -23,7 +23,7 @@ from app.services.common import (
     normalize_name,
     update_model_fields,
 )
-from app.services.tags import associate_tags
+from app.services.tags import associate_tags, create_tag, get_tags, remove_tags
 
 __all__ = [
     "associate_tags",
@@ -45,4 +45,7 @@ __all__ = [
     "get_top_authors",
     "create_author",
     "remove_authors",
+    "get_tags",
+    "create_tag",
+    "remove_tags",
 ]

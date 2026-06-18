@@ -3,13 +3,11 @@ from typing import Any
 
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required
-from sqlalchemy import select
 
 from app.database import db
 from app.decorators import get_user_id, validate_json
-from app.models import Tag
 from app.schemas import BasicSchema, IDSchema
-from app.services import get_entities, get_or_create_by_name
+from app.services import create_tag, get_tags, remove_tags
 
 logger = logging.getLogger("article_manager.tags")
 
@@ -20,8 +18,7 @@ tags_bp = Blueprint("tags", __name__, url_prefix="/tags")
 @jwt_required()
 @get_user_id
 def list_tags(user_id: int):
-    stmt = select(Tag).where(Tag.user_id == user_id)
-    tags = db.session.execute(stmt).scalars().all()
+    tags = get_tags(db.session, user_id)
     logger.debug("Listed %d tags for user_id=%d", len(tags), user_id)
     return jsonify([tag.to_dict() for tag in tags]), 200
 
@@ -32,8 +29,7 @@ def list_tags(user_id: int):
 @get_user_id
 def add_tag(data: dict[str, Any], user_id: int):
     schema = BasicSchema.model_validate(data)
-    tag = get_or_create_by_name(db.session, Tag, schema.name, user_id)
-    db.session.commit()
+    tag = create_tag(db.session, schema.name, user_id)
     logger.info(
         "Tag created/retrieved: id=%d name=%r user_id=%d", tag.id, tag.name, user_id
     )
@@ -46,14 +42,17 @@ def add_tag(data: dict[str, Any], user_id: int):
 @get_user_id
 def delete_tags(data: dict[str, Any], user_id: int):
     schema = IDSchema.model_validate(data)
-    tags = get_entities(db.session, schema.ids, Tag, user_id)
-    for tag in tags:
-        db.session.delete(tag)
-    db.session.commit()
+    tags = remove_tags(db.session, schema.ids, user_id)
+    tags_count = len(tags)
     logger.info(
-        "Tags deleted: ids=%s user_id=%d count=%d", schema.ids, user_id, len(tags)
+        "Tags deleted: ids=%s user_id=%d count=%d", schema.ids, user_id, tags_count
     )
     return (
-        jsonify({"deleted": [tag.to_dict() for tag in tags], "count": len(tags)}),
+        jsonify(
+            {
+                "deleted": tags,
+                "count": tags_count,
+            }
+        ),
         200,
     )

@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from sqlalchemy import func, select
+from sqlalchemy import Row, func, select
 
 from app.exceptions import EntityDuplicatedError
 from app.models import Article, Author
@@ -8,13 +8,15 @@ from app.services.common import get_entities, get_or_create_by_name
 from app.types import DbSession
 
 
-def get_authors(session: DbSession, user_id: int) -> list[Author]:
+def get_authors(session: DbSession, user_id: int) -> Sequence[Author]:
     stmt = select(Author).where(Author.user_id == user_id)
     authors = session.execute(stmt).scalars().all()
     return authors
 
 
-def get_top_authors(session: DbSession, user_id: int) -> list[tuple[Author, int]]:
+def get_top_authors(
+    session: DbSession, user_id: int
+) -> Sequence[Row[tuple[Author, int]]]:
     nb_articles = func.count(Article.id).label("nb_articles")
     stmt = (
         select(Author, nb_articles)
