@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 
 from app.database import db
 from app.decorators import get_user_id, validate_json
-from app.schemas import BasicSchema, IDSchema
+from app.schemas import BasicSchema, IDSchema, NamedEntityResponse
 from app.services import (
     create_author,
     get_authors,
@@ -25,7 +25,9 @@ authors_bp = Blueprint("authors", __name__, url_prefix="/authors")
 def list_authors(user_id: int):
     authors = get_authors(db.session, user_id)
     logger.debug("Listed %d authors for user_id=%d", len(authors), user_id)
-    return jsonify([author.to_dict() for author in authors]), 200
+    return jsonify(
+        [NamedEntityResponse.model_validate(author).model_dump() for author in authors]
+    ), 200
 
 
 @authors_bp.route("/top")
@@ -60,7 +62,7 @@ def add_author(data: dict[str, Any], user_id: int):
         author.name,
         user_id,
     )
-    return jsonify(author.to_dict()), 201
+    return jsonify(NamedEntityResponse.model_validate(author).model_dump()), 201
 
 
 @authors_bp.route("", methods=["DELETE"])
@@ -80,7 +82,10 @@ def delete_authors(data: dict[str, Any], user_id: int):
     return (
         jsonify(
             {
-                "deleted": authors,
+                "deleted": [
+                    NamedEntityResponse.model_validate(author).model_dump()
+                    for author in authors
+                ],
                 "count": authors_count,
             }
         ),
