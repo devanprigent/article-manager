@@ -1,3 +1,5 @@
+from typing import cast
+
 from flask import Flask, g
 from sqlalchemy.orm import Session
 
@@ -19,4 +21,4 @@ def register_session(app: Flask) -> None:
 
 
 def get_session() -> Session:
-    return g.db
+    return cast(Session, g.db)

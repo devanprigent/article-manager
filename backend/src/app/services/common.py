@@ -1,12 +1,13 @@
 import re
 import unicodedata
 from collections.abc import Sequence
+from typing import Any, overload
 
 from sqlalchemy import select
 
 from app.exceptions import EntitiesNotFoundError
 from app.models import Article
-from app.types import DbSession, NamedEntity, UserScoped
+from app.types import DbSession, HasPrimaryKey, NamedEntity, UserScoped
 
 
 def normalize_name(raw: str) -> str:
@@ -19,8 +20,9 @@ def get_or_create_by_name[T: NamedEntity](
     session: DbSession, model: type[T], name: str, user_id: int
 ) -> T:
     normalized_name = normalize_name(name)
+    query_model: Any = model
     stmt = select(model).where(
-        model.normalized_name == normalized_name, model.user_id == user_id
+        query_model.normalized_name == normalized_name, query_model.user_id == user_id
     )
     entity = session.execute(stmt).scalars().first()
     if entity is None:
@@ -45,25 +47,51 @@ def update_model_fields(instance, payload: dict, allowed_fields: set[str]) -> No
             setattr(instance, field, value)
 
 
-def get_entity[T: NamedEntity](
+@overload
+def get_entity[T: HasPrimaryKey](
+    session: DbSession, entity_id: int, model: type[T], user_id: None = None
+) -> T: ...
+
+
+@overload
+def get_entity[T: UserScoped](
+    session: DbSession, entity_id: int, model: type[T], user_id: int | None = None
+) -> T: ...
+
+
+def get_entity[T: HasPrimaryKey](
     session: DbSession, entity_id: int, model: type[T], user_id: int | None = None
 ) -> T:
-    stmt = select(model).where(model.id == entity_id)
+    query_model: Any = model
+    stmt = select(model).where(query_model.id == entity_id)
     if user_id is not None:
-        stmt = stmt.where(model.user_id == user_id)
+        stmt = stmt.where(query_model.user_id == user_id)
     entity = session.execute(stmt).scalars().first()
     if entity is None:
         raise EntitiesNotFoundError([entity_id], "Entity not found")
     return entity
 
 
+@overload
+def get_entities[T: HasPrimaryKey](
+    session: DbSession, ids: Sequence[int], model: type[T], user_id: None = None
+) -> Sequence[T]: ...
+
+
+@overload
 def get_entities[T: UserScoped](
+    session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
+) -> Sequence[T]: ...
+
+
+def get_entities[T: HasPrimaryKey](
     session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]:
     dedup_ids = set(ids)
-    stmt = select(model).where(model.id.in_(dedup_ids))
+    query_model: Any = model
+    stmt = select(model).where(query_model.id.in_(dedup_ids))
     if user_id is not None:
-        stmt = stmt.where(model.user_id == user_id)
+        stmt = stmt.where(query_model.user_id == user_id)
     entities = session.execute(stmt).scalars().all()
 
     if len(entities) == len(dedup_ids):
