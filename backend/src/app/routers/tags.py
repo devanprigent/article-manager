@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 
 from app.database import db
 from app.decorators import get_user_id, validate_json
-from app.schemas import BasicSchema, IDSchema, NamedEntityResponse
+from app.schemas import BasicSchema, DeleteResponse, IDSchema, NamedEntityResponse
 from app.services import create_tag, get_tags, remove_tags
 
 logger = logging.getLogger("article_manager.tags")
@@ -21,7 +21,10 @@ def list_tags(user_id: int):
     tags = get_tags(db.session, user_id)
     logger.debug("Listed %d tags for user_id=%d", len(tags), user_id)
     return jsonify(
-        [NamedEntityResponse.model_validate(tag).model_dump() for tag in tags]
+        [
+            NamedEntityResponse.model_validate(tag).model_dump(mode="json")
+            for tag in tags
+        ]
     ), 200
 
 
@@ -35,7 +38,7 @@ def add_tag(data: dict[str, Any], user_id: int):
     logger.info(
         "Tag created/retrieved: id=%d name=%r user_id=%d", tag.id, tag.name, user_id
     )
-    return jsonify(NamedEntityResponse.model_validate(tag).model_dump()), 201
+    return jsonify(NamedEntityResponse.model_validate(tag).model_dump(mode="json")), 201
 
 
 @tags_bp.route("", methods=["DELETE"])
@@ -51,12 +54,10 @@ def delete_tags(data: dict[str, Any], user_id: int):
     )
     return (
         jsonify(
-            {
-                "deleted": [
-                    NamedEntityResponse.model_validate(tag).model_dump() for tag in tags
-                ],
-                "count": tags_count,
-            }
+            DeleteResponse[NamedEntityResponse](
+                deleted=[NamedEntityResponse.model_validate(tag) for tag in tags],
+                count=tags_count,
+            ).model_dump(mode="json")
         ),
         200,
     )

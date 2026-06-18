@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     database_url: str
     secret_key: str
     jwt_secret_key: str
-    frontend_origins: list[str] = ["http://localhost:3000"]
+    frontend_origins: str = "http://localhost:3000"
     jwt_cookie_domain: str | None = None
     jwt_access_token_expires: timedelta = timedelta(minutes=15)
     jwt_refresh_token_expires: timedelta = timedelta(days=30)
@@ -44,12 +44,11 @@ class Settings(BaseSettings):
             return "postgresql+psycopg://" + url.removeprefix("postgresql://")
         return url
 
-    @field_validator("frontend_origins", mode="before")
-    @classmethod
-    def split_frontend_origins(cls, v: str | list[str]) -> list[str]:
-        if isinstance(v, list):
-            return v
-        return [o.strip() for o in v.split(",") if o.strip()]
+    @property
+    def frontend_origins_list(self) -> list[str]:
+        if isinstance(self.frontend_origins, list):
+            return self.frontend_origins
+        return [o.strip() for o in self.frontend_origins.split(",") if o.strip()]
 
     def to_flask_config(self) -> dict:
         return {

@@ -28,13 +28,14 @@ def test_article_return_content_not_articles(auth_client, article):
     res = auth_client.get("/articles")
     payload = res.get_json()["data"]
     assert len(payload) == 1
-    assert "content" not in payload[0]
-    article_id = int(payload[0]["id"])
+    assert payload[0]["content"] is None
 
+    article_id = int(payload[0]["id"])
     res2 = auth_client.get(f"/articles/{article_id}")
     assert res2.status_code == 200
+
     payload2 = res2.get_json()
-    assert "content" in payload2
+    assert payload2["content"] is not None
 
 
 def test_add_valid_tag(auth_client, tag):

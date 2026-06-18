@@ -19,13 +19,12 @@ def create_tag(session: DbSession, name: str, user_id: int) -> Tag:
     return tag
 
 
-def remove_tags(session: DbSession, tag_ids: list[int], user_id: int) -> list[dict]:
-    tags = get_entities(session, tag_ids, Tag, user_id)
-    tags_dict = [tag.to_dict() for tag in tags]
+def remove_tags(session: DbSession, tag_ids: list[int], user_id: int) -> list[Tag]:
+    tags = list(get_entities(session, tag_ids, Tag, user_id))
     for tag in tags:
         session.delete(tag)
     session.commit()
-    return tags_dict
+    return tags
 
 
 def associate_tags(session: DbSession, raw_tags: list[str], user_id: int) -> list[Tag]:

@@ -1,20 +1,22 @@
 from app.schemas.requests import ArticleSchema, BasicSchema, IDSchema, UserSchema
 from app.schemas.responses import (
-    ArticleCreate,
-    ArticleDetailResponse,
     ArticleResponse,
-    ArticleUpdate,
+    DeleteResponse,
     NamedEntityResponse,
+    PaginatedArticlesResponse,
+    ParsedArticleResponse,
+    TopAuthorResponse,
 )
 
 __all__ = [
-    "ArticleCreate",
-    "ArticleDetailResponse",
     "ArticleResponse",
     "ArticleSchema",
-    "ArticleUpdate",
     "BasicSchema",
     "IDSchema",
     "UserSchema",
     "NamedEntityResponse",
+    "PaginatedArticlesResponse",
+    "ParsedArticleResponse",
+    "DeleteResponse",
+    "TopAuthorResponse",
 ]
