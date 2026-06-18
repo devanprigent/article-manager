@@ -94,7 +94,9 @@ def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
     return article
 
 
-def remove_articles(session: DbSession, article_ids: list[int], user_id: int):
+def remove_articles(
+    session: DbSession, article_ids: list[int], user_id: int
+) -> Sequence[Article]:
     articles = list(get_entities(session, article_ids, Article, user_id))
 
     for article in articles:

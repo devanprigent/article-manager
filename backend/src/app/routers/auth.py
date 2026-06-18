@@ -13,7 +13,7 @@ from flask_jwt_extended import (
 from app.database import db
 from app.decorators import get_user_id, validate_json
 from app.models import User
-from app.schemas import UserSchema
+from app.schemas import NamedEntityResponse, UserSchema
 from app.services import get_entity, login_user, register_user
 
 logger = logging.getLogger("article_manager.auth")
@@ -51,7 +51,9 @@ def login(data: dict[str, Any]):
 def session(user_id: int):
     logger.info("Session verified: user_id=%d", user_id)
     user = get_entity(db.session, user_id, User)
-    return jsonify({"id": user_id, "name": user.name}), 200
+    return jsonify(
+        NamedEntityResponse(id=user_id, name=user.name).model_dump(mode="json")
+    ), 200
 
 
 @auth_bp.route("/refresh", methods=["POST"])

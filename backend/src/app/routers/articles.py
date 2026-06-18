@@ -105,10 +105,7 @@ def delete_articles(data: dict[str, Any], user_id: int):
     return (
         jsonify(
             DeleteResponse[ArticleResponse](
-                deleted=[
-                    ArticleResponse.from_model(article).model_dump(mode="json")
-                    for article in articles
-                ],
+                deleted=[ArticleResponse.from_model(article) for article in articles],
                 count=articles_count,
             ).model_dump(mode="json")
         ),

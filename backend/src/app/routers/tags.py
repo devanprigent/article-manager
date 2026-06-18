@@ -55,10 +55,7 @@ def delete_tags(data: dict[str, Any], user_id: int):
     return (
         jsonify(
             DeleteResponse[NamedEntityResponse](
-                deleted=[
-                    NamedEntityResponse.model_validate(tag).model_dump(mode="json")
-                    for tag in tags
-                ],
+                deleted=[NamedEntityResponse.model_validate(tag) for tag in tags],
                 count=tags_count,
             ).model_dump(mode="json")
         ),
