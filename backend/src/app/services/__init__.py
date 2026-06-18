@@ -23,6 +23,7 @@ from app.services.common import (
     normalize_name,
     update_model_fields,
 )
+from app.services.search import search_query
 from app.services.tags import associate_tags, create_tag, get_tags, remove_tags
 
 __all__ = [
@@ -48,4 +49,5 @@ __all__ = [
     "get_tags",
     "create_tag",
     "remove_tags",
+    "search_query",
 ]
