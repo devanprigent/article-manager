@@ -2,9 +2,8 @@ from collections.abc import Sequence
 
 import requests
 from sqlalchemy import func, select
-from werkzeug.exceptions import BadRequest
 
-from app.exceptions import EntityDuplicatedError
+from app.exceptions import ClientInputError, EntityDuplicatedError
 from app.models import Article, Author
 from app.parser import MetadataParser
 from app.schemas import ArticleSchema
@@ -66,7 +65,7 @@ def create_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
 
 def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Article:
     if data.id is None:
-        raise ValueError("Article id is required for update")
+        raise ClientInputError("Article id is required for update")
     if not check_url_uniqueness(session, data.url, user_id, data.id):
         raise EntityDuplicatedError("Edit article", user_id, "URL", data.url)
     article = get_entity(session, data.id, Article, user_id)
@@ -117,7 +116,7 @@ def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataParser:
         parser.parse()
         return parser
     except requests.exceptions.RequestException as error:
-        raise BadRequest(
+        raise ClientInputError(
             "Unable to fetch metadata from the provided URL. "
             "Please check that the URL is valid and reachable."
         ) from error

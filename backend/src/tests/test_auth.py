@@ -32,6 +32,14 @@ def test_login(client):
     assert get_cookie_value(res, "csrf_refresh_token")
 
 
+def test_login_wrong_password(client):
+    client.post("/auth/register", json={"name": "Test", "password": "12345678"})
+    res = client.post("/auth/login", json={"name": "Test", "password": "123456789"})
+    payload = res.get_json()
+    assert res.status_code == 401
+    assert payload["error"] == "Wrong username or password"
+
+
 def test_refresh(client):
     res = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     headers = get_csrf_header(res, "refresh")

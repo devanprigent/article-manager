@@ -2,10 +2,10 @@ import logging
 
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
-from werkzeug.exceptions import BadRequest
 
 from app.database import db
 from app.decorators import get_pagination, get_user_id
+from app.exceptions import ClientInputError
 from app.schemas import ArticleResponse, PaginatedArticlesResponse
 from app.services import search_query
 
@@ -22,7 +22,7 @@ def search(user_id: int, offset: int | None = None, limit: int | None = None):
     query = request.args.get("q", "").strip()
 
     if not query:
-        raise BadRequest("Invalid query")
+        raise ClientInputError("Invalid query")
 
     articles, total = search_query(db.session, query, offset, limit, user_id)
     logger.debug(

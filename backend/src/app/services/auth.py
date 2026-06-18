@@ -6,7 +6,7 @@ from sqlalchemy import select
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.database import db
-from app.exceptions import EntityDuplicatedError
+from app.exceptions import EntityDuplicatedError, InvalidCredentialsError
 from app.models import User
 
 
@@ -31,7 +31,7 @@ def login_user(username: str, password: str) -> tuple[int, str, str]:
     user = db.session.execute(stmt).scalars().first()
 
     if user is None or not check_password_hash(user.password_hash, password):
-        raise ValueError("Wrong username or password")
+        raise InvalidCredentialsError("Wrong username or password")
 
     access_token = create_access_token(identity=str(user.id))
     refresh_token = create_refresh_token(identity=str(user.id))

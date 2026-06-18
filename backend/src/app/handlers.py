@@ -4,7 +4,13 @@ from flask import Flask, jsonify, request
 from pydantic import ValidationError
 from werkzeug.exceptions import HTTPException
 
-from app.exceptions import EntitiesNotFoundError, EntityDuplicatedError
+from app.exceptions import (
+    ClientInputError,
+    EntitiesNotFoundError,
+    EntityDuplicatedError,
+    InvalidCredentialsError,
+    ParsingError,
+)
 
 
 def register_error_handlers(app: Flask, logger: logging.Logger) -> None:
@@ -39,6 +45,36 @@ def register_error_handlers(app: Flask, logger: logging.Logger) -> None:
             error.missing_ids,
         )
         return jsonify({"error": str(error), "missing_ids": error.missing_ids}), 404
+
+    @app.errorhandler(InvalidCredentialsError)
+    def handle_credentials_error(error: InvalidCredentialsError):
+        logger.warning(
+            "Authentication error on %s %s: %s",
+            request.method,
+            request.path,
+            str(error),
+        )
+        return jsonify({"error": str(error)}), 401
+
+    @app.errorhandler(ClientInputError)
+    def handle_invalid_input(error: ClientInputError):
+        logger.warning(
+            "Invalid input on %s %s: %s",
+            request.method,
+            request.path,
+            str(error),
+        )
+        return jsonify({"error": str(error)}), 400
+
+    @app.errorhandler(ParsingError)
+    def handle_parsing_error(error: ParsingError):
+        logger.warning(
+            "Error while parsing on %s %s: %s",
+            request.method,
+            request.path,
+            str(error),
+        )
+        return jsonify({"error": str(error)}), 400
 
     @app.errorhandler(HTTPException)
     def handle_http_exception(error: HTTPException):

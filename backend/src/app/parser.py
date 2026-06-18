@@ -7,7 +7,8 @@ from urllib.parse import urlsplit
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-from werkzeug.exceptions import BadRequest
+
+from app.exceptions import ParsingError
 
 
 class Candidate(TypedDict):
@@ -75,12 +76,12 @@ class MetadataParser:
             parsed_url = urlsplit(url)
             protocol = parsed_url.scheme
             if protocol not in ["http", "https"]:
-                raise BadRequest(
+                raise ParsingError(
                     "Invalid protocol - only http and https are permitted."
                 )
             hostname = parsed_url.hostname
             if not hostname:
-                raise BadRequest("Invalid URL.")
+                raise ParsingError("Invalid URL.")
             port = parsed_url.port or (443 if parsed_url.scheme == "https" else 80)
             resolved_ips = socket.getaddrinfo(hostname, port)
             for result in resolved_ips:
@@ -88,9 +89,11 @@ class MetadataParser:
                 resolved_ip = socket_address[0]
                 addr = ip_address(resolved_ip)
                 if not addr.is_global:
-                    raise BadRequest("Invalid IP - the resolved IP has been rejected.")
+                    raise ParsingError(
+                        "Invalid IP - the resolved IP has been rejected."
+                    )
         except (ValueError, socket.gaierror) as e:
-            raise BadRequest("Unable to fetch metadata.") from e
+            raise ParsingError("Unable to fetch metadata.") from e
         return url
 
     def parse(self):
@@ -144,7 +147,7 @@ class MetadataParser:
         )
 
         if hasattr(res, "is_redirect") and res.is_redirect:
-            raise BadRequest("Redirects are not allowed.")
+            raise ParsingError("Redirects are not allowed.")
 
         res.raise_for_status()
         return BeautifulSoup(res.text, "html.parser")

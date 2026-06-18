@@ -2,7 +2,8 @@ from functools import wraps
 
 from flask import jsonify, request
 from flask_jwt_extended import get_jwt_identity
-from werkzeug.exceptions import BadRequest
+
+from app.exceptions import ClientInputError
 
 
 def validate_json(fn):
@@ -36,11 +37,11 @@ def get_pagination(fn):
         offset = request.args.get("offset", type=int)
         limit = request.args.get("limit", type=int)
         if offset is not None and offset < 0:
-            raise BadRequest("Offset should be greater than or equal to 0.")
+            raise ClientInputError("Offset should be greater than or equal to 0.")
         if limit is not None and limit <= 0:
-            raise BadRequest("Limit should be greater than 0.")
+            raise ClientInputError("Limit should be greater than 0.")
         if limit is not None and limit > MAX_LIMIT:
-            raise BadRequest(f"Limit should not exceed {MAX_LIMIT}.")
+            raise ClientInputError(f"Limit should not exceed {MAX_LIMIT}.")
         return fn(*args, offset=offset, limit=limit, **kwargs)
 
     return wrapper

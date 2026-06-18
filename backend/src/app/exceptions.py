@@ -17,3 +17,15 @@ class EntitiesNotFoundError(ValueError):
     def __init__(self, missing_ids: list[int], message: str):
         self.missing_ids = missing_ids
         super().__init__(message)
+
+
+class InvalidCredentialsError(ValueError):
+    pass
+
+
+class ParsingError(Exception):
+    pass
+
+
+class ClientInputError(ValueError):
+    pass
