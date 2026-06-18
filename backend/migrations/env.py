@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
 import app.models  # noqa: F401
-from app.database import db
+from app.database import Base
 from app.settings import BASE_DIR, Settings
 
 config = context.config
@@ -25,7 +25,7 @@ if not database_url:
     )
 config.set_main_option("sqlalchemy.url", Settings.normalize_db_url(database_url))
 
-target_metadata = db.metadata
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:

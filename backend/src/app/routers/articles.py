@@ -4,7 +4,6 @@ from typing import Any
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required
 
-from app.database import db
 from app.decorators import get_pagination, get_user_id, validate_json
 from app.models import Article
 from app.schemas import (
@@ -24,6 +23,7 @@ from app.services import (
     remove_articles,
     update_article,
 )
+from app.sessions import get_session
 
 logger = logging.getLogger("article_manager.articles")
 
@@ -35,7 +35,7 @@ articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
 @get_user_id
 @get_pagination
 def list_articles(user_id: int, offset: int | None = None, limit: int | None = None):
-    articles, total = get_articles(db.session, offset, limit, user_id)
+    articles, total = get_articles(get_session(), offset, limit, user_id)
     logger.debug("Listed %d articles for user_id=%d", len(articles), user_id)
     return jsonify(
         PaginatedArticlesResponse(
@@ -51,7 +51,7 @@ def list_articles(user_id: int, offset: int | None = None, limit: int | None = N
 @jwt_required()
 @get_user_id
 def get_article(user_id: int, article_id: int):
-    article = get_entity(db.session, article_id, Article, user_id)
+    article = get_entity(get_session(), article_id, Article, user_id)
     logger.info(
         "Article fetched: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
@@ -68,7 +68,7 @@ def get_article(user_id: int, article_id: int):
 @get_user_id
 def add_article(data: dict[str, Any], user_id: int):
     schema = ArticleSchema.model_validate(data)
-    article = create_article(db.session, schema, user_id)
+    article = create_article(get_session(), schema, user_id)
     logger.info(
         "Article created: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
@@ -81,7 +81,7 @@ def add_article(data: dict[str, Any], user_id: int):
 @get_user_id
 def edit_article(data: dict[str, Any], user_id: int):
     schema = ArticleSchema.model_validate(data)
-    article = update_article(db.session, schema, user_id)
+    article = update_article(get_session(), schema, user_id)
     logger.info(
         "Article updated: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
@@ -94,7 +94,7 @@ def edit_article(data: dict[str, Any], user_id: int):
 @get_user_id
 def delete_articles(data: dict[str, Any], user_id: int):
     schema = IDSchema.model_validate(data)
-    articles = remove_articles(db.session, schema.ids, user_id)
+    articles = remove_articles(get_session(), schema.ids, user_id)
     articles_count = len(articles)
     logger.info(
         "Articles deleted: ids=%s user_id=%d count=%d",
@@ -120,7 +120,7 @@ def delete_articles(data: dict[str, Any], user_id: int):
 def parse_article(data: dict[str, Any], user_id: int):
     schema = BasicSchema.model_validate(data)
     url = schema.name
-    parser = get_metadata(db.session, url, user_id)
+    parser = get_metadata(get_session(), url, user_id)
     return jsonify(
         ParsedArticleResponse(
             title=parser.title, author=parser.author, date=parser.date, url=url

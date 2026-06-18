@@ -1,7 +1,6 @@
 from typing import Protocol
 
-from flask_sqlalchemy.session import Session as FlaskSession
-from sqlalchemy.orm import Mapped, Session, scoped_session
+from sqlalchemy.orm import Mapped, Session
 
 
 class HasPrimaryKey(Protocol):
@@ -20,4 +19,4 @@ class NamedEntity(UserScoped, Protocol):
         pass
 
 
-DbSession = Session | scoped_session[FlaskSession]
+DbSession = Session

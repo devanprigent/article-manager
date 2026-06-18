@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
-from app.database import db
+from app.database import init_db
 from app.handlers import register_error_handlers
 from app.logger import configure_logging, register_logging
 from app.routers.articles import articles_bp
@@ -11,6 +11,7 @@ from app.routers.authors import authors_bp
 from app.routers.health import health_bp
 from app.routers.search import search_bp
 from app.routers.tags import tags_bp
+from app.sessions import register_session
 from app.settings import Settings
 
 logger = configure_logging()
@@ -26,9 +27,9 @@ def create_app(settings: Settings | None = None):
         supports_credentials=True,
     )
 
-    db.init_app(app)
+    init_db(settings.database_url)
     JWTManager(app)
-
+    register_session(app)
     register_logging(app, logger)
     register_error_handlers(app, logger)
 

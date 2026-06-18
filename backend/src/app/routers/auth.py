@@ -10,11 +10,11 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
 )
 
-from app.database import db
 from app.decorators import get_user_id, validate_json
 from app.models import User
 from app.schemas import NamedEntityResponse, UserSchema
 from app.services import get_entity, login_user, register_user
+from app.sessions import get_session
 
 logger = logging.getLogger("article_manager.auth")
 
@@ -25,7 +25,9 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 @validate_json
 def register(data: dict[str, Any]):
     schema = UserSchema.model_validate(data)
-    user_id, access_token, refresh_token = register_user(schema.name, schema.password)
+    user_id, access_token, refresh_token = register_user(
+        get_session(), schema.name, schema.password
+    )
     logger.info("User registered: id=%d name=%r", user_id, schema.name)
     response = jsonify({"msg": "Successfully registered"})
     set_access_cookies(response, access_token)
@@ -37,7 +39,9 @@ def register(data: dict[str, Any]):
 @validate_json
 def login(data: dict[str, Any]):
     schema = UserSchema.model_validate(data)
-    user_id, access_token, refresh_token = login_user(schema.name, schema.password)
+    user_id, access_token, refresh_token = login_user(
+        get_session(), schema.name, schema.password
+    )
     logger.info("User logged in: id=%d name=%r", user_id, schema.name)
     response = jsonify({"msg": "Successfully logged-in"})
     set_access_cookies(response, access_token)
@@ -50,7 +54,7 @@ def login(data: dict[str, Any]):
 @get_user_id
 def session(user_id: int):
     logger.info("Session verified: user_id=%d", user_id)
-    user = get_entity(db.session, user_id, User)
+    user = get_entity(get_session(), user_id, User)
     return jsonify(
         NamedEntityResponse(id=user_id, name=user.name).model_dump(mode="json")
     ), 200

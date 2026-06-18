@@ -52,7 +52,6 @@ class Settings(BaseSettings):
 
     def to_flask_config(self) -> dict:
         return {
-            "SQLALCHEMY_DATABASE_URI": self.database_url,
             "SECRET_KEY": self.secret_key,
             "JWT_SECRET_KEY": self.jwt_secret_key,
             "JWT_ACCESS_TOKEN_EXPIRES": self.jwt_access_token_expires,

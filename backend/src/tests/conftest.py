@@ -4,8 +4,8 @@ from types import SimpleNamespace
 import pytest
 from werkzeug import Response
 
+import app.database as database
 from app import create_app
-from app.database import db as _db
 from app.settings import Settings
 
 
@@ -50,9 +50,9 @@ def app():
         )
     )
     with app.app_context():
-        _db.create_all()
+        database.Base.metadata.create_all(database.engine)
         yield app
-        _db.drop_all()
+        database.Base.metadata.drop_all(database.engine)
 
 
 @pytest.fixture()

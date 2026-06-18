@@ -1,12 +1,13 @@
 from datetime import UTC, datetime
 
-from sqlalchemy import JSON, ForeignKey, UniqueConstraint
+from sqlalchemy import JSON, Column, ForeignKey, Integer, Table, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database import db
+from app.database import Base
 
 
-class User(db.Model):
+class User(Base):
+    __tablename__ = "user"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(nullable=False, unique=True)
     password_hash: Mapped[str] = mapped_column(nullable=False)
@@ -20,7 +21,8 @@ class User(db.Model):
     )
 
 
-class Tag(db.Model):
+class Tag(Base):
+    __tablename__ = "tag"
     __table_args__ = (
         UniqueConstraint(
             "user_id", "normalized_name", name="uq_tag_user_normalized_name"
@@ -41,7 +43,8 @@ class Tag(db.Model):
     )
 
 
-class Author(db.Model):
+class Author(Base):
+    __tablename__ = "author"
     __table_args__ = (
         UniqueConstraint(
             "user_id", "normalized_name", name="uq_author_user_normalized_name"
@@ -63,19 +66,18 @@ class Author(db.Model):
     )
 
 
-article_tag = db.Table(
+article_tag = Table(
     "article_tag",
-    db.Column("article_id", db.Integer, db.ForeignKey("article.id"), primary_key=True),
-    db.Column(
-        "tag_id",
-        db.Integer,
-        db.ForeignKey("tag.id", ondelete="CASCADE"),
-        primary_key=True,
+    Base.metadata,
+    Column("article_id", Integer, ForeignKey("article.id"), primary_key=True),
+    Column(
+        "tag_id", Integer, ForeignKey("tag.id", ondelete="CASCADE"), primary_key=True
     ),
 )
 
 
-class Article(db.Model):
+class Article(Base):
+    __tablename__ = "article"
     __table_args__ = (UniqueConstraint("user_id", "url", name="uq_article_user_url"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
