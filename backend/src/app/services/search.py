@@ -2,12 +2,12 @@ from collections.abc import Sequence
 
 from sqlalchemy import String, cast, func, or_, select
 
-from app.database import db
 from app.models import Article, Author
+from app.types import DbSession
 
 
 def search_query(
-    query: str, offset: int | None, limit: int | None, user_id: int
+    session: DbSession, query: str, offset: int | None, limit: int | None, user_id: int
 ) -> tuple[Sequence[Article], int]:
     pattern = f"%{query}%"
     stmt = (
@@ -27,7 +27,7 @@ def search_query(
         stmt = stmt.offset(offset)
     if limit is not None:
         stmt = stmt.limit(limit)
-    articles = db.session.execute(stmt).scalars().all()
+    articles = session.execute(stmt).scalars().all()
 
     count_stmt = (
         select(func.count())
@@ -42,6 +42,6 @@ def search_query(
             )
         )
     )
-    total = db.session.execute(count_stmt).scalar_one()
+    total = session.execute(count_stmt).scalar_one()
 
     return articles, total
