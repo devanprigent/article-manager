@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from flask_migrate import Migrate
 
 from app.blueprints.articles import articles_bp
 from app.blueprints.auth import auth_bp
@@ -28,7 +27,6 @@ def create_app(settings: Settings | None = None):
     )
 
     db.init_app(app)
-    Migrate(app, db)
     JWTManager(app)
 
     register_logging(app, logger)
