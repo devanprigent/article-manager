@@ -12,7 +12,7 @@ def register_error_handlers(app: Flask, logger: logging.Logger) -> None:
     @app.errorhandler(EntityDuplicatedError)
     def handle_duplicated_error(error: EntityDuplicatedError):
         logger.warning(
-            "%s failed — duplicate %s for user_id=%d: %s",
+            "%s failed — duplicate %s for user_id=%s: %s",
             error.action,
             error.entity_name,
             error.user_id,

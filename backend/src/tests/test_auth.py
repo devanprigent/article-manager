@@ -15,6 +15,13 @@ def test_register_wrong_password(client):
     assert res.status_code == 422
 
 
+def test_register_duplicated_username(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "12345678"})
+    assert res.status_code == 201
+    res = client.post("/auth/register", json={"name": "Test", "password": "87654321"})
+    assert res.status_code == 409
+
+
 def test_login(client):
     client.post("/auth/register", json={"name": "Test", "password": "12345678"})
     res = client.post("/auth/login", json={"name": "Test", "password": "12345678"})

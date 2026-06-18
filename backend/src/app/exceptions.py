@@ -1,6 +1,6 @@
 class EntityDuplicatedError(Exception):
     def __init__(
-        self, action: str, user_id: int, entity_name: str, entity_id: int | str
+        self, action: str, user_id: int | None, entity_name: str, entity_id: int | str
     ):
         self.action = action
         self.user_id = user_id

@@ -8,6 +8,7 @@ from app.services.articles import (
     remove_articles,
     update_article,
 )
+from app.services.auth import login_user, register_user
 from app.services.common import (
     check_url_uniqueness,
     get_entities,
@@ -32,4 +33,6 @@ __all__ = [
     "get_or_create_by_name",
     "normalize_name",
     "update_model_fields",
+    "register_user",
+    "login_user",
 ]
