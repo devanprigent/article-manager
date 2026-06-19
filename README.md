@@ -1,6 +1,6 @@
 # Article Manager
 [![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000000)](https://react.dev/)
 [![CI](https://github.com/devanprigent/article-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/devanprigent/article-manager/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -55,7 +55,7 @@ Existing tools felt too heavy or were missing features, so I built my own and I'
 
 ## Architecture
 
-The application is built with a Flask REST API, a PostgreSQL database and a React interface.
+The application is built with a FastAPI REST API, a PostgreSQL database and a React interface.
 
 Authentication uses JWTs stored in httpOnly cookies, as well as CSRF tokens for authenticated requests.
 
@@ -65,7 +65,7 @@ The project includes automated checks for both frontend and backend code through
 | Layer    | Technology      | Why?                                                                                          |
 | -------- | ----------------|---------------------------------------------------------------------------------------------- |
 | Frontend | React 18 | To have a dynamic UI and fast interactions when browsing and filtering articles                      |
-| Backend  | Flask 3 | To have a lightweight API, easy to extend                                                             |
+| Backend  | FastAPI | To have a lightweight API, easy to extend                                                             |
 | Database | PostgreSQL | A relational database that works cleanly with SQLAlchemy and SQL                                   |
 | Tooling  | Pytest, Playwright, Ruff, ESLint, Prettier, Vitest, pre-commit| Automated tests, linting, and formatting for fast feedback      |
 
@@ -83,6 +83,7 @@ For the record, here's the justification for some technical decisions I made dur
 - Added Alembic to handle schema migrations.
 - Added pagination and server-side filtering to improve performance on large collections.
 - Wrote Playwright tests to perform end-to-end checks on the main features and prevent regressions.
+- Migrated from Flask to FastAPI to have native async endpoint support and cleaner typed route declarations.
 
 ## Prerequisites
 
@@ -135,13 +136,13 @@ CREATE DATABASE article_manager;
 Apply the existing database migrations:
 
 ```bash
-poetry run flask --app src/main.py db upgrade
+poetry run alembic upgrade head
 ```
 
-Start the Flask API:
+Start the FastAPI API:
 
 ```bash
-poetry run python src/main.py
+poetry run uvicorn asgi:app --reload --port 5000
 ```
 
 
