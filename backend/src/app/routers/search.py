@@ -1,9 +1,8 @@
 import logging
 
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required
 
-from app.decorators import get_pagination, get_user_id
+from app.decorators import get_pagination, get_user_id, jwt_required
 from app.exceptions import ClientInputError
 from app.schemas import ArticleResponse, PaginatedArticlesResponse
 from app.services import search_query

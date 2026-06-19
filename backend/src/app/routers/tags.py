@@ -2,9 +2,8 @@ import logging
 from typing import Any
 
 from flask import Blueprint, jsonify
-from flask_jwt_extended import jwt_required
 
-from app.decorators import get_user_id, validate_json
+from app.decorators import get_user_id, jwt_required, validate_json
 from app.schemas import BasicSchema, DeleteResponse, IDSchema, NamedEntityResponse
 from app.services import create_tag, get_tags, remove_tags
 from app.sessions import get_session

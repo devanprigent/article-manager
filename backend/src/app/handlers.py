@@ -5,6 +5,7 @@ from pydantic import ValidationError
 from werkzeug.exceptions import HTTPException
 
 from app.exceptions import (
+    AuthenticationError,
     ClientInputError,
     EntitiesNotFoundError,
     EntityDuplicatedError,
@@ -75,6 +76,16 @@ def register_error_handlers(app: Flask, logger: logging.Logger) -> None:
             str(error),
         )
         return jsonify({"error": str(error)}), 400
+
+    @app.errorhandler(AuthenticationError)
+    def handle_token_error(error: AuthenticationError):
+        logger.warning(
+            "Invalid token on %s %s: %s",
+            request.method,
+            request.path,
+            str(error),
+        )
+        return jsonify({"error": "Invalid token"}), 401
 
     @app.errorhandler(HTTPException)
     def handle_http_exception(error: HTTPException):

@@ -1,9 +1,12 @@
 from functools import wraps
+from hmac import compare_digest
 
-from flask import jsonify, request
-from flask_jwt_extended import get_jwt_identity
+from flask import g, jsonify, request
 
-from app.exceptions import ClientInputError
+from app.auth.tokens import decode_token
+from app.constants import ACCESS_COOKIE_NAME, CSRF_METHODS, REFRESH_COOKIE_NAME
+from app.exceptions import AuthenticationError, ClientInputError
+from app.settings import get_settings
 
 
 def validate_json(fn):
@@ -22,10 +25,34 @@ def validate_json(fn):
 def get_user_id(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        user_id = int(get_jwt_identity())
-        return fn(*args, user_id=user_id, **kwargs)
+        return fn(*args, user_id=g.user_id, **kwargs)
 
     return wrapper
+
+
+def jwt_required(*, refresh: bool = False):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            settings = get_settings()
+            cookie_name = REFRESH_COOKIE_NAME if refresh else ACCESS_COOKIE_NAME
+            token = request.cookies.get(cookie_name)
+            if not token:
+                raise AuthenticationError()
+            payload = decode_token(token, settings, refresh=refresh)
+            if settings.jwt_cookie_csrf_protect and request.method in CSRF_METHODS:
+                csrf_header = request.headers.get("X-CSRF-TOKEN")
+                if not csrf_header:
+                    raise AuthenticationError()
+                token_csrf = payload.get("csrf")
+                if not token_csrf or not compare_digest(csrf_header, token_csrf):
+                    raise AuthenticationError()
+            g.user_id = int(payload["sub"])
+            return fn(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 MAX_LIMIT = 1000

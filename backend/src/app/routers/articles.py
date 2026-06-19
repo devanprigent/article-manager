@@ -2,9 +2,8 @@ import logging
 from typing import Any
 
 from flask import Blueprint, jsonify
-from flask_jwt_extended import jwt_required
 
-from app.decorators import get_pagination, get_user_id, validate_json
+from app.decorators import get_pagination, get_user_id, jwt_required, validate_json
 from app.models import Article
 from app.schemas import (
     ArticleResponse,

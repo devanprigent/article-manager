@@ -366,26 +366,6 @@ flask = ">=0.9"
 Werkzeug = ">=0.7"
 
 [[package]]
-name = "flask-jwt-extended"
-version = "4.7.3"
-description = "Extended JWT integration with Flask"
-optional = false
-python-versions = "<4,>=3.10"
-groups = ["main"]
-files = [
-    {file = "flask_jwt_extended-4.7.3-py2.py3-none-any.whl", hash = "sha256:905ac807b52b5409bc9244dbcca434968c13ca6f9d91bffe7d4cb71e0e6231cb"},
-    {file = "flask_jwt_extended-4.7.3.tar.gz", hash = "sha256:a8318a3d983d1f360724b901889f1947ffee418e2a3950b48e99c70923b6615e"},
-]
-
-[package.dependencies]
-Flask = ">=2.0,<4.0"
-PyJWT = ">=2.0,<3.0"
-Werkzeug = ">=0.14"
-
-[package.extras]
-asymmetric-crypto = ["cryptography (>=3.3.1)"]
-
-[[package]]
 name = "greenlet"
 version = "3.5.1"
 description = "Lightweight in-process concurrent programming"
@@ -1691,4 +1671,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4"
-content-hash = "2c4d76f703a063e7e31c16a13cb4fed450eaa869a668df2060c68548917470b1"
+content-hash = "98c46dc01860e9916ba85756f5adc187a033f704e991cf0e4397df1de6291fb4"

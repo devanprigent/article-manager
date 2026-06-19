@@ -2,15 +2,15 @@ import logging
 from typing import Any
 
 from flask import Blueprint, jsonify
-from flask_jwt_extended import (
-    jwt_required,
+
+from app.auth import (
+    create_access_token,
+    create_refresh_token,
     set_access_cookies,
-    set_refresh_cookies,
+    set_auth_cookies,
     unset_jwt_cookies,
 )
-
-from app.auth import create_access_token, create_refresh_token
-from app.decorators import get_user_id, validate_json
+from app.decorators import get_user_id, jwt_required, validate_json
 from app.models import User
 from app.schemas import NamedEntityResponse, UserSchema
 from app.services import get_entity, login_user, register_user
@@ -32,8 +32,7 @@ def register(data: dict[str, Any]):
     refresh_token = create_refresh_token(user_id, settings)
     logger.info("User registered: id=%d name=%r", user_id, schema.name)
     response = jsonify({"msg": "Successfully registered"})
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
+    set_auth_cookies(response, access_token, refresh_token, settings)
     return response, 201
 
 
@@ -47,8 +46,7 @@ def login(data: dict[str, Any]):
     refresh_token = create_refresh_token(user_id, settings)
     logger.info("User logged in: id=%d name=%r", user_id, schema.name)
     response = jsonify({"msg": "Successfully logged-in"})
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
+    set_auth_cookies(response, access_token, refresh_token, settings)
     return response, 200
 
 
@@ -71,7 +69,7 @@ def refresh(user_id: int):
     settings = get_settings()
     access_token = create_access_token(user_id, settings)
     response = jsonify({"msg": "Refresh successful"})
-    set_access_cookies(response, access_token)
+    set_access_cookies(response, access_token, settings)
     return response, 200
 
 
@@ -80,5 +78,6 @@ def refresh(user_id: int):
 def logout():
     logger.info("User logged out")
     response = jsonify({"msg": "Successfully logged-out"})
-    unset_jwt_cookies(response)
+    settings = get_settings()
+    unset_jwt_cookies(response, settings)
     return response, 200

@@ -23,13 +23,11 @@ class Settings(BaseSettings):
     jwt_cookie_domain: str | None = None
     jwt_access_token_expires: timedelta = timedelta(minutes=15)
     jwt_refresh_token_expires: timedelta = timedelta(days=30)
-    jwt_token_location: list[str] = ["cookies"]
     jwt_refresh_cookie_path: str = "/auth/refresh"
     jwt_cookie_secure: bool = True
     jwt_cookie_samesite: str = "Lax"
     jwt_cookie_csrf_protect: bool = True
     jwt_csrf_in_cookies: bool = True
-    jwt_csrf_cookie_httponly: bool = False
     jwt_access_csrf_cookie_path: str = "/"
     jwt_refresh_csrf_cookie_path: str = "/"
     testing: bool = False
@@ -55,19 +53,6 @@ class Settings(BaseSettings):
     def to_flask_config(self) -> dict:
         return {
             "SECRET_KEY": self.secret_key,
-            "JWT_SECRET_KEY": self.jwt_secret_key,
-            "JWT_ACCESS_TOKEN_EXPIRES": self.jwt_access_token_expires,
-            "JWT_REFRESH_TOKEN_EXPIRES": self.jwt_refresh_token_expires,
-            "JWT_TOKEN_LOCATION": self.jwt_token_location,
-            "JWT_REFRESH_COOKIE_PATH": self.jwt_refresh_cookie_path,
-            "JWT_COOKIE_DOMAIN": self.jwt_cookie_domain,
-            "JWT_COOKIE_SECURE": self.jwt_cookie_secure,
-            "JWT_COOKIE_SAMESITE": self.jwt_cookie_samesite,
-            "JWT_COOKIE_CSRF_PROTECT": self.jwt_cookie_csrf_protect,
-            "JWT_CSRF_IN_COOKIES": self.jwt_csrf_in_cookies,
-            "JWT_CSRF_COOKIE_HTTPONLY": self.jwt_csrf_cookie_httponly,
-            "JWT_ACCESS_CSRF_COOKIE_PATH": self.jwt_access_csrf_cookie_path,
-            "JWT_REFRESH_CSRF_COOKIE_PATH": self.jwt_refresh_csrf_cookie_path,
             "TESTING": self.testing,
         }
 
