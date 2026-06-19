@@ -1,6 +1,8 @@
 from datetime import timedelta
 from pathlib import Path
+from typing import cast
 
+from flask import current_app
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -68,3 +70,7 @@ class Settings(BaseSettings):
             "JWT_REFRESH_CSRF_COOKIE_PATH": self.jwt_refresh_csrf_cookie_path,
             "TESTING": self.testing,
         }
+
+
+def get_settings() -> Settings:
+    return cast(Settings, current_app.extensions["settings"])

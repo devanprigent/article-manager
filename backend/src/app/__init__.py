@@ -20,6 +20,7 @@ logger = configure_logging()
 def create_app(settings: Settings | None = None):
     app = Flask(__name__)
     settings = settings or Settings()
+    app.extensions["settings"] = settings
     app.config.update(settings.to_flask_config())
     CORS(
         app,

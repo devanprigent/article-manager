@@ -3,18 +3,19 @@ from typing import Any
 
 from flask import Blueprint, jsonify
 from flask_jwt_extended import (
-    create_access_token,
     jwt_required,
     set_access_cookies,
     set_refresh_cookies,
     unset_jwt_cookies,
 )
 
+from app.auth import create_access_token, create_refresh_token
 from app.decorators import get_user_id, validate_json
 from app.models import User
 from app.schemas import NamedEntityResponse, UserSchema
 from app.services import get_entity, login_user, register_user
 from app.sessions import get_session
+from app.settings import get_settings
 
 logger = logging.getLogger("article_manager.auth")
 
@@ -25,9 +26,10 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 @validate_json
 def register(data: dict[str, Any]):
     schema = UserSchema.model_validate(data)
-    user_id, access_token, refresh_token = register_user(
-        get_session(), schema.name, schema.password
-    )
+    user_id = register_user(get_session(), schema.name, schema.password)
+    settings = get_settings()
+    access_token = create_access_token(user_id, settings)
+    refresh_token = create_refresh_token(user_id, settings)
     logger.info("User registered: id=%d name=%r", user_id, schema.name)
     response = jsonify({"msg": "Successfully registered"})
     set_access_cookies(response, access_token)
@@ -39,9 +41,10 @@ def register(data: dict[str, Any]):
 @validate_json
 def login(data: dict[str, Any]):
     schema = UserSchema.model_validate(data)
-    user_id, access_token, refresh_token = login_user(
-        get_session(), schema.name, schema.password
-    )
+    user_id = login_user(get_session(), schema.name, schema.password)
+    settings = get_settings()
+    access_token = create_access_token(user_id, settings)
+    refresh_token = create_refresh_token(user_id, settings)
     logger.info("User logged in: id=%d name=%r", user_id, schema.name)
     response = jsonify({"msg": "Successfully logged-in"})
     set_access_cookies(response, access_token)
@@ -65,7 +68,8 @@ def session(user_id: int):
 @get_user_id
 def refresh(user_id: int):
     logger.info("Token refreshed: user_id=%d", user_id)
-    access_token = create_access_token(identity=str(user_id))
+    settings = get_settings()
+    access_token = create_access_token(user_id, settings)
     response = jsonify({"msg": "Refresh successful"})
     set_access_cookies(response, access_token)
     return response, 200
