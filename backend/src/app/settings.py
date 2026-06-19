@@ -1,12 +1,13 @@
 from datetime import timedelta
 from pathlib import Path
-from typing import cast
+from typing import Literal, cast
 
-from flask import current_app
+from fastapi import Request
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parents[2]
+CookieSameSite = Literal["lax", "strict", "none"]
 
 
 class Settings(BaseSettings):
@@ -25,7 +26,7 @@ class Settings(BaseSettings):
     jwt_refresh_token_expires: timedelta = timedelta(days=30)
     jwt_refresh_cookie_path: str = "/auth/refresh"
     jwt_cookie_secure: bool = True
-    jwt_cookie_samesite: str = "Lax"
+    jwt_cookie_samesite: CookieSameSite | None = "lax"
     jwt_cookie_csrf_protect: bool = True
     jwt_csrf_in_cookies: bool = True
     jwt_access_csrf_cookie_path: str = "/"
@@ -44,18 +45,22 @@ class Settings(BaseSettings):
             return "postgresql+psycopg://" + url.removeprefix("postgresql://")
         return url
 
+    @field_validator("jwt_cookie_samesite", mode="before")
+    @classmethod
+    def normalize_cookie_samesite(cls, value: str | None) -> CookieSameSite | None:
+        if value is None:
+            return None
+        normalized = str(value).lower()
+        if normalized not in ("lax", "strict", "none"):
+            raise ValueError("jwt_cookie_samesite must be 'lax', 'strict', or 'none'")
+        return cast(CookieSameSite, normalized)
+
     @property
     def frontend_origins_list(self) -> list[str]:
         if isinstance(self.frontend_origins, list):
             return self.frontend_origins
         return [o.strip() for o in self.frontend_origins.split(",") if o.strip()]
 
-    def to_flask_config(self) -> dict:
-        return {
-            "SECRET_KEY": self.secret_key,
-            "TESTING": self.testing,
-        }
 
-
-def get_settings() -> Settings:
-    return cast(Settings, current_app.extensions["settings"])
+def get_settings(request: Request) -> Settings:
+    return cast(Settings, request.app.state.settings)

@@ -1,19 +1,22 @@
+import contextvars
 import logging
 import time
 import uuid
 
-from flask import Flask, has_request_context, request
+from fastapi import FastAPI, Request
 
 LOG_FORMAT = "%(asctime)s [%(levelname)s] [%(request_id)s] %(name)s: %(message)s"
 APP_LOGGER_NAME = "article_manager"
 
 
+request_id_var: contextvars.ContextVar[str] = contextvars.ContextVar(
+    "request_id", default="-"
+)
+
+
 class RequestIdFilter(logging.Filter):
     def filter(self, record: logging.LogRecord) -> bool:
-        if has_request_context():
-            record.request_id = getattr(request, "request_id", "-")
-        else:
-            record.request_id = "-"
+        record.request_id = request_id_var.get()
         return True
 
 
@@ -29,30 +32,32 @@ def configure_logging() -> logging.Logger:
     return logging.getLogger(APP_LOGGER_NAME)
 
 
-def register_logging(app: Flask, logger: logging.Logger) -> None:
+def register_logging(app: FastAPI, logger: logging.Logger) -> None:
 
-    @app.before_request
-    def _set_request_id():
-        request.request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    @app.middleware("http")
+    async def logging_middleware(request: Request, call_next):
+        # --- before_request equivalent ---
+        request_id = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+        token = request_id_var.set(request_id)
 
-    @app.after_request
-    def _return_request_id(response):
-        response.headers["X-Request-ID"] = request.request_id
-        return response
+        try:
+            start_time = time.perf_counter()
 
-    @app.before_request
-    def _log_request_start():
-        request.start_time = time.perf_counter()
-        logger.info("→ %s %s", request.method, request.path)
+            logger.info("→ %s %s", request.method, request.url.path)
 
-    @app.after_request
-    def _log_request_end(response):
-        duration_ms = (time.perf_counter() - request.start_time) * 1000
-        logger.info(
-            "← %s %s %d (%.1fms)",
-            request.method,
-            request.path,
-            response.status_code,
-            duration_ms,
-        )
-        return response
+            # --- run route + exception handlers ---
+            response = await call_next(request)
+
+            # --- after_request equivalent ---
+            duration_ms = (time.perf_counter() - start_time) * 1000
+            response.headers["X-Request-ID"] = request_id
+            logger.info(
+                "← %s %s %d (%.1fms)",
+                request.method,
+                request.url.path,
+                response.status_code,
+                duration_ms,
+            )
+            return response
+        finally:
+            request_id_var.reset(token)

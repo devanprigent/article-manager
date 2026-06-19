@@ -10,12 +10,12 @@ def test_health(client):
 
 def test_get_article(auth_client, article):
     res = auth_client.get("/articles")
-    payload = res.get_json()["data"]
+    payload = res.json()["data"]
     assert len(payload) == 1
     article_id = int(payload[0]["id"])
     res2 = auth_client.get(f"/articles/{article_id}")
     assert res2.status_code == 200
-    payload2 = res2.get_json()
+    payload2 = res2.json()
     assert payload[0]["title"] == payload2["title"]
 
 
@@ -26,7 +26,7 @@ def test_get_invalid_article(auth_client, article):
 
 def test_article_return_content_not_articles(auth_client, article):
     res = auth_client.get("/articles")
-    payload = res.get_json()["data"]
+    payload = res.json()["data"]
     assert len(payload) == 1
     assert payload[0]["content"] is None
 
@@ -34,14 +34,14 @@ def test_article_return_content_not_articles(auth_client, article):
     res2 = auth_client.get(f"/articles/{article_id}")
     assert res2.status_code == 200
 
-    payload2 = res2.get_json()
+    payload2 = res2.json()
     assert payload2["content"] is not None
 
 
 def test_add_valid_tag(auth_client, tag):
     res = auth_client.get("/tags")
     assert res.status_code == 200
-    payload = res.get_json()
+    payload = res.json()
     assert len(payload) == 1
     assert payload[0]["name"] == tag["name"]
 
@@ -55,14 +55,14 @@ def test_add_invalid_tag(auth_client):
 @pytest.mark.parametrize("endpoint", ["/tags", "/authors"])
 def test_delete_entity(auth_client, endpoint):
     res = auth_client.get(endpoint)
-    payload = res.get_json()
+    payload = res.json()
     assert len(payload) == 1
     entity_id = int(payload[0]["id"])
     res_delete = auth_client.delete(endpoint, json={"ids": [entity_id]})
     assert res_delete.status_code == 200
-    assert res_delete.get_json()["count"] == 1
+    assert res_delete.json()["count"] == 1
     new_res = auth_client.get(endpoint)
-    new_payload = new_res.get_json()
+    new_payload = new_res.json()
     assert len(new_payload) == 0
 
 
@@ -75,21 +75,21 @@ def test_delete_author_with_article(auth_client, author, mock_article):
 
 def test_delete_article(auth_client, article):
     res = auth_client.get("/articles")
-    payload = res.get_json()["data"]
+    payload = res.json()["data"]
     assert len(payload) == 1
     article_id = int(payload[0]["id"])
     res_delete = auth_client.delete("/articles", json={"ids": [article_id]})
     assert res_delete.status_code == 200
-    assert res_delete.get_json()["count"] == 1
+    assert res_delete.json()["count"] == 1
     new_res = auth_client.get("/articles")
-    new_payload = new_res.get_json()["data"]
+    new_payload = new_res.json()["data"]
     assert len(new_payload) == 0
 
 
 def test_add_valid_author(auth_client, author):
     res = auth_client.get("/authors")
     assert res.status_code == 200
-    payload = res.get_json()
+    payload = res.json()
     assert len(payload) == 1
     assert payload[0]["name"] == author["name"]
 
@@ -102,7 +102,7 @@ def test_add_invalid_author(auth_client):
 def test_add_valid_article(auth_client, article):
     res = auth_client.get("/articles")
     assert res.status_code == 200
-    payload = res.get_json()["data"]
+    payload = res.json()["data"]
     assert len(payload) == 1
     assert payload[0]["title"] == article["title"]
 
@@ -117,10 +117,13 @@ def test_add_invalid_articles(
 ):
     res = auth_client.post("/articles", json=invalid_article)
     assert res.status_code == expected_status
-    payload = res.get_json()
-    assert "error" in payload
+    payload = res.json()
+    assert "detail" in payload
     if expected_error_locs is not None:
-        actual_locs = [e["loc"] for e in payload["error"]]
+        actual_locs = [
+            e["loc"][1:] if e["loc"] and e["loc"][0] == "body" else e["loc"]
+            for e in payload["detail"]
+        ]
         for loc in expected_error_locs:
             assert loc in actual_locs, (loc, actual_locs)
 
@@ -128,7 +131,7 @@ def test_add_invalid_articles(
 def test_top_authors(auth_client, create_list_authors_articles):
     res = auth_client.get("/authors/top")
     assert res.status_code == 200
-    payload = res.get_json()
+    payload = res.json()
     expected_responses = [
         ("Cal Newport", 3),
         ("Brandon Sanderson", 2),
@@ -145,18 +148,19 @@ def test_duplicated_url(auth_client, article, mock_article_2):
     mock_article_2["url"] = article["url"]
     res = auth_client.post("/articles", json=mock_article_2)
     assert res.status_code == 409
-    assert "duplicate" in res.get_json()["error"]
+    payload = res.json()
+    assert "duplicate" in payload["detail"]
 
 
 def test_list_articles_pagination(auth_client, create_list_authors_articles):
     res = auth_client.get("/articles")
     assert res.status_code == 200
-    payload = res.get_json()["data"]
+    payload = res.json()["data"]
     assert len(payload) == 6
 
     res2 = auth_client.get("/articles?offset=2&limit=2")
     assert res2.status_code == 200
-    payload2 = res2.get_json()["data"]
+    payload2 = res2.json()["data"]
     assert len(payload2) == 2
 
     assert payload[2]["id"] == payload2[0]["id"]
@@ -176,4 +180,5 @@ def test_list_articles_rejects_zero_limit(auth_client):
 def test_list_articles_rejects_limit_above_max(auth_client):
     res = auth_client.get("/articles?limit=1001")
     assert res.status_code == 400
-    assert "1000" in res.get_json()["error"]
+    payload = res.json()
+    assert "1000" in payload["detail"]

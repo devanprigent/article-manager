@@ -1,5 +1,5 @@
 import jwt
-from flask import Response
+from fastapi import Response
 
 from app.constants import (
     ACCESS_COOKIE_NAME,
@@ -20,7 +20,7 @@ def _csrf_from_token(encoded_token: str) -> str:
     )
     csrf = payload.get("csrf")
     if csrf is None:
-        raise AuthenticationError()
+        raise AuthenticationError("Invalid cookie")
     return str(csrf)
 
 
@@ -86,44 +86,42 @@ def set_auth_cookies(
 
 
 def unset_access_cookies(response: Response, settings: Settings) -> None:
-    flags = _cookie_flags(settings)
-    response.set_cookie(
+    response.delete_cookie(
         ACCESS_COOKIE_NAME,
-        value="",
-        expires=0,
-        httponly=True,
         path=ACCESS_COOKIE_PATH,
-        **flags,
+        domain=settings.jwt_cookie_domain,
+        secure=settings.jwt_cookie_secure,
+        httponly=True,
+        samesite=settings.jwt_cookie_samesite,
     )
     if settings.jwt_cookie_csrf_protect and settings.jwt_csrf_in_cookies:
-        response.set_cookie(
+        response.delete_cookie(
             ACCESS_CSRF_COOKIE_NAME,
-            value="",
-            expires=0,
-            httponly=False,
             path=settings.jwt_access_csrf_cookie_path,
-            **flags,
+            domain=settings.jwt_cookie_domain,
+            secure=settings.jwt_cookie_secure,
+            httponly=False,
+            samesite=settings.jwt_cookie_samesite,
         )
 
 
 def unset_refresh_cookies(response: Response, settings: Settings) -> None:
-    flags = _cookie_flags(settings)
-    response.set_cookie(
+    response.delete_cookie(
         REFRESH_COOKIE_NAME,
-        value="",
-        expires=0,
-        httponly=True,
         path=settings.jwt_refresh_cookie_path,
-        **flags,
+        domain=settings.jwt_cookie_domain,
+        secure=settings.jwt_cookie_secure,
+        httponly=True,
+        samesite=settings.jwt_cookie_samesite,
     )
     if settings.jwt_cookie_csrf_protect and settings.jwt_csrf_in_cookies:
-        response.set_cookie(
+        response.delete_cookie(
             REFRESH_CSRF_COOKIE_NAME,
-            value="",
-            expires=0,
-            httponly=False,
             path=settings.jwt_refresh_csrf_cookie_path,
-            **flags,
+            domain=settings.jwt_cookie_domain,
+            secure=settings.jwt_cookie_secure,
+            httponly=False,
+            samesite=settings.jwt_cookie_samesite,
         )
 
 

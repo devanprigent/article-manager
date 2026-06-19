@@ -1,8 +1,8 @@
 import logging
 
-from flask import Flask, jsonify, request
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from pydantic import ValidationError
-from werkzeug.exceptions import HTTPException
 
 from app.exceptions import (
     AuthenticationError,
@@ -14,10 +14,10 @@ from app.exceptions import (
 )
 
 
-def register_error_handlers(app: Flask, logger: logging.Logger) -> None:
+def register_error_handlers(app: FastAPI, logger: logging.Logger) -> None:
 
-    @app.errorhandler(EntityDuplicatedError)
-    def handle_duplicated_error(error: EntityDuplicatedError):
+    @app.exception_handler(EntityDuplicatedError)
+    def handle_duplicated_error(request: Request, error: EntityDuplicatedError):
         logger.warning(
             "%s failed — duplicate %s for user_id=%s: %s",
             error.action,
@@ -25,80 +25,107 @@ def register_error_handlers(app: Flask, logger: logging.Logger) -> None:
             error.user_id,
             error.entity_id,
         )
-        return jsonify({"error": str(error)}), 409
+        return JSONResponse(
+            status_code=409,
+            content={"detail": str(error)},
+        )
 
-    @app.errorhandler(ValidationError)
-    def handle_validation_error(error: ValidationError):
+    @app.exception_handler(ValidationError)
+    def handle_validation_error(request: Request, error: ValidationError):
         logger.warning(
             "Validation error on %s %s: %s",
             request.method,
-            request.path,
+            request.url.path,
             error.errors(),
         )
-        return jsonify({"error": error.errors()}), 422
+        return JSONResponse(
+            status_code=422,
+            content={"detail": error.errors()},
+        )
 
-    @app.errorhandler(EntitiesNotFoundError)
-    def handle_entities_not_found_error(error: EntitiesNotFoundError):
+    @app.exception_handler(EntitiesNotFoundError)
+    def handle_entities_not_found_error(request: Request, error: EntitiesNotFoundError):
         logger.warning(
             "Entities not found on %s %s: missing_ids=%s",
             request.method,
-            request.path,
+            request.url.path,
             error.missing_ids,
         )
-        return jsonify({"error": str(error), "missing_ids": error.missing_ids}), 404
+        return JSONResponse(
+            status_code=404,
+            content={"detail": str(error), "missing_ids": error.missing_ids},
+        )
 
-    @app.errorhandler(InvalidCredentialsError)
-    def handle_credentials_error(error: InvalidCredentialsError):
+    @app.exception_handler(InvalidCredentialsError)
+    def handle_credentials_error(request: Request, error: InvalidCredentialsError):
         logger.warning(
             "Authentication error on %s %s: %s",
             request.method,
-            request.path,
+            request.url.path,
             str(error),
         )
-        return jsonify({"error": str(error)}), 401
+        return JSONResponse(
+            status_code=401,
+            content={"detail": str(error)},
+        )
 
-    @app.errorhandler(ClientInputError)
-    def handle_invalid_input(error: ClientInputError):
+    @app.exception_handler(ClientInputError)
+    def handle_invalid_input(request: Request, error: ClientInputError):
         logger.warning(
             "Invalid input on %s %s: %s",
             request.method,
-            request.path,
+            request.url.path,
             str(error),
         )
-        return jsonify({"error": str(error)}), 400
+        return JSONResponse(
+            status_code=400,
+            content={"detail": str(error)},
+        )
 
-    @app.errorhandler(ParsingError)
-    def handle_parsing_error(error: ParsingError):
+    @app.exception_handler(ParsingError)
+    def handle_parsing_error(request: Request, error: ParsingError):
         logger.warning(
             "Error while parsing on %s %s: %s",
             request.method,
-            request.path,
+            request.url.path,
             str(error),
         )
-        return jsonify({"error": str(error)}), 400
+        return JSONResponse(
+            status_code=400,
+            content={"detail": str(error)},
+        )
 
-    @app.errorhandler(AuthenticationError)
-    def handle_token_error(error: AuthenticationError):
+    @app.exception_handler(AuthenticationError)
+    def handle_token_error(request: Request, error: AuthenticationError):
         logger.warning(
             "Invalid token on %s %s: %s",
             request.method,
-            request.path,
+            request.url.path,
             str(error),
         )
-        return jsonify({"error": "Invalid token"}), 401
+        return JSONResponse(
+            status_code=401,
+            content={"detail": str(error)},
+        )
 
-    @app.errorhandler(HTTPException)
-    def handle_http_exception(error: HTTPException):
+    @app.exception_handler(HTTPException)
+    def handle_http_exception(request: Request, error: HTTPException):
         logger.warning(
             "HTTP %d on %s %s: %s",
-            error.code,
+            error.status_code,
             request.method,
-            request.path,
-            error.description,
+            request.url.path,
+            error.detail,
         )
-        return jsonify({"error": error.description}), error.code
+        return JSONResponse(
+            status_code=error.status_code,
+            content={"detail": error.detail},
+        )
 
-    @app.errorhandler(Exception)
-    def handle_unexpected(error):
-        logger.exception("Unhandled error on %s %s", request.method, request.path)
-        return jsonify({"error": "Internal server error"}), 500
+    @app.exception_handler(Exception)
+    def handle_unexpected(request: Request, error):
+        logger.exception("Unhandled error on %s %s", request.method, request.url.path)
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error"},
+        )

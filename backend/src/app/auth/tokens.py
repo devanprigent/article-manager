@@ -42,9 +42,9 @@ def decode_token(token: str, settings: Settings, *, refresh: bool = False) -> di
     try:
         payload = jwt.decode(token, settings.jwt_secret_key, algorithms=["HS256"])
     except jwt.PyJWTError as exc:
-        raise AuthenticationError() from exc
+        raise AuthenticationError("Invalid token") from exc
 
     expected_type = "refresh" if refresh else "access"
     if payload.get("type", "access") != expected_type:
-        raise AuthenticationError()
+        raise AuthenticationError("Invalid token")
     return payload
