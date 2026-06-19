@@ -2,7 +2,8 @@ import socket
 from types import SimpleNamespace
 
 import pytest
-from werkzeug import Response
+from fastapi import Response
+from fastapi.testclient import TestClient
 
 import app.database as database
 from app import create_app
@@ -21,7 +22,7 @@ def parse_cookies(cookies: list[str], name: str) -> str | None:
 
 
 def get_cookie_value(response: Response, name: str):
-    cookies = response.headers.getlist("Set-Cookie")
+    cookies = response.headers.get_list("set-cookie")
     return parse_cookies(cookies, name)
 
 
@@ -45,19 +46,19 @@ def app():
             database_url="sqlite:///:memory:",
             secret_key="test-key",
             jwt_secret_key="very-very-very-long-test-jwt-key",
+            jwt_cookie_secure=False,
             testing=True,
             _env_file=None,
         )
     )
-    with app.app_context():
-        database.Base.metadata.create_all(database.engine)
-        yield app
-        database.Base.metadata.drop_all(database.engine)
+    database.Base.metadata.create_all(database.engine)
+    yield app
+    database.Base.metadata.drop_all(database.engine)
 
 
 @pytest.fixture()
 def client(app):
-    return app.test_client()
+    return TestClient(app)
 
 
 @pytest.fixture()
@@ -88,6 +89,11 @@ def auth_client(client, auth_headers):
         def delete(self, *args, **kwargs):
             headers = kwargs.pop("headers", {})
             headers = {**auth_headers, **headers}
+            json_body = kwargs.pop("json", None)
+            if json_body is not None:
+                return client.request(
+                    "DELETE", *args, json=json_body, headers=headers, **kwargs
+                )
             return client.delete(*args, headers=headers, **kwargs)
 
     return AuthClient()
@@ -190,14 +196,14 @@ def create_list_authors_articles(auth_client, list_authors, list_articles):
 def author(auth_client, list_authors):
     r = auth_client.post("/authors", json=list_authors[0])
     assert r.status_code == 201
-    return r.get_json()
+    return r.json()
 
 
 @pytest.fixture()
 def tag(auth_client):
     r = auth_client.post("/tags", json={"name": "Nature"})
     assert r.status_code == 201
-    return r.get_json()
+    return r.json()
 
 
 @pytest.fixture()
@@ -251,11 +257,11 @@ def article(auth_client, author, tag, mock_article_incomplete, list_authors):
     assert r_tags.status_code == 201
 
     new_article = mock_article_incomplete.copy()
-    new_article["author"] = r_author.get_json()["name"]
-    new_article["tags"] = [r_tags.get_json()["name"]]
+    new_article["author"] = r_author.json()["name"]
+    new_article["tags"] = [r_tags.json()["name"]]
     r = auth_client.post("/articles", json=new_article)
     assert r.status_code == 201
-    return r.get_json()
+    return r.json()
 
 
 INVALID_ARTICLE_CASES = [

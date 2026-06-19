@@ -67,3 +67,7 @@ class DeleteResponse[T](BaseModel):
 class TopAuthorResponse(BaseModel):
     author: str
     count: int
+
+
+class AuthMessageResponse(BaseModel):
+    msg: str

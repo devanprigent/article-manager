@@ -29,3 +29,11 @@ def init_db(database_url: str) -> None:
         engine = create_engine(database_url)
 
     SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+def get_db():
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()

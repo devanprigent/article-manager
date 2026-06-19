@@ -1,84 +1,67 @@
 import logging
-from typing import Any
 
-from flask import Blueprint, jsonify
-from flask_jwt_extended import (
-    jwt_required,
+from fastapi import APIRouter, Response
+
+from app.auth import (
+    create_access_token,
+    create_refresh_token,
     set_access_cookies,
-    set_refresh_cookies,
+    set_auth_cookies,
     unset_jwt_cookies,
 )
-
-from app.auth import create_access_token, create_refresh_token
-from app.decorators import get_user_id, validate_json
+from app.dependencies import AppSettings, DbSession, RefreshUserId, UserId
 from app.models import User
-from app.schemas import NamedEntityResponse, UserSchema
+from app.schemas import AuthMessageResponse, NamedEntityResponse, UserSchema
 from app.services import get_entity, login_user, register_user
-from app.sessions import get_session
-from app.settings import get_settings
 
 logger = logging.getLogger("article_manager.auth")
 
-auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
+router = APIRouter(prefix="/auth")
 
 
-@auth_bp.route("/register", methods=["POST"])
-@validate_json
-def register(data: dict[str, Any]):
-    schema = UserSchema.model_validate(data)
-    user_id = register_user(get_session(), schema.name, schema.password)
-    settings = get_settings()
+@router.post("/register", status_code=201)
+def register(
+    db: DbSession, payload: UserSchema, settings: AppSettings, response: Response
+) -> AuthMessageResponse:
+    user_id = register_user(db, payload.name, payload.password)
     access_token = create_access_token(user_id, settings)
     refresh_token = create_refresh_token(user_id, settings)
-    logger.info("User registered: id=%d name=%r", user_id, schema.name)
-    response = jsonify({"msg": "Successfully registered"})
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
-    return response, 201
+    logger.info("User registered: id=%d name=%r", user_id, payload.name)
+    set_auth_cookies(response, access_token, refresh_token, settings)
+    return AuthMessageResponse(msg="Successfully registered")
 
 
-@auth_bp.route("/login", methods=["POST"])
-@validate_json
-def login(data: dict[str, Any]):
-    schema = UserSchema.model_validate(data)
-    user_id = login_user(get_session(), schema.name, schema.password)
-    settings = get_settings()
+@router.post("/login")
+def login(
+    db: DbSession, payload: UserSchema, settings: AppSettings, response: Response
+) -> AuthMessageResponse:
+    user_id = login_user(db, payload.name, payload.password)
     access_token = create_access_token(user_id, settings)
     refresh_token = create_refresh_token(user_id, settings)
-    logger.info("User logged in: id=%d name=%r", user_id, schema.name)
-    response = jsonify({"msg": "Successfully logged-in"})
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
-    return response, 200
+    logger.info("User logged in: id=%d name=%r", user_id, payload.name)
+    set_auth_cookies(response, access_token, refresh_token, settings)
+    return AuthMessageResponse(msg="Successfully logged-in")
 
 
-@auth_bp.route("/session", methods=["GET"])
-@jwt_required()
-@get_user_id
-def session(user_id: int):
+@router.get("/session")
+def session(db: DbSession, user_id: UserId) -> NamedEntityResponse:
     logger.info("Session verified: user_id=%d", user_id)
-    user = get_entity(get_session(), user_id, User)
-    return jsonify(
-        NamedEntityResponse(id=user_id, name=user.name).model_dump(mode="json")
-    ), 200
+    user = get_entity(db, user_id, User)
+    return NamedEntityResponse(id=user_id, name=user.name)
 
 
-@auth_bp.route("/refresh", methods=["POST"])
-@jwt_required(refresh=True)
-@get_user_id
-def refresh(user_id: int):
+@router.post("/refresh")
+def refresh(
+    user_id: RefreshUserId, settings: AppSettings, response: Response
+) -> AuthMessageResponse:
     logger.info("Token refreshed: user_id=%d", user_id)
-    settings = get_settings()
     access_token = create_access_token(user_id, settings)
-    response = jsonify({"msg": "Refresh successful"})
-    set_access_cookies(response, access_token)
-    return response, 200
+    set_access_cookies(response, access_token, settings)
+    return AuthMessageResponse(msg="Refresh successful")
 
 
-@auth_bp.route("/logout", methods=["POST"])
-@jwt_required()
-def logout():
+@router.post("/logout")
+def logout(settings: AppSettings, response: Response) -> AuthMessageResponse:
     logger.info("User logged out")
-    response = jsonify({"msg": "Successfully logged-out"})
-    unset_jwt_cookies(response)
-    return response, 200
+    unset_jwt_cookies(response, settings)
+    return AuthMessageResponse(msg="Successfully logged-out")

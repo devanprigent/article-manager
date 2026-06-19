@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Protocol
 
 from sqlalchemy.orm import Session
@@ -19,3 +20,9 @@ class NamedEntity(UserScoped, Protocol):
 
 
 DbSession = Session
+
+
+@dataclass(frozen=True)
+class Pagination:
+    offset: int | None
+    limit: int | None

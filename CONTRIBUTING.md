@@ -17,7 +17,7 @@ git clone <repo-url>
 cd <repo-name>
 ```
 
-### 2. Backend setup (Flask)
+### 2. Backend setup (FastAPI)
 
 Create `backend/.env` from `backend/.env.example`:
 
@@ -33,7 +33,7 @@ Then launch the development server:
 ```
 cd backend
 poetry install
-poetry run python ./src/main.py
+poetry run uvicorn asgi:app --reload --port 5000
 ```
 
 ### 3. Frontend setup (React)

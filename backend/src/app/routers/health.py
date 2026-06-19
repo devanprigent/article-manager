@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify
+from fastapi import APIRouter
 
-health_bp = Blueprint("health", __name__, url_prefix="/health")
+router = APIRouter(prefix="/health")
 
 
-@health_bp.route("", methods=["GET"])
-def health():
-    return jsonify({"msg": "Server is alive"}), 200
+@router.get("")
+def health() -> dict[str, str]:
+    return {"msg": "Server is alive"}

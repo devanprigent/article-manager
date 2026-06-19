@@ -28,7 +28,7 @@ def test_parse_metadata(auth_client, monkeypatch, fixture_name, title, author, d
 
     res = auth_client.post("/articles/metadata", json={"name": "https://example.com"})
     assert res.status_code == 200
-    json = res.get_json()
+    json = res.json()
     assert json["title"] == title
     assert json["author"] == author
     assert json["date"] == date
@@ -37,7 +37,8 @@ def test_parse_metadata(auth_client, monkeypatch, fixture_name, title, author, d
 def test_duplicated_url_on_parsing(auth_client, article):
     res = auth_client.post("/articles/metadata", json={"name": article["url"]})
     assert res.status_code == 409
-    assert "duplicate" in res.get_json()["error"]
+    payload = res.json()
+    assert "duplicate" in payload["detail"]
 
 
 @pytest.mark.parametrize("vuln_url", ["not-a-url", "ftp://localhost:8765"])

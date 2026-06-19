@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 
 import jwt
 
+from app.exceptions import AuthenticationError
 from app.settings import Settings
 
 
@@ -35,3 +36,15 @@ def create_refresh_token(user_id: int, settings: Settings) -> str:
         user_id, settings, "refresh", settings.jwt_refresh_token_expires
     )
     return jwt.encode(payload, settings.jwt_secret_key, algorithm="HS256")
+
+
+def decode_token(token: str, settings: Settings, *, refresh: bool = False) -> dict:
+    try:
+        payload = jwt.decode(token, settings.jwt_secret_key, algorithms=["HS256"])
+    except jwt.PyJWTError as exc:
+        raise AuthenticationError("Invalid token") from exc
+
+    expected_type = "refresh" if refresh else "access"
+    if payload.get("type", "access") != expected_type:
+        raise AuthenticationError("Invalid token")
+    return payload

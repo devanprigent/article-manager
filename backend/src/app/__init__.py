@@ -1,46 +1,50 @@
-from flask import Flask
-from flask_cors import CORS
-from flask_jwt_extended import JWTManager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import init_db
 from app.handlers import register_error_handlers
 from app.logger import configure_logging, register_logging
-from app.routers.articles import articles_bp
-from app.routers.auth import auth_bp
-from app.routers.authors import authors_bp
-from app.routers.health import health_bp
-from app.routers.search import search_bp
-from app.routers.tags import tags_bp
-from app.sessions import register_session
+from app.routers.articles import router as articles_router
+from app.routers.auth import router as auth_router
+from app.routers.authors import router as authors_router
+from app.routers.health import router as health_router
+from app.routers.search import router as search_router
+from app.routers.tags import router as tags_router
 from app.settings import Settings
 
 logger = configure_logging()
 
 
 def create_app(settings: Settings | None = None):
-    app = Flask(__name__)
+    app = FastAPI()
     settings = settings or Settings()
-    app.extensions["settings"] = settings
-    app.config.update(settings.to_flask_config())
-    CORS(
-        app,
-        resources={r"/*": {"origins": settings.frontend_origins_list}},
-        supports_credentials=True,
+    app.state.settings = settings
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=settings.frontend_origins_list,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
 
     init_db(settings.database_url)
-    JWTManager(app)
-    register_session(app)
     register_logging(app, logger)
     register_error_handlers(app, logger)
 
-    @app.route("/favicon.ico")
+    @app.get("/favicon.ico", status_code=204)
     def favicon():
-        return "", 204
+        return ""
 
-    routers = [health_bp, auth_bp, articles_bp, authors_bp, tags_bp, search_bp]
+    routers = [
+        health_router,
+        auth_router,
+        articles_router,
+        authors_router,
+        tags_router,
+        search_router,
+    ]
     for r in routers:
-        app.register_blueprint(r)
+        app.include_router(r)
 
     logger.info("App created — routers registered, DB ready")
     return app

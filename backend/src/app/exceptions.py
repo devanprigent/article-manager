@@ -29,3 +29,7 @@ class ParsingError(Exception):
 
 class ClientInputError(ValueError):
     pass
+
+
+class AuthenticationError(Exception):
+    pass

@@ -1,10 +1,9 @@
 import logging
-from typing import Any
+from typing import Annotated
 
-from flask import Blueprint, jsonify
-from flask_jwt_extended import jwt_required
+from fastapi import APIRouter, Depends
 
-from app.decorators import get_pagination, get_user_id, validate_json
+from app.dependencies import DbSession, UserId, get_pagination
 from app.models import Article
 from app.schemas import (
     ArticleResponse,
@@ -23,106 +22,84 @@ from app.services import (
     remove_articles,
     update_article,
 )
-from app.sessions import get_session
+from app.types import Pagination
 
 logger = logging.getLogger("article_manager.articles")
 
-articles_bp = Blueprint("articles", __name__, url_prefix="/articles")
+router = APIRouter(prefix="/articles")
 
 
-@articles_bp.route("", methods=["GET"])
-@jwt_required()
-@get_user_id
-@get_pagination
-def list_articles(user_id: int, offset: int | None = None, limit: int | None = None):
-    articles, total = get_articles(get_session(), offset, limit, user_id)
+@router.get("")
+def list_articles(
+    db: DbSession,
+    user_id: UserId,
+    pagination: Annotated[Pagination, Depends(get_pagination)],
+) -> PaginatedArticlesResponse:
+    articles, total = get_articles(db, pagination.offset, pagination.limit, user_id)
     logger.debug("Listed %d articles for user_id=%d", len(articles), user_id)
-    return jsonify(
-        PaginatedArticlesResponse(
-            data=[ArticleResponse.from_model(a) for a in articles],
-            total=total,
-            offset=offset,
-            limit=limit,
-        ).model_dump(mode="json")
-    ), 200
+    return PaginatedArticlesResponse(
+        data=[ArticleResponse.from_model(a) for a in articles],
+        total=total,
+        offset=pagination.offset,
+        limit=pagination.limit,
+    )
 
 
-@articles_bp.route("/<int:article_id>", methods=["GET"])
-@jwt_required()
-@get_user_id
-def get_article(user_id: int, article_id: int):
-    article = get_entity(get_session(), article_id, Article, user_id)
+@router.get("/{article_id}")
+def get_article(db: DbSession, user_id: UserId, article_id: int) -> ArticleResponse:
+    article = get_entity(db, article_id, Article, user_id)
     logger.info(
         "Article fetched: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
-    return jsonify(
-        ArticleResponse.from_model(article, include_content=True).model_dump(
-            mode="json"
-        )
-    ), 200
+    return ArticleResponse.from_model(article, include_content=True)
 
 
-@articles_bp.route("", methods=["POST"])
-@jwt_required()
-@validate_json
-@get_user_id
-def add_article(data: dict[str, Any], user_id: int):
-    schema = ArticleSchema.model_validate(data)
-    article = create_article(get_session(), schema, user_id)
+@router.post("", status_code=201)
+def add_article(
+    db: DbSession, payload: ArticleSchema, user_id: UserId
+) -> ArticleResponse:
+    article = create_article(db, payload, user_id)
     logger.info(
         "Article created: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
-    return jsonify(ArticleResponse.from_model(article).model_dump(mode="json")), 201
+    return ArticleResponse.from_model(article)
 
 
-@articles_bp.route("", methods=["PUT"])
-@jwt_required()
-@validate_json
-@get_user_id
-def edit_article(data: dict[str, Any], user_id: int):
-    schema = ArticleSchema.model_validate(data)
-    article = update_article(get_session(), schema, user_id)
+@router.put("")
+def edit_article(
+    db: DbSession, payload: ArticleSchema, user_id: UserId
+) -> ArticleResponse:
+    article = update_article(db, payload, user_id)
     logger.info(
         "Article updated: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
-    return (jsonify(ArticleResponse.from_model(article).model_dump(mode="json")), 200)
+    return ArticleResponse.from_model(article)
 
 
-@articles_bp.route("", methods=["DELETE"])
-@jwt_required()
-@validate_json
-@get_user_id
-def delete_articles(data: dict[str, Any], user_id: int):
-    schema = IDSchema.model_validate(data)
-    articles = remove_articles(get_session(), schema.ids, user_id)
+@router.delete("")
+def delete_articles(
+    db: DbSession, payload: IDSchema, user_id: UserId
+) -> DeleteResponse[ArticleResponse]:
+    articles = remove_articles(db, payload.ids, user_id)
     articles_count = len(articles)
     logger.info(
         "Articles deleted: ids=%s user_id=%d count=%d",
-        schema.ids,
+        payload.ids,
         user_id,
         articles_count,
     )
-    return (
-        jsonify(
-            DeleteResponse[ArticleResponse](
-                deleted=[ArticleResponse.from_model(article) for article in articles],
-                count=articles_count,
-            ).model_dump(mode="json")
-        ),
-        200,
+    return DeleteResponse[ArticleResponse](
+        deleted=[ArticleResponse.from_model(article) for article in articles],
+        count=articles_count,
     )
 
 
-@articles_bp.route("/metadata", methods=["POST"])
-@validate_json
-@jwt_required()
-@get_user_id
-def parse_article(data: dict[str, Any], user_id: int):
-    schema = BasicSchema.model_validate(data)
-    url = schema.name
-    parser = get_metadata(get_session(), url, user_id)
-    return jsonify(
-        ParsedArticleResponse(
-            title=parser.title, author=parser.author, date=parser.date, url=url
-        ).model_dump(mode="json")
-    ), 200
+@router.post("/metadata")
+def parse_article(
+    db: DbSession, payload: BasicSchema, user_id: UserId
+) -> ParsedArticleResponse:
+    url = payload.name
+    parser = get_metadata(db, url, user_id)
+    return ParsedArticleResponse(
+        title=parser.title, author=parser.author, date=parser.date, url=url
+    )
