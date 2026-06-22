@@ -148,6 +148,12 @@ poetry run uvicorn asgi:app --reload --port 5000
 
 ### Frontend (`frontend/`)
 
+Create `frontend/.env` from `frontend/.env.example`:
+
+```
+VITE_API_BASE_URL=http://localhost:5000
+```
+
 To run the frontend, execute the following commands:
 
 ```bash
