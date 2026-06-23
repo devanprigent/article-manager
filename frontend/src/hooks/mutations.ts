@@ -38,8 +38,8 @@ function extractErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
     const data = err.response?.data;
     if (data && typeof data === 'object') {
-      const { message, error } = data;
-      return stringifyErrorValue(message) ?? stringifyErrorValue(error) ?? err.message;
+      const { detail } = data;
+      return detail?.[0]?.msg ?? err.message;
     }
     return stringifyErrorValue(data) ?? err.message;
   }

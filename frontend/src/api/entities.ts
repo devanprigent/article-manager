@@ -47,6 +47,19 @@ apiClient.interceptors.response.use(
   },
 );
 
+const parseWithError = <TSchema extends ZodType>(schema: TSchema, data: unknown): ZodInfer<TSchema> => {
+  try {
+    const response = schema.parse(data);
+    return response;
+  } catch (error: unknown) {
+    if (error instanceof ZodError) {
+      console.error(`Invalid API response`, error);
+      throw new Error(`Invalid API response. Please try again later.`, { cause: error });
+    }
+    throw error;
+  }
+};
+
 export const healthApi = {
   status: async (): Promise<Message> => {
     const { data } = await apiClient.get(API_URLS.HEALTH);
@@ -98,19 +111,6 @@ export const authApi = {
     const result = parseWithError(MessageSchema, data);
     return result;
   },
-};
-
-const parseWithError = <TSchema extends ZodType>(schema: TSchema, data: unknown): ZodInfer<TSchema> => {
-  try {
-    const response = schema.parse(data);
-    return response;
-  } catch (error: unknown) {
-    if (error instanceof ZodError) {
-      console.error(`Invalid API response`, error);
-      throw new Error(`Invalid API response. Please try again later.`, { cause: error });
-    }
-    throw error;
-  }
 };
 
 export const articlesApi = {
