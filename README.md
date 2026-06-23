@@ -112,14 +112,15 @@ This will create all the necessary services:
 | Backend  | http://localhost:5000 |
 | Postgres | `localhost:5433` (user `user`, password `password`, database `article_manager`) |
 
-Stop the services and free the ports:
+You can now access the app on [http://localhost:3000](http://localhost:3000)!
+ 
+After changing Dockerfiles or application code, rebuild with `docker compose up -d --build`.
+
+If you want to stop the services and free the ports:
 
 ```bash
 docker compose down
 ```
-
-After changing Dockerfiles or application code, rebuild with `docker compose up -d --build`.
-
 
 ### Option B — Local development
 
@@ -199,6 +200,7 @@ Open http://localhost:3000 in your browser.
 Run backend checks:
 
 ```bash
+cd backend
 poetry run ruff check .
 poetry run pytest
 ```
@@ -206,6 +208,7 @@ poetry run pytest
 Run frontend checks:
 
 ```bash
+cd frontend
 npm run lint
 npm run build
 ```
