@@ -43,7 +43,7 @@ def register_logging(app: FastAPI, logger: logging.Logger) -> None:
         try:
             start_time = time.perf_counter()
 
-            logger.info("→ %s %s", request.method, request.url.path)
+            logger.info("→  %s %s", request.method, request.url.path)
 
             # --- run route + exception handlers ---
             response = await call_next(request)
@@ -52,7 +52,7 @@ def register_logging(app: FastAPI, logger: logging.Logger) -> None:
             duration_ms = (time.perf_counter() - start_time) * 1000
             response.headers["X-Request-ID"] = request_id
             logger.info(
-                "← %s %s %d (%.1fms)",
+                "←  %s %s %d (%.1fms)",
                 request.method,
                 request.url.path,
                 response.status_code,

@@ -87,14 +87,52 @@ For the record, here's the justification for some technical decisions I made dur
 
 ## Prerequisites
 
-- Python 3.12 and [Poetry](https://python-poetry.org/docs/#installation)
-- Node.js 22 and npm
-- PostgreSQL database
+Choose one setup path below.
+
+**Docker (recommended)** — [Docker](https://docs.docker.com/get-docker/) and Docker Compose.
+
+**Local development** — Python 3.12, [Poetry](https://python-poetry.org/docs/#installation), Node.js 22, npm, and a PostgreSQL database.
 
 
 ## Getting Started
 
-### Backend (`backend/`)
+### Option A — Docker Compose
+
+Using Docker, you just have to execute a single command from the root repository:
+
+```bash
+docker compose up -d --build
+```
+
+This will create all the necessary services:
+
+| Service  | URL |
+| -------- | --- |
+| Frontend | http://localhost:3000 |
+| Backend  | http://localhost:5000 |
+| Postgres | `localhost:5433` (user `user`, password `password`, database `article_manager`) |
+
+Stop the services and free the ports:
+
+```bash
+docker compose down
+```
+
+After changing Dockerfiles or application code, rebuild with `docker compose up -d --build`.
+
+
+### Option B — Local development
+
+#### Git hooks (once per clone)
+
+From the repository root:
+
+```bash
+pre-commit install
+pre-commit install --hook-type commit-msg
+```
+
+#### Backend (`backend/`)
 
 Install dependencies:
 
@@ -103,20 +141,13 @@ cd backend
 poetry install
 ```
 
-From the repository root, install Git hooks (run once per clone):
-
-```bash
-pre-commit install
-pre-commit install --hook-type commit-msg
-```
-
-Create `backend/.env` from `backend/.env.example`:
+Create `backend/.env` from `backend/.env.example` and set a local database URL:
 
 ```
 SECRET_KEY=change-me
 JWT_SECRET_KEY=change-me
 DATABASE_URL=postgresql+psycopg://user:password@localhost:5432/article_manager
-FRONTEND_ORIGIN=http://localhost:3000
+FRONTEND_ORIGINS=http://localhost:3000
 ```
 
 Create the PostgreSQL database locally:
@@ -145,8 +176,7 @@ Start the FastAPI API:
 poetry run uvicorn asgi:app --reload --port 5000
 ```
 
-
-### Frontend (`frontend/`)
+#### Frontend (`frontend/`)
 
 Create `frontend/.env` from `frontend/.env.example`:
 
@@ -154,7 +184,7 @@ Create `frontend/.env` from `frontend/.env.example`:
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
-To run the frontend, execute the following commands:
+Install dependencies and start the dev server:
 
 ```bash
 cd frontend
@@ -162,7 +192,7 @@ npm install
 npm run start
 ```
 
-Then open your browser and go to `http://127.0.0.1:3000`. 
+Open http://localhost:3000 in your browser. 
 
 ## Checks
 

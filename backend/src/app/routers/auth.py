@@ -23,11 +23,14 @@ router = APIRouter(prefix="/auth")
 def register(
     db: DbSession, payload: UserSchema, settings: AppSettings, response: Response
 ) -> AuthMessageResponse:
+    logger.info("Registering user: name=%r", payload.name)
+
     user_id = register_user(db, payload.name, payload.password)
     access_token = create_access_token(user_id, settings)
     refresh_token = create_refresh_token(user_id, settings)
-    logger.info("User registered: id=%d name=%r", user_id, payload.name)
     set_auth_cookies(response, access_token, refresh_token, settings)
+
+    logger.info("User registered: id=%d name=%r", user_id, payload.name)
     return AuthMessageResponse(msg="Successfully registered")
 
 
@@ -35,11 +38,14 @@ def register(
 def login(
     db: DbSession, payload: UserSchema, settings: AppSettings, response: Response
 ) -> AuthMessageResponse:
+    logger.info("Logging user: name=%r", payload.name)
+
     user_id = login_user(db, payload.name, payload.password)
     access_token = create_access_token(user_id, settings)
     refresh_token = create_refresh_token(user_id, settings)
-    logger.info("User logged in: id=%d name=%r", user_id, payload.name)
     set_auth_cookies(response, access_token, refresh_token, settings)
+
+    logger.info("User logged in: id=%d name=%r", user_id, payload.name)
     return AuthMessageResponse(msg="Successfully logged-in")
 
 
