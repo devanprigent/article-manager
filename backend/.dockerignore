@@ -1,0 +1,43 @@
+# Python caches and virtualenvs
+__pycache__
+*.py[cod]
+*$py.class
+.pytest_cache
+.mypy_cache
+.ruff_cache
+htmlcov
+.coverage
+.coverage.*
+venv
+.venv
+__venv__
+
+# Secrets and local env
+.env
+.env.*
+!.env.example
+
+# Tests (not shipped in the runtime image)
+src/tests
+pytest.ini
+
+# Logs and local DB artifacts
+*.log
+db.sqlite3
+*.dump
+dump.sql
+backup.sql.gz
+
+# VCS and IDE
+.git
+.gitignore
+.idea
+.vscode
+.cursor
+
+# Docker metadata
+Dockerfile
+
+# OS junk
+.DS_Store
+Thumbs.db

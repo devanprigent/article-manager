@@ -1,0 +1,39 @@
+# Dependencies and build output (reinstalled/built inside the image)
+node_modules
+dist
+build
+
+# Secrets and local env
+.env
+.env.*
+!.env.example
+
+# E2E / unit test tooling (not needed for vite build)
+tests
+test-results
+playwright-report
+blob-report
+playwright/.cache
+playwright.config.ts
+
+# VCS and IDE
+.git
+.gitignore
+.idea
+.vscode
+.cursor
+
+# Docker / deploy metadata
+Dockerfile
+docker-compose.yml
+vercel.json
+
+# Lint / CI-only config
+eslint.config.js
+.prettierrc
+.prettierignore
+commitlint.config.cjs
+
+# OS junk
+.DS_Store
+Thumbs.db
