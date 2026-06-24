@@ -4,7 +4,7 @@ export interface Article {
   author: string;
   url: string;
   year: number;
-  summary: string;
+  summary: string | null;
   consulted: boolean;
   read_later: boolean;
   liked: boolean;

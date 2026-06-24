@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { DataGrid, GridColDef, GridFilterModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridFilterModel } from '@mui/x-data-grid';
 
 import { pageSize } from '../../constants/constants';
 import { Article } from '../../constants/types';
@@ -24,6 +24,7 @@ interface DataTableProps {
     }>
   >;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  columnVisibilityModel?: GridColumnVisibilityModel;
 }
 
 export default function DataTable({
@@ -35,6 +36,7 @@ export default function DataTable({
   paginationModel,
   setPaginationModel,
   setSearch,
+  columnVisibilityModel,
 }: Readonly<DataTableProps>) {
   const isDarkMode = useIsDarkMode();
 
@@ -51,11 +53,12 @@ export default function DataTable({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900">
+    <div className="min-w-0 w-full bg-white dark:bg-slate-900">
       <DataGrid
         className="app-data-grid"
         rows={rows}
         columns={columns}
+        columnVisibilityModel={columnVisibilityModel}
         loading={isFetching}
         filterMode="server"
         onFilterModelChange={onFilterChange}
@@ -76,6 +79,8 @@ export default function DataTable({
         }}
         sx={{
           border: 0,
+          width: '100%',
+          minWidth: 0,
           ...(isDarkMode && {
             '--DataGrid-t-header-background-base': '#1e293b',
             '--DataGrid-t-cell-background-base': '#0f172a',

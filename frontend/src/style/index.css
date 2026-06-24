@@ -7,7 +7,7 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 transition-colors;
+  @apply overflow-x-hidden bg-slate-50 text-slate-900 transition-colors;
 }
 
 .dark body {
@@ -372,8 +372,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 9999px;
   border: 1px solid #cbd5e1;
   background-color: #f1f5f9;
