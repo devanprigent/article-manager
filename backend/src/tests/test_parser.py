@@ -7,6 +7,13 @@ import pytest
 FIXTURES_DIR = Path(__file__).parent / "fixtures" / "parser"
 
 
+async def fake_get(html: str, *args, **kwargs):
+    return SimpleNamespace(
+        text=html,
+        raise_for_status=lambda: None,
+    )
+
+
 @pytest.mark.parametrize(
     "fixture_name, title, author, date",
     [
@@ -23,8 +30,9 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures" / "parser"
 )
 def test_parse_metadata(auth_client, monkeypatch, fixture_name, title, author, date):
     html = (FIXTURES_DIR / fixture_name).read_text(encoding="utf-8")
-    response = SimpleNamespace(text=html, raise_for_status=lambda: None)
-    monkeypatch.setattr("app.parser.requests.get", lambda *args, **kwargs: response)
+    monkeypatch.setattr(
+        "httpx2.AsyncClient.get", lambda *args, **kwargs: fake_get(html)
+    )
 
     res = auth_client.post("/articles/metadata", json={"name": "https://example.com"})
     assert res.status_code == 200

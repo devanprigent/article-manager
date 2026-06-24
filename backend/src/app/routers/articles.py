@@ -55,10 +55,10 @@ def get_article(db: DbSession, user_id: UserId, article_id: int) -> ArticleRespo
 
 
 @router.post("", status_code=201)
-def add_article(
+async def add_article(
     db: DbSession, payload: ArticleSchema, user_id: UserId
 ) -> ArticleResponse:
-    article = create_article(db, payload, user_id)
+    article = await create_article(db, payload, user_id)
     logger.info(
         "Article created: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )
@@ -95,11 +95,11 @@ def delete_articles(
 
 
 @router.post("/metadata")
-def parse_article(
+async def parse_article(
     db: DbSession, payload: BasicSchema, user_id: UserId
 ) -> ParsedArticleResponse:
     url = payload.name
-    parser = get_metadata(db, url, user_id)
+    parser = await get_metadata(db, url, user_id)
     return ParsedArticleResponse(
         title=parser.title, author=parser.author, date=parser.date, url=url
     )

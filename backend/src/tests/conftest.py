@@ -348,13 +348,13 @@ DEFAULT_PARSER_HTML = """
 
 @pytest.fixture(autouse=True)
 def mock_requests_get(monkeypatch):
-    def fake_get(url: str, *args, **kwargs):
+    async def fake_get(url: str, *args, **kwargs):
         return SimpleNamespace(
             text=DEFAULT_PARSER_HTML,
             raise_for_status=lambda: None,
         )
 
-    monkeypatch.setattr("app.parser.requests.get", fake_get)
+    monkeypatch.setattr("httpx2.AsyncClient.get", fake_get)
 
 
 @pytest.fixture(autouse=True)

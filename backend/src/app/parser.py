@@ -4,7 +4,7 @@ from ipaddress import ip_address
 from typing import Any, Literal, NotRequired, TypedDict
 from urllib.parse import urlsplit
 
-import requests
+import httpx2
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
@@ -64,11 +64,15 @@ class ContentParser:
 class MetadataParser:
     def __init__(self, url: str):
         self.url = MetadataParser.sanitize_url(url)
-        self.doc: BeautifulSoup | None = self.get_document(self.url)
+        self.doc: BeautifulSoup | None = None
         self.title = ""
         self.author = ""
         self.date = ""
         self.content: list[dict] = []
+
+    async def fetch(self):
+        res = await MetadataParser.fetch_document(self.url)
+        self.doc = res
 
     @staticmethod
     def sanitize_url(url):
@@ -137,20 +141,17 @@ class MetadataParser:
             return ""
         return text.strip()
 
-    def get_document(self, url: str) -> BeautifulSoup:
+    @staticmethod
+    async def fetch_document(url: str):
         headers = {"User-Agent": "ArticleManager/1.0"}
-        res = requests.get(
-            url,
-            headers=headers,
-            timeout=10,
-            allow_redirects=False,
-        )
-
-        if hasattr(res, "is_redirect") and res.is_redirect:
-            raise ParsingError("Redirects are not allowed.")
-
-        res.raise_for_status()
-        return BeautifulSoup(res.text, "html.parser")
+        async with httpx2.AsyncClient() as client:
+            response = await client.get(
+                url, headers=headers, timeout=10, follow_redirects=False
+            )
+            if hasattr(response, "is_redirect") and response.is_redirect:
+                raise ParsingError("Redirects are not allowed.")
+        response.raise_for_status()
+        return BeautifulSoup(response.text, "html.parser")
 
     def get_title(self) -> None:
         candidates: list[Candidate] = [

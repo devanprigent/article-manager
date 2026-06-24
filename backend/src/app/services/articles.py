@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-import requests
+import httpx2
 from sqlalchemy import func, select
 
 from app.exceptions import ClientInputError, EntityDuplicatedError
@@ -38,10 +38,10 @@ def get_articles(
     return articles, total
 
 
-def create_article(session: DbSession, data: ArticleSchema, user_id: int) -> Article:
-    if not check_url_uniqueness(session, data.url, user_id):
-        raise EntityDuplicatedError("Add article", user_id, "URL", data.url)
-    parser = MetadataParser(data.url)
+async def create_article(
+    session: DbSession, data: ArticleSchema, user_id: int
+) -> Article:
+    parser = await get_metadata(session, data.url, user_id)
     content = parser.get_content()
     tags = associate_tags(session, data.tags, user_id)
     author = get_or_create_by_name(session, Author, data.author, user_id)
@@ -107,15 +107,15 @@ def remove_articles(
     return articles
 
 
-def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataParser:
+async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataParser:
     if not check_url_uniqueness(session, url, user_id):
         raise EntityDuplicatedError("Add article", user_id, "URL", url)
-
     try:
         parser = MetadataParser(url)
+        await parser.fetch()
         parser.parse()
         return parser
-    except requests.exceptions.RequestException as error:
+    except httpx2.HTTPError as error:
         raise ClientInputError(
             "Unable to fetch metadata from the provided URL. "
             "Please check that the URL is valid and reachable."
