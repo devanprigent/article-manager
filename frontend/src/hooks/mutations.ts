@@ -39,7 +39,7 @@ function extractErrorMessage(err: unknown): string {
     const data = err.response?.data;
     if (data && typeof data === 'object') {
       const { detail } = data;
-      return detail?.[0]?.msg ?? err.message;
+      return detail?.[0]?.msg ?? stringifyErrorValue(detail) ?? err.message;
     }
     return stringifyErrorValue(data) ?? err.message;
   }

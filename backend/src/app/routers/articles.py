@@ -100,6 +100,12 @@ async def parse_article(
 ) -> ParsedArticleResponse:
     url = payload.name
     parser = await get_metadata(db, url, user_id)
+    logger.info(
+        "Parsed url: url=%s author=%s date=%s",
+        url,
+        parser.author,
+        parser.date,
+    )
     return ParsedArticleResponse(
         title=parser.title, author=parser.author, date=parser.date, url=url
     )

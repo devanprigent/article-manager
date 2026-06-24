@@ -55,7 +55,7 @@ class PaginatedArticlesResponse(BaseModel):
 class ParsedArticleResponse(BaseModel):
     title: str
     author: str
-    date: date
+    date: date | str
     url: str
 
 

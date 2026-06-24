@@ -65,8 +65,8 @@ The project includes automated checks for both frontend and backend code through
 | Layer    | Technology      | Why?                                                                                          |
 | -------- | ----------------|---------------------------------------------------------------------------------------------- |
 | Frontend | React 18 | To have a dynamic UI and fast interactions when browsing and filtering articles                      |
-| Backend  | FastAPI | To have a lightweight API, easy to extend                                                             |
-| Database | PostgreSQL | A relational database that works cleanly with SQLAlchemy and SQL                                   |
+| Backend  | FastAPI | To have a lightweight API, easy to extend, compatible with SQLAlchemy, Pydantic and Alembic                                                             |
+| Database | PostgreSQL + SQLAlchemy + Alembic | Relational database with ORM and versioned schema migrations                                |
 | Tooling  | Pytest, Playwright, Ruff, ESLint, Prettier, Vitest, pre-commit| Automated tests, linting, and formatting for fast feedback      |
 
 

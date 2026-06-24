@@ -32,7 +32,7 @@ export const ArticleSchema = z.object({
     .int('Year must be an integer')
     .min(0, 'Year must be greater than or equal to 0')
     .max(new Date().getFullYear(), 'Year must be less than or equal to the current year'),
-  summary: z.string(),
+  summary: z.string().nullable(),
   consulted: z.boolean(),
   read_later: z.boolean(),
   liked: z.boolean(),

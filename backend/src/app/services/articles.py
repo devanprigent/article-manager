@@ -1,9 +1,14 @@
+import logging
 from collections.abc import Sequence
 
 import httpx2
 from sqlalchemy import func, select
 
-from app.exceptions import ClientInputError, EntityDuplicatedError
+from app.exceptions import (
+    ClientInputError,
+    EntityDuplicatedError,
+    MetadataFetchError,
+)
 from app.models import Article, Author
 from app.parser import MetadataParser
 from app.schemas import ArticleSchema
@@ -16,6 +21,8 @@ from app.services.common import (
 )
 from app.services.tags import associate_tags
 from app.types import DbSession
+
+logger = logging.getLogger("article_manager.services.articles")
 
 
 def get_articles(
@@ -38,11 +45,25 @@ def get_articles(
     return articles, total
 
 
+async def enrich_with_content(
+    session: DbSession, user_id: int, url: str
+) -> list[dict] | None:
+    try:
+        parser = await get_metadata(session, url, user_id)
+        return parser.get_content()
+    except MetadataFetchError as error:
+        logger.info(
+            "Article content enrichment failed for url=%s; continuing without content",
+            url,
+            exc_info=error,
+        )
+        return None
+
+
 async def create_article(
     session: DbSession, data: ArticleSchema, user_id: int
 ) -> Article:
-    parser = await get_metadata(session, data.url, user_id)
-    content = parser.get_content()
+    content = await enrich_with_content(session, user_id, data.url)
     tags = associate_tags(session, data.tags, user_id)
     author = get_or_create_by_name(session, Author, data.author, user_id)
     article = Article(
@@ -116,7 +137,8 @@ async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataPa
         parser.parse()
         return parser
     except httpx2.HTTPError as error:
-        raise ClientInputError(
+        logger.info("Article parsing failed with url: %s", url)
+        raise MetadataFetchError(
             "Unable to fetch metadata from the provided URL. "
             "Please check that the URL is valid and reachable."
         ) from error

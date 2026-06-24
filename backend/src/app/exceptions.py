@@ -33,3 +33,7 @@ class ClientInputError(ValueError):
 
 class AuthenticationError(Exception):
     pass
+
+
+class MetadataFetchError(Exception):
+    pass
