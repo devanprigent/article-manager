@@ -59,7 +59,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
       return;
     }
 
-    if (requireSummaryOnSave && item.consulted && item.summary.trim() === '') {
+    if (requireSummaryOnSave && item.consulted && item.summary?.trim() === '') {
       setErrors({ summary: 'Summary is required' });
       return;
     }
@@ -190,7 +190,7 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
               <Input
                 type="textarea"
                 name="summary"
-                value={item.summary}
+                value={item.summary || ''}
                 onChange={handleFieldChange}
                 className={inputClassName}
                 invalid={errors.summary !== undefined && errors.summary !== ''}
