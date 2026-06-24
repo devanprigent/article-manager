@@ -23,10 +23,6 @@ class InvalidCredentialsError(ValueError):
     pass
 
 
-class ParsingError(Exception):
-    pass
-
-
 class ClientInputError(ValueError):
     pass
 
@@ -35,5 +31,13 @@ class AuthenticationError(Exception):
     pass
 
 
-class MetadataFetchError(Exception):
+class ParsingError(Exception):
+    pass
+
+
+class UrlValidationError(ParsingError):
+    pass
+
+
+class MetadataParsingError(ParsingError):
     pass

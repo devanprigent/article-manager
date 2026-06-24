@@ -8,7 +8,7 @@ import httpx2
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-from app.exceptions import ParsingError
+from app.exceptions import UrlValidationError
 
 
 class Candidate(TypedDict):
@@ -80,12 +80,12 @@ class MetadataParser:
             parsed_url = urlsplit(url)
             protocol = parsed_url.scheme
             if protocol not in ["http", "https"]:
-                raise ParsingError(
+                raise UrlValidationError(
                     "Invalid protocol - only http and https are permitted."
                 )
             hostname = parsed_url.hostname
             if not hostname:
-                raise ParsingError("Invalid URL.")
+                raise UrlValidationError("Invalid URL.")
             port = parsed_url.port or (443 if parsed_url.scheme == "https" else 80)
             resolved_ips = socket.getaddrinfo(hostname, port)
             for result in resolved_ips:
@@ -93,11 +93,11 @@ class MetadataParser:
                 resolved_ip = socket_address[0]
                 addr = ip_address(resolved_ip)
                 if not addr.is_global:
-                    raise ParsingError(
+                    raise UrlValidationError(
                         "Invalid IP - the resolved IP has been rejected."
                     )
         except (ValueError, socket.gaierror) as e:
-            raise ParsingError("Unable to fetch metadata.") from e
+            raise UrlValidationError("Unable to resolve URL.") from e
         return url
 
     def parse(self):
@@ -149,7 +149,7 @@ class MetadataParser:
                 url, headers=headers, timeout=10, follow_redirects=False
             )
             if hasattr(response, "is_redirect") and response.is_redirect:
-                raise ParsingError("Redirects are not allowed.")
+                raise UrlValidationError("Redirects are not allowed.")
         response.raise_for_status()
         return BeautifulSoup(response.text, "html.parser")
 

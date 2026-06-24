@@ -7,7 +7,7 @@ from sqlalchemy import func, select
 from app.exceptions import (
     ClientInputError,
     EntityDuplicatedError,
-    MetadataFetchError,
+    MetadataParsingError,
 )
 from app.models import Article, Author
 from app.parser import MetadataParser
@@ -51,7 +51,7 @@ async def enrich_with_content(
     try:
         parser = await get_metadata(session, url, user_id)
         return parser.get_content()
-    except MetadataFetchError as error:
+    except MetadataParsingError as error:
         logger.info(
             "Article content enrichment failed for url=%s; continuing without content",
             url,
@@ -138,7 +138,7 @@ async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataPa
         return parser
     except httpx2.HTTPError as error:
         logger.info("Article parsing failed with url: %s", url)
-        raise MetadataFetchError(
+        raise MetadataParsingError(
             "Unable to fetch metadata from the provided URL. "
             "Please check that the URL is valid and reachable."
         ) from error

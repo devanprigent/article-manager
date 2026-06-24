@@ -10,7 +10,6 @@ from app.exceptions import (
     EntitiesNotFoundError,
     EntityDuplicatedError,
     InvalidCredentialsError,
-    MetadataFetchError,
     ParsingError,
 )
 
@@ -83,7 +82,7 @@ def register_error_handlers(app: FastAPI, logger: logging.Logger) -> None:
             content={"detail": str(error)},
         )
 
-    @app.exception_handler(ParsingError, MetadataFetchError)
+    @app.exception_handler(ParsingError)
     def handle_parsing_error(request: Request, error: ParsingError):
         logger.warning(
             "Error while parsing on %s %s: %s",
