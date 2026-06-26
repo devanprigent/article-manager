@@ -10,7 +10,6 @@ from app.exceptions import (
     MetadataParsingError,
 )
 from app.models import Article, Author
-from app.parser import MetadataParser
 from app.schemas import ArticleSchema
 from app.services.common import (
     check_url_uniqueness,
@@ -19,6 +18,7 @@ from app.services.common import (
     get_or_create_by_name,
     update_model_fields,
 )
+from app.services.parser import MetadataParser
 from app.services.tags import associate_tags
 from app.types import DbSession
 
@@ -120,6 +120,7 @@ def remove_articles(
     articles = list(get_entities(session, article_ids, Article, user_id))
 
     for article in articles:
+        # force relationships into memory before delete + commit
         _ = article.author.name
         _ = [t.name for t in article.tags]
         session.delete(article)
