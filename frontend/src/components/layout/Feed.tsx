@@ -54,8 +54,8 @@ function FeedItem({ article, onClearReadLater, isClearPending, isDarkMode }: Rea
             </h2>
             <p className={`mt-1 truncate text-sm font-medium ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>{article.author}</p>
           </div>
-          <time dateTime={article.date_creation} className={`shrink-0 text-xs font-medium ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-            {formatCreatedDate(article.date_creation)}
+          <time dateTime={article.date_modification} className={`shrink-0 text-xs font-medium ${isDarkMode ? 'text-slate-500' : 'text-slate-400'}`}>
+            {formatCreatedDate(article.date_modification)}
           </time>
         </div>
       </article>
