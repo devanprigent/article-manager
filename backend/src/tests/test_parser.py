@@ -62,7 +62,7 @@ def mock_resolved_ip(monkeypatch, ip: str, family=socket.AF_INET):
     def fake_getaddrinfo(hostname, port):
         return [(family, socket.SOCK_STREAM, 6, "", socket_address)]
 
-    monkeypatch.setattr("app.parser.socket.getaddrinfo", fake_getaddrinfo)
+    monkeypatch.setattr("app.services.parser.socket.getaddrinfo", fake_getaddrinfo)
 
 
 @pytest.mark.parametrize(

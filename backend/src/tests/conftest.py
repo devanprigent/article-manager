@@ -373,4 +373,4 @@ def mock_getaddrinfo(request, monkeypatch):
             )
         ]
 
-    monkeypatch.setattr("app.parser.socket.getaddrinfo", fake_getaddrinfo)
+    monkeypatch.setattr("app.services.parser.socket.getaddrinfo", fake_getaddrinfo)
