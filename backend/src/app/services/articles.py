@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from collections.abc import Sequence
 
@@ -50,7 +51,8 @@ async def enrich_with_content(
 ) -> list[dict] | None:
     try:
         parser = await get_metadata(session, url, user_id)
-        return parser.get_content()
+        content = await asyncio.to_thread(parser.get_content)
+        return content
     except MetadataParsingError as error:
         logger.info(
             "Article content enrichment failed for url=%s; continuing without content",
@@ -135,7 +137,7 @@ async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataPa
     try:
         parser = MetadataParser(url)
         await parser.fetch()
-        parser.parse()
+        await asyncio.to_thread(parser.parse)
         return parser
     except httpx2.HTTPError as error:
         logger.info("Article parsing failed with url: %s", url)
