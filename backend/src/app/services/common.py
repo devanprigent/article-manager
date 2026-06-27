@@ -3,6 +3,7 @@ import unicodedata
 from collections.abc import Sequence
 from typing import Any, overload
 
+import httpx2
 from sqlalchemy import select
 
 from app.exceptions import EntitiesNotFoundError
@@ -103,3 +104,19 @@ def get_entities[T: HasPrimaryKey](
     raise EntitiesNotFoundError(
         missing_ids, "One or several entities weren't found based on the provided ids"
     )
+
+
+async def get_api(url: str, api_key: str, timeout: int = 10):
+    headers = {"X-Api-Key": api_key}
+    async with httpx2.AsyncClient() as client:
+        response = await client.get(url, headers=headers, timeout=timeout)
+        response.raise_for_status()
+        return response
+
+
+async def post_api(url: str, api_key: str, json: dict | None = None, timeout: int = 10):
+    headers = {"X-Api-Key": api_key}
+    async with httpx2.AsyncClient() as client:
+        response = await client.post(url, headers=headers, json=json, timeout=timeout)
+        response.raise_for_status()
+        return response
