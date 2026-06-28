@@ -2,7 +2,8 @@ import socket
 
 import pytest
 
-from tests.helpers import FIXTURES_DIR, fake_get
+from tests.constants import FIXTURES_DIR
+from tests.helpers import fake_get
 
 
 @pytest.mark.parametrize(

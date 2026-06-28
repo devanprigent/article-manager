@@ -1,6 +1,6 @@
 import pytest
 
-from tests.conftest import INVALID_ARTICLE_CASES
+from tests.constants import INVALID_ARTICLE_CASES
 
 
 def test_get_article(auth_client, article):

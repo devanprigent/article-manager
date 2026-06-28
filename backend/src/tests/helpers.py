@@ -1,7 +1,35 @@
-from pathlib import Path
 from types import SimpleNamespace
 
-FIXTURES_DIR = Path(__file__).parent / "fixtures" / "parser"
+from fastapi import Response
+
+
+def parse_cookies(cookies: list[str], name: str) -> str | None:
+    for cookie in cookies:
+        first_pair = cookie.split(";", 1)[0].strip()
+        if not first_pair or "=" not in first_pair:
+            continue
+        cookie_name, cookie_value = first_pair.split("=", 1)
+        if cookie_name.strip() == name:
+            return cookie_value
+    return None
+
+
+def get_cookie_value(response: Response, name: str):
+    cookies = response.headers.get_list("set-cookie")
+    return parse_cookies(cookies, name)
+
+
+def get_csrf_header(res: Response, csrf_type: str):
+    if csrf_type == "access":
+        csrf_access_token = get_cookie_value(res, "csrf_access_token")
+        return {
+            "X-CSRF-TOKEN": csrf_access_token,
+        }
+    else:
+        csrf_refresh_token = get_cookie_value(res, "csrf_refresh_token")
+        return {
+            "X-CSRF-TOKEN": csrf_refresh_token,
+        }
 
 
 async def fake_get(html: str, *args, **kwargs):

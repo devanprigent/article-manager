@@ -2,41 +2,13 @@ import socket
 from types import SimpleNamespace
 
 import pytest
-from fastapi import Response
 from fastapi.testclient import TestClient
 
 import app.database as database
 from app import create_app
 from app.settings import Settings
-
-
-def parse_cookies(cookies: list[str], name: str) -> str | None:
-    for cookie in cookies:
-        first_pair = cookie.split(";", 1)[0].strip()
-        if not first_pair or "=" not in first_pair:
-            continue
-        cookie_name, cookie_value = first_pair.split("=", 1)
-        if cookie_name.strip() == name:
-            return cookie_value
-    return None
-
-
-def get_cookie_value(response: Response, name: str):
-    cookies = response.headers.get_list("set-cookie")
-    return parse_cookies(cookies, name)
-
-
-def get_csrf_header(res: Response, csrf_type: str):
-    if csrf_type == "access":
-        csrf_access_token = get_cookie_value(res, "csrf_access_token")
-        return {
-            "X-CSRF-TOKEN": csrf_access_token,
-        }
-    else:
-        csrf_refresh_token = get_cookie_value(res, "csrf_refresh_token")
-        return {
-            "X-CSRF-TOKEN": csrf_refresh_token,
-        }
+from tests.constants import DEFAULT_PARSER_HTML
+from tests.helpers import get_csrf_header
 
 
 @pytest.fixture()
@@ -262,88 +234,6 @@ def article(auth_client, author, tag, mock_article_incomplete, list_authors):
     r = auth_client.post("/articles", json=new_article)
     assert r.status_code == 201
     return r.json()
-
-
-INVALID_ARTICLE_CASES = [
-    (
-        {
-            "url": "https://example.com/article-2",
-            "year": 2026,
-            "summary": "Short summary",
-            "consulted": False,
-            "read_later": False,
-            "liked": False,
-            "tags": ["Literature"],
-            "author": "Test",
-        },
-        422,
-        [["title"]],
-    ),
-    (
-        {
-            "title": "My article",
-            "url": "https://example.com/article-3",
-            "year": 2026,
-            "summary": "Short summary",
-            "tags": ["Politics"],
-            "author": "Test 2",
-        },
-        422,
-        [["consulted"], ["read_later"], ["liked"]],
-    ),
-    (
-        {
-            "title": "My article",
-            "url": "https://example.com/article-4",
-            "year": 2026,
-            "summary": "Short summary",
-            "consulted": False,
-            "read_later": False,
-            "liked": False,
-            "tags": [""],
-            "author": "Test 3",
-        },
-        422,
-        [["tags", 0]],
-    ),
-    (
-        {
-            "title": "My article",
-            "url": "https://example.com/article-5",
-            "year": 2026,
-            "summary": "Short summary",
-            "consulted": False,
-            "read_later": False,
-            "liked": False,
-            "tags": ["War", ""],
-            "author": "Test 4",
-        },
-        422,
-        [["tags", 1]],
-    ),
-    (
-        {
-            "title": "My article",
-            "url": "https://example.com/article-6",
-            "year": 2026,
-            "summary": "Short summary",
-            "consulted": False,
-            "read_later": False,
-            "liked": False,
-            "tags": ["Science"],
-            "author": "",
-        },
-        422,
-        [["author"]],
-    ),
-]
-
-DEFAULT_PARSER_HTML = """
-<html>
-  <head><title>Test Article</title></head>
-  <body><article><p>Test content</p></article></body>
-</html>
-"""
 
 
 @pytest.fixture(autouse=True)

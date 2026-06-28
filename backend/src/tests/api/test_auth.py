@@ -1,5 +1,4 @@
-from tests.conftest import get_cookie_value, get_csrf_header
-from tests.helpers import normalized_cookie_value
+from tests.helpers import get_cookie_value, get_csrf_header, normalized_cookie_value
 
 
 def test_register(client):
