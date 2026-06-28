@@ -3,8 +3,11 @@ from types import SimpleNamespace
 from fastapi import Response
 
 
-def call_endpoint(auth_client, endpoint: str) -> dict | list:
-    res = auth_client.get(endpoint)
+def call_endpoint(auth_client, endpoint: str, params: str | None = None) -> dict | list:
+    url = endpoint
+    if params is not None:
+        url = f"{url}?{params}"
+    res = auth_client.get(url)
     assert res.status_code == 200
     return res.json()
 

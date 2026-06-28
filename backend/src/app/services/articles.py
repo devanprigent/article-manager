@@ -27,21 +27,33 @@ logger = logging.getLogger("article_manager.services.articles")
 
 
 def get_articles(
-    session: DbSession, offset: int | None, limit: int | None, user_id: int
+    session: DbSession,
+    offset: int | None,
+    limit: int | None,
+    user_id: int,
+    read_later: bool | None,
+    liked: bool | None,
 ) -> tuple[Sequence[Article], int]:
     stmt = (
         select(Article)
         .where(Article.user_id == user_id)
         .order_by(Article.date_modification.desc(), Article.id.desc())
     )
+    count_stmt = (
+        select(func.count()).select_from(Article).where(Article.user_id == user_id)
+    )
+    if read_later is not None:
+        stmt = stmt.where(Article.read_later == read_later)
+        count_stmt = count_stmt.where(Article.read_later == read_later)
+    if liked is not None:
+        stmt = stmt.where(Article.liked == liked)
+        count_stmt = count_stmt.where(Article.liked == liked)
     if offset is not None:
         stmt = stmt.offset(offset)
     if limit is not None:
         stmt = stmt.limit(limit)
+
     articles = session.execute(stmt).scalars().all()
-    count_stmt = (
-        select(func.count()).select_from(Article).where(Article.user_id == user_id)
-    )
     total = session.execute(count_stmt).scalar_one()
     return articles, total
 

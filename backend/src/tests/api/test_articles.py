@@ -105,3 +105,20 @@ def test_list_articles_rejects_limit_above_max(auth_client):
     assert res.status_code == 400
     payload = res.json()
     assert "1000" in payload["detail"]
+
+
+@pytest.mark.parametrize(
+    "param, expected_number",
+    [("liked=True", 4), ("read_later=True", 3), ("liked=True&read_later=True", 2)],
+)
+def test_list_articles_filters_by_status(
+    auth_client, create_list_authors_articles, param, expected_number
+):
+    articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(articles) == 6
+
+    response = call_endpoint(auth_client, "/articles", param)
+    new_articles = response["data"]
+    new_total = response["total"]
+    assert len(new_articles) == expected_number
+    assert new_total == expected_number

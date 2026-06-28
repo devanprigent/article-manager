@@ -34,8 +34,12 @@ def list_articles(
     db: DbSession,
     user_id: UserId,
     pagination: Annotated[Pagination, Depends(get_pagination)],
+    read_later: bool | None = None,
+    liked: bool | None = None,
 ) -> PaginatedArticlesResponse:
-    articles, total = get_articles(db, pagination.offset, pagination.limit, user_id)
+    articles, total = get_articles(
+        db, pagination.offset, pagination.limit, user_id, read_later, liked
+    )
     logger.debug("Listed %d articles for user_id=%d", len(articles), user_id)
     return PaginatedArticlesResponse(
         data=[ArticleResponse.from_model(a) for a in articles],
