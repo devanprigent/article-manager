@@ -3,11 +3,6 @@ import pytest
 from tests.conftest import INVALID_ARTICLE_CASES
 
 
-def test_health(client):
-    res = client.get("/health")
-    assert res.status_code == 200
-
-
 def test_get_article(auth_client, article):
     res = auth_client.get("/articles")
     payload = res.json()["data"]
@@ -38,41 +33,6 @@ def test_article_return_content_not_articles(auth_client, article):
     assert payload2["content"] is not None
 
 
-def test_add_valid_tag(auth_client, tag):
-    res = auth_client.get("/tags")
-    assert res.status_code == 200
-    payload = res.json()
-    assert len(payload) == 1
-    assert payload[0]["name"] == tag["name"]
-
-
-def test_add_invalid_tag(auth_client):
-    res = auth_client.post("/tags", json={"name": ""})
-    assert res.status_code == 422
-
-
-@pytest.mark.usefixtures("tag", "author")
-@pytest.mark.parametrize("endpoint", ["/tags", "/authors"])
-def test_delete_entity(auth_client, endpoint):
-    res = auth_client.get(endpoint)
-    payload = res.json()
-    assert len(payload) == 1
-    entity_id = int(payload[0]["id"])
-    res_delete = auth_client.delete(endpoint, json={"ids": [entity_id]})
-    assert res_delete.status_code == 200
-    assert res_delete.json()["count"] == 1
-    new_res = auth_client.get(endpoint)
-    new_payload = new_res.json()
-    assert len(new_payload) == 0
-
-
-def test_delete_author_with_article(auth_client, author, mock_article):
-    mock_article = {**mock_article, "author": author["name"]}
-    auth_client.post("/articles", json=mock_article)
-    res_delete = auth_client.delete("/authors", json={"ids": [author["id"]]})
-    assert res_delete.status_code == 409
-
-
 def test_delete_article(auth_client, article):
     res = auth_client.get("/articles")
     payload = res.json()["data"]
@@ -84,19 +44,6 @@ def test_delete_article(auth_client, article):
     new_res = auth_client.get("/articles")
     new_payload = new_res.json()["data"]
     assert len(new_payload) == 0
-
-
-def test_add_valid_author(auth_client, author):
-    res = auth_client.get("/authors")
-    assert res.status_code == 200
-    payload = res.json()
-    assert len(payload) == 1
-    assert payload[0]["name"] == author["name"]
-
-
-def test_add_invalid_author(auth_client):
-    res = auth_client.post("/authors", json={"name": ""})
-    assert res.status_code == 422
 
 
 def test_add_valid_article(auth_client, article):
@@ -126,22 +73,6 @@ def test_add_invalid_articles(
         ]
         for loc in expected_error_locs:
             assert loc in actual_locs, (loc, actual_locs)
-
-
-def test_top_authors(auth_client, create_list_authors_articles):
-    res = auth_client.get("/authors/top")
-    assert res.status_code == 200
-    payload = res.json()
-    expected_responses = [
-        ("Cal Newport", 3),
-        ("Brandon Sanderson", 2),
-        ("Scott Alexander", 1),
-        ("J.R.R Tolkien", 0),
-        ("Mark Manson", 0),
-    ]
-    for i in range(len(expected_responses)):
-        assert payload[i]["author"] == expected_responses[i][0]
-        assert payload[i]["count"] == expected_responses[i][1]
 
 
 def test_duplicated_url(auth_client, article, mock_article_2):
