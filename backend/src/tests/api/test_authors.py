@@ -1,9 +1,10 @@
+from tests.helpers import call_endpoint
+
+
 def test_add_valid_author(auth_client, author):
-    res = auth_client.get("/authors")
-    assert res.status_code == 200
-    payload = res.json()
-    assert len(payload) == 1
-    assert payload[0]["name"] == author["name"]
+    authors = call_endpoint(auth_client, "/authors")
+    assert len(authors) == 1
+    assert authors[0]["name"] == author["name"]
 
 
 def test_add_invalid_author(auth_client):
@@ -12,16 +13,15 @@ def test_add_invalid_author(auth_client):
 
 
 def test_delete_author(auth_client, author):
-    res = auth_client.get("/authors")
-    payload = res.json()
-    assert len(payload) == 1
-    entity_id = int(payload[0]["id"])
+    authors = call_endpoint(auth_client, "/authors")
+    assert len(authors) == 1
+    entity_id = int(authors[0]["id"])
     res_delete = auth_client.delete("/authors", json={"ids": [entity_id]})
     assert res_delete.status_code == 200
     assert res_delete.json()["count"] == 1
-    new_res = auth_client.get("/authors")
-    new_payload = new_res.json()
-    assert len(new_payload) == 0
+
+    new_authors = call_endpoint(auth_client, "/authors")
+    assert len(new_authors) == 0
 
 
 def test_delete_author_with_article(auth_client, author, mock_article):

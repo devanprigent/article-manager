@@ -1,9 +1,10 @@
+from tests.helpers import call_endpoint
+
+
 def test_add_valid_tag(auth_client, tag):
-    res = auth_client.get("/tags")
-    assert res.status_code == 200
-    payload = res.json()
-    assert len(payload) == 1
-    assert payload[0]["name"] == tag["name"]
+    tags = call_endpoint(auth_client, "/tags")
+    assert len(tags) == 1
+    assert tags[0]["name"] == tag["name"]
 
 
 def test_add_invalid_tag(auth_client):
@@ -12,13 +13,12 @@ def test_add_invalid_tag(auth_client):
 
 
 def test_delete_tag(auth_client, tag):
-    res = auth_client.get("/tags")
-    payload = res.json()
-    assert len(payload) == 1
-    entity_id = int(payload[0]["id"])
+    tags = call_endpoint(auth_client, "/tags")
+    assert len(tags) == 1
+    entity_id = int(tags[0]["id"])
     res_delete = auth_client.delete("/tags", json={"ids": [entity_id]})
     assert res_delete.status_code == 200
     assert res_delete.json()["count"] == 1
-    new_res = auth_client.get("/tags")
-    new_payload = new_res.json()
-    assert len(new_payload) == 0
+
+    new_tags = call_endpoint(auth_client, "/tags")
+    assert len(new_tags) == 0

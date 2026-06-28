@@ -3,6 +3,18 @@ from types import SimpleNamespace
 from fastapi import Response
 
 
+def call_endpoint(auth_client, endpoint: str) -> dict | list:
+    res = auth_client.get(endpoint)
+    assert res.status_code == 200
+    return res.json()
+
+
+def get_article(auth_client, article_id: int) -> dict:
+    res = auth_client.get(f"/articles/{article_id}")
+    assert res.status_code == 200
+    return res.json()
+
+
 def parse_cookies(cookies: list[str], name: str) -> str | None:
     for cookie in cookies:
         first_pair = cookie.split(";", 1)[0].strip()
