@@ -1,17 +1,8 @@
 import socket
-from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
 
-FIXTURES_DIR = Path(__file__).parent / "fixtures" / "parser"
-
-
-async def fake_get(html: str, *args, **kwargs):
-    return SimpleNamespace(
-        text=html,
-        raise_for_status=lambda: None,
-    )
+from tests.helpers import FIXTURES_DIR, fake_get
 
 
 @pytest.mark.parametrize(

@@ -1,12 +1,5 @@
 from tests.conftest import get_cookie_value, get_csrf_header
-
-
-def _normalized_cookie_value(value: str | None) -> str | None:
-    if value is None:
-        return None
-    if value in ("", '""'):
-        return None
-    return value
+from tests.helpers import normalized_cookie_value
 
 
 def test_register(client):
@@ -62,8 +55,8 @@ def test_logout(auth_client):
     assert res.status_code == 200
     access_token = get_cookie_value(res, "access_token_cookie").strip()
     csrf_access_token = get_cookie_value(res, "csrf_access_token")
-    assert not _normalized_cookie_value(access_token)
-    assert not _normalized_cookie_value(csrf_access_token)
+    assert not normalized_cookie_value(access_token)
+    assert not normalized_cookie_value(csrf_access_token)
 
 
 def test_method_not_allowed(client):
