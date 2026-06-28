@@ -1,4 +1,4 @@
-import type { Entity } from '../constants/types';
+import type { Article, Entity, ReadByMonthStat } from '../constants/types';
 
 export function getCookie(name: string): string | undefined {
   const nameEQ = name + '=';
@@ -58,3 +58,38 @@ export function postLoginPath(state: unknown): string {
   }
   return '/articles';
 }
+
+export const getReadPerMonth = (articles: Article[]) => {
+  const counts = new Map<string, ReadByMonthStat>();
+
+  articles.forEach((article) => {
+    if (!article.consulted) {
+      return;
+    }
+
+    const sourceDate = article.date_modification || article.date_creation;
+    const date = new Date(sourceDate);
+
+    if (Number.isNaN(date.getTime())) {
+      return;
+    }
+
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const monthKey = `${year}-${String(month).padStart(2, '0')}`;
+    const monthLabel = date.toLocaleDateString('en-US', {
+      month: 'short',
+      year: 'numeric',
+    });
+
+    const existing = counts.get(monthKey);
+    if (existing) {
+      existing.count += 1;
+      return;
+    }
+
+    counts.set(monthKey, { monthKey, monthLabel, count: 1 });
+  });
+
+  return Array.from(counts.values()).sort((a, b) => a.monthKey.localeCompare(b.monthKey));
+};

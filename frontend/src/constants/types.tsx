@@ -70,3 +70,9 @@ export interface User {
 }
 
 export type AuthMode = 'login' | 'register';
+
+export type ReadByMonthStat = {
+  monthKey: string;
+  monthLabel: string;
+  count: number;
+};

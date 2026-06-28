@@ -1,17 +1,10 @@
-import { useMemo } from 'react';
-
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
+import { getReadPerMonth } from '../../helpers/helpers';
 import { useArticles, useTopAuthors } from '../../hooks/queries';
 import StatsGraphWidget from '../features/StatsGraphWidget';
 import PageHeader from '../layout/PageHeader';
-
-type ReadByMonthStat = {
-  monthKey: string;
-  monthLabel: string;
-  count: number;
-};
 
 function StatsPage() {
   const { data: { articles = [] } = {}, isLoading: isArticlesLoading } = useArticles();
@@ -26,42 +19,7 @@ function StatsPage() {
     borderRadius: '0.75rem',
     color: isDarkMode ? '#e2e8f0' : '#0f172a',
   };
-
-  const readPerMonth = useMemo<ReadByMonthStat[]>(() => {
-    const counts = new Map<string, ReadByMonthStat>();
-
-    articles.forEach((article) => {
-      if (!article.consulted) {
-        return;
-      }
-
-      const sourceDate = article.date_modification || article.date_creation;
-      const date = new Date(sourceDate);
-
-      if (Number.isNaN(date.getTime())) {
-        return;
-      }
-
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const monthKey = `${year}-${String(month).padStart(2, '0')}`;
-      const monthLabel = date.toLocaleDateString('en-US', {
-        month: 'short',
-        year: 'numeric',
-      });
-
-      const existing = counts.get(monthKey);
-      if (existing) {
-        existing.count += 1;
-        return;
-      }
-
-      counts.set(monthKey, { monthKey, monthLabel, count: 1 });
-    });
-
-    return Array.from(counts.values()).sort((a, b) => a.monthKey.localeCompare(b.monthKey));
-  }, [articles]);
-
+  const readPerMonth = getReadPerMonth(articles);
   const consultedCount = articles.filter((article) => article.consulted).length;
 
   return (
