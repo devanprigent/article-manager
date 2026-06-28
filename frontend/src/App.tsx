@@ -6,12 +6,11 @@ import Footer from './components/layout/Footer';
 import NavBar from './components/layout/NavBar';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import ArticlesPage from './components/pages/ArticlesPage';
-import GridPage from './components/pages/GridPage';
 import HomePage from './components/pages/HomePage';
+import LikedPage from './components/pages/LikedPage';
 import ReadingPage from './components/pages/ReadingPage';
 import ReadLaterPage from './components/pages/ReadLaterPage';
 import StatsPage from './components/pages/StatsPage';
-import { Article } from './constants/types';
 import { useAuth } from './contexts/AuthContext';
 import { useIsDarkMode } from './contexts/ThemeContext';
 import { useHealth } from './hooks/queries';
@@ -30,24 +29,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="articles" element={<ArticlesPage />} />
               <Route path="articles/:id" element={<ReadingPage />} />
-              <Route
-                path="likes"
-                element={
-                  <GridPage
-                    title="Likes"
-                    description="Quickly find the articles you liked."
-                    emptyMessage="No liked articles yet. Mark articles as liked from the Articles page."
-                    filter={(article: Article) => article.liked}
-                    badge={(count) => (
-                      <span className="inline-flex rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-900/40 dark:text-red-300">
-                        {count} liked
-                      </span>
-                    )}
-                    clearPatch={(article) => ({ ...article, liked: false })}
-                    cardAction="liked"
-                  />
-                }
-              />
+              <Route path="likes" element={<LikedPage />} />
               <Route path="read-later" element={<ReadLaterPage />} />
               <Route path="stats" element={<StatsPage />} />
             </Route>

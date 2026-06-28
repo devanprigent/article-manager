@@ -142,12 +142,24 @@ export async function installMockApi(page: Page): Promise<MockApi> {
     }
 
     if (matchesApiPath(route, '/articles') && request.method() === 'GET') {
+      const url = new URL(request.url());
+      const readLaterFilter = url.searchParams.get('read_later');
+      const likedFilter = url.searchParams.get('liked');
+      let articles = [sampleArticle];
+
+      if (readLaterFilter === 'true' && !sampleArticle.read_later) {
+        articles = [];
+      }
+      if (likedFilter === 'true' && !sampleArticle.liked) {
+        articles = [];
+      }
+
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
         body: JSON.stringify({
-          data: [sampleArticle],
-          total: 1,
+          data: articles,
+          total: articles.length,
           offset: 0,
           limit: 25,
         }),

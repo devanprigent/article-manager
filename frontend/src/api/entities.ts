@@ -15,7 +15,7 @@ import {
   MessageSchema,
   ParsedMetadataSchema,
 } from '../constants/schema';
-import type { Article, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../constants/types';
+import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../constants/types';
 import { getCookie, normalizeEntityNames } from '../helpers/helpers';
 
 const apiClient = axios.create();
@@ -114,11 +114,22 @@ export const authApi = {
 };
 
 export const articlesApi = {
-  list: async (offset?: number, limit?: number): Promise<{ articles: Article[]; total: number }> => {
-    let url = API_URLS.ARTICLES;
-    if (offset != undefined && limit != undefined) {
-      url = `${API_URLS.ARTICLES}?offset=${offset}&limit=${limit}`;
+  list: async (offset?: number, limit?: number, filters: ArticleListFilters = {}): Promise<{ articles: Article[]; total: number }> => {
+    const params = new URLSearchParams();
+    if (offset != undefined) {
+      params.set('offset', String(offset));
     }
+    if (limit != undefined) {
+      params.set('limit', String(limit));
+    }
+    if (filters.read_later != undefined) {
+      params.set('read_later', String(filters.read_later));
+    }
+    if (filters.liked != undefined) {
+      params.set('liked', String(filters.liked));
+    }
+    const query = params.toString();
+    const url = query ? `${API_URLS.ARTICLES}?${query}` : API_URLS.ARTICLES;
     const { data } = await apiClient.get(url);
     const response = parseWithError(ArticlesSchema, data);
     const articles = response['data'];

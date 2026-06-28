@@ -2,17 +2,18 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { articlesApi, authApi, authorsApi, healthApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
+import type { ArticleListFilters } from '../constants/types';
 
-export function useArticles(isSearching?: boolean, page?: number, pageSize?: number) {
+export function useArticles(isSearching?: boolean, page?: number, pageSize?: number, filters: ArticleListFilters = {}) {
   return useQuery({
-    queryKey: page != undefined && pageSize != undefined ? queryKeys.articles.slice(page, pageSize) : queryKeys.articles.list(),
+    queryKey: page != undefined && pageSize != undefined ? queryKeys.articles.slice(page, pageSize, filters) : queryKeys.articles.list(filters),
     queryFn: async () => {
       let offset;
       if (page != undefined && pageSize != undefined) {
         offset = page * pageSize;
       }
       const limit = pageSize;
-      return articlesApi.list(offset, limit);
+      return articlesApi.list(offset, limit, filters);
     },
     placeholderData: keepPreviousData,
     enabled: !isSearching,

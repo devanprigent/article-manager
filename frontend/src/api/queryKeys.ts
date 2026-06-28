@@ -1,8 +1,10 @@
+import type { ArticleListFilters } from '../constants/types';
+
 export const queryKeys = {
   articles: {
     all: ['articles'],
-    list: () => [...queryKeys.articles.all, 'list'],
-    slice: (page: number, pageSize: number) => [...queryKeys.articles.all, page, pageSize],
+    list: (filters: ArticleListFilters = {}) => [...queryKeys.articles.all, 'list', filters],
+    slice: (page: number, pageSize: number, filters: ArticleListFilters = {}) => [...queryKeys.articles.all, page, pageSize, filters],
     detail: (id: number) => [...queryKeys.articles.all, 'detail', id],
     search: (query: string, page: number, pageSize: number) => [...queryKeys.articles.all, 'search', query, page, pageSize],
   },

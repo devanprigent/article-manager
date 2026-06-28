@@ -62,6 +62,11 @@ export interface UrlFormProps extends BaseFormProps {
   onSave: (url: string) => void;
 }
 
+export type ArticleListFilters = {
+  read_later?: boolean;
+  liked?: boolean;
+};
+
 export type GridPageCardAction = 'liked' | 'readLater';
 
 export interface User {
