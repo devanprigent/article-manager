@@ -89,6 +89,7 @@ function AddButton({ title }: Readonly<PropsType>) {
       )}
       {modalCreate && (
         <ArticleForm
+          mode="create"
           activeItem={{ ...newArticle, title: metadata.title, author: metadata.author, url: metadata.url, year: parseYear(metadata.date) }}
           isOpen={modalCreate}
           toggle={toggleModalCreate}

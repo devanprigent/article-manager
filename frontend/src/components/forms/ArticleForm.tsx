@@ -15,7 +15,8 @@ import TagsForm from './TagsForm';
 
 type AuthorOption = { value: string; label: string };
 
-function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButton, isPending = false }: Readonly<ArticleFormProps>) {
+function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButton, isPending = false, mode = 'edit' }: Readonly<ArticleFormProps>) {
+  const isCreateMode = mode === 'create';
   const currentYear = new Date().getFullYear();
   const [item, setItem] = useState(activeItem);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -143,60 +144,76 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
               />
               {errors.url && <div className="text-sm text-red-500">{errors.url}</div>}
             </div>
-            <div>
-              <TagsForm onChange={handleTagChange} currentTags={activeItem.tags} />
-            </div>
-            <div className="checkbox-group flex flex-row justify-between space-x-4 rounded-xl border border-slate-200 bg-white px-4 py-3">
-              <div>
-                <label htmlFor="consulted" className="text-slate-800 dark:text-slate-100">
-                  <b>Consulted</b>
-                </label>
-                <br />
-                <Input type="checkbox" name="consulted" checked={item.consulted} onChange={handleFieldChange} className="h-4 w-4 accent-blue-500" />
-                {errors.consulted && <div className="text-sm text-red-500">{errors.consulted}</div>}
-              </div>
-              <div>
-                <label htmlFor="read_later" className="text-slate-800 dark:text-slate-100">
-                  <b>Read later</b>
-                </label>
-                <br />
-                <Input type="checkbox" name="read_later" checked={item.read_later} onChange={handleFieldChange} className="h-4 w-4 accent-blue-500" />
-                {errors.read_later && <div className="text-sm text-red-500">{errors.read_later}</div>}
-              </div>
-              <div>
-                <label htmlFor="liked" className="text-slate-800 dark:text-slate-100">
-                  <b>Liked</b>
-                </label>
-                <br />
-                <button
-                  type="button"
-                  aria-pressed={item.liked}
-                  aria-label={item.liked ? 'Remove like' : 'Add like'}
-                  title={item.liked ? 'Liked' : 'Not liked'}
-                  onClick={handleLikedToggle}
-                  className={`inline-flex h-6 w-6 items-center justify-center transition ${
-                    item.liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 dark:text-slate-500'
-                  }`}
-                >
-                  <Heart size={18} fill={item.liked ? 'currentColor' : 'none'} aria-hidden="true" />
-                </button>
-                {errors.liked && <div className="text-sm text-red-500">{errors.liked}</div>}
-              </div>
-            </div>
-            <div>
-              <label htmlFor="summary" className="text-slate-800 dark:text-slate-100">
-                <b>Summary{requireSummaryOnSave ? ' *' : ''}</b>
-              </label>
-              <Input
-                type="textarea"
-                name="summary"
-                value={item.summary || ''}
-                onChange={handleFieldChange}
-                className={inputClassName}
-                invalid={errors.summary !== undefined && errors.summary !== ''}
-              />
-              {errors.summary && <div className="text-sm text-red-500">{errors.summary}</div>}
-            </div>
+            {!isCreateMode && (
+              <>
+                <div>
+                  <TagsForm onChange={handleTagChange} currentTags={item.tags} />
+                </div>
+                <div className="checkbox-group flex flex-row justify-between space-x-4 rounded-xl border border-slate-200 bg-white px-4 py-3">
+                  <div>
+                    <label htmlFor="consulted" className="text-slate-800 dark:text-slate-100">
+                      <b>Consulted</b>
+                    </label>
+                    <br />
+                    <Input
+                      type="checkbox"
+                      name="consulted"
+                      checked={item.consulted}
+                      onChange={handleFieldChange}
+                      className="h-4 w-4 accent-blue-500"
+                    />
+                    {errors.consulted && <div className="text-sm text-red-500">{errors.consulted}</div>}
+                  </div>
+                  <div>
+                    <label htmlFor="read_later" className="text-slate-800 dark:text-slate-100">
+                      <b>Read later</b>
+                    </label>
+                    <br />
+                    <Input
+                      type="checkbox"
+                      name="read_later"
+                      checked={item.read_later}
+                      onChange={handleFieldChange}
+                      className="h-4 w-4 accent-blue-500"
+                    />
+                    {errors.read_later && <div className="text-sm text-red-500">{errors.read_later}</div>}
+                  </div>
+                  <div>
+                    <label htmlFor="liked" className="text-slate-800 dark:text-slate-100">
+                      <b>Liked</b>
+                    </label>
+                    <br />
+                    <button
+                      type="button"
+                      aria-pressed={item.liked}
+                      aria-label={item.liked ? 'Remove like' : 'Add like'}
+                      title={item.liked ? 'Liked' : 'Not liked'}
+                      onClick={handleLikedToggle}
+                      className={`inline-flex h-6 w-6 items-center justify-center transition ${
+                        item.liked ? 'text-red-500 dark:text-red-400' : 'text-slate-400 dark:text-slate-500'
+                      }`}
+                    >
+                      <Heart size={18} fill={item.liked ? 'currentColor' : 'none'} aria-hidden="true" />
+                    </button>
+                    {errors.liked && <div className="text-sm text-red-500">{errors.liked}</div>}
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="summary" className="text-slate-800 dark:text-slate-100">
+                    <b>Summary{requireSummaryOnSave ? ' *' : ''}</b>
+                  </label>
+                  <Input
+                    type="textarea"
+                    name="summary"
+                    value={item.summary || ''}
+                    onChange={handleFieldChange}
+                    className={inputClassName}
+                    invalid={errors.summary !== undefined && errors.summary !== ''}
+                  />
+                  {errors.summary && <div className="text-sm text-red-500">{errors.summary}</div>}
+                </div>
+              </>
+            )}
           </div>
         </form>
         <div className="flex w-full justify-center">
