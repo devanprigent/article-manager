@@ -41,12 +41,20 @@ async def wait_for_api(url: str, api_key: str, timeout_seconds: int = 180):
 
 async def generate_tags(settings: Settings, content: list[dict] | None) -> list[str]:
     logger.info("Get labels")
-    await wait_for_api(settings.embedding_api_url, settings.embedding_api_key)
+
+    api_url = settings.embedding_api_url
+    api_key = settings.embedding_api_key
+
+    if not (api_url and api_key):
+        logger.info("Missing embedding API url or key. Skipping tags generation.")
+        return []
+
+    await wait_for_api(api_url, api_key)
     raw_text = " ".join(block["text"] for block in content) if content else ""
     try:
         res = await post_api(
-            f"{settings.embedding_api_url}/v1/labels",
-            settings.embedding_api_key,
+            f"{api_url}/v1/labels",
+            api_key,
             json={"text": raw_text},
         )
         data = res.json()["data"]
@@ -59,5 +67,13 @@ async def generate_tags(settings: Settings, content: list[dict] | None) -> list[
 
 async def stop_server(settings: Settings):
     logger.info("Stop embedding server")
-    res = await get_api(settings.embedding_stop_url, settings.embedding_api_key)
+
+    api_url = settings.embedding_stop_url
+    api_key = settings.embedding_api_key
+
+    if not (api_url and api_key):
+        logger.info("Missing embedding API url or key. Cannot stop server.")
+        return {}
+
+    res = await get_api(api_url, api_key)
     return res.json()
