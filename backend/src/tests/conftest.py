@@ -248,6 +248,22 @@ def mock_requests_get(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
+def mock_generate_tags(monkeypatch):
+    async def fake_generate_tags(settings, content=None):
+        return ["test"]
+
+    monkeypatch.setattr("app.services.articles.generate_tags", fake_generate_tags)
+
+
+@pytest.fixture(autouse=True)
+def mock_embedding_server(monkeypatch):
+    async def fake_wake_up(settings):
+        return {"msg": "Server is alive"}
+
+    monkeypatch.setattr("app.routers.health.wake_up_server", fake_wake_up)
+
+
+@pytest.fixture(autouse=True)
 def mock_getaddrinfo(request, monkeypatch):
     if "nomocksanitizer" in request.keywords:
         return

@@ -32,7 +32,7 @@ class ArticleResponse(BaseModel):
             consulted=article.consulted,
             read_later=article.read_later,
             liked=article.liked,
-            tags=[t.name for t in article.tags],
+            tags=[t.normalized_name for t in article.tags],
             date_creation=article.date_creation,
             date_modification=article.date_modification,
             content=article.content if include_content else None,

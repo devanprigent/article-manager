@@ -33,6 +33,11 @@ class Settings(BaseSettings):
     jwt_refresh_csrf_cookie_path: str = "/"
     testing: bool = False
 
+    embedding_wake_url: str = ""
+    embedding_stop_url: str = ""
+    embedding_api_url: str = ""
+    embedding_api_key: str = ""
+
     @field_validator("database_url", mode="before")
     @classmethod
     def normalize_db_url(cls, url: str) -> str:

@@ -17,10 +17,12 @@ from app.services.authors import (
 )
 from app.services.common import (
     check_url_uniqueness,
+    get_api,
     get_entities,
     get_entity,
     get_or_create_by_name,
     normalize_name,
+    post_api,
     update_model_fields,
 )
 from app.services.parser import MetadataParser
@@ -52,4 +54,6 @@ __all__ = [
     "remove_tags",
     "search_query",
     "MetadataParser",
+    "get_api",
+    "post_api",
 ]

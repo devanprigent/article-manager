@@ -3,7 +3,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from app.dependencies import DbSession, UserId, get_pagination
+from app.dependencies import AppSettings, DbSession, UserId, get_pagination
 from app.models import Article
 from app.schemas import (
     ArticleResponse,
@@ -60,9 +60,9 @@ def get_article(db: DbSession, user_id: UserId, article_id: int) -> ArticleRespo
 
 @router.post("", status_code=201)
 async def add_article(
-    db: DbSession, payload: ArticleSchema, user_id: UserId
+    db: DbSession, settings: AppSettings, payload: ArticleSchema, user_id: UserId
 ) -> ArticleResponse:
-    article = await create_article(db, payload, user_id)
+    article = await create_article(db, settings, payload, user_id)
     logger.info(
         "Article created: id=%d title=%r user_id=%d", article.id, article.title, user_id
     )

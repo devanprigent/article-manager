@@ -3,6 +3,7 @@ import logging
 from collections.abc import Sequence
 
 import httpx2
+from fastapi import HTTPException
 from sqlalchemy import func, select
 
 from app.exceptions import (
@@ -19,8 +20,10 @@ from app.services.common import (
     get_or_create_by_name,
     update_model_fields,
 )
+from app.services.embedding import generate_tags
 from app.services.parser import MetadataParser
 from app.services.tags import associate_tags
+from app.settings import Settings
 from app.types import DbSession
 
 logger = logging.getLogger("article_manager.services.articles")
@@ -75,10 +78,10 @@ async def enrich_with_content(
 
 
 async def create_article(
-    session: DbSession, data: ArticleSchema, user_id: int
+    session: DbSession, settings: Settings, data: ArticleSchema, user_id: int
 ) -> Article:
     content = await enrich_with_content(session, user_id, data.url)
-    tags = associate_tags(session, data.tags, user_id)
+    tags = await resolve_article_tags(session, settings, data.tags, user_id, content)
     author = get_or_create_by_name(session, Author, data.author, user_id)
     article = Article(
         user_id=user_id,
@@ -157,3 +160,20 @@ async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataPa
             "Unable to fetch metadata from the provided URL. "
             "Please check that the URL is valid and reachable."
         ) from error
+
+
+async def resolve_article_tags(
+    session: DbSession,
+    settings: Settings,
+    raw_tags: list[str],
+    user_id: int,
+    content: list[dict] | None,
+):
+    if raw_tags:
+        return associate_tags(session, raw_tags, user_id)
+    try:
+        generated_tags = await generate_tags(settings, content)
+    except HTTPException as error:
+        logger.info("Request failed to generate tags", exc_info=error)
+        return []
+    return associate_tags(session, generated_tags, user_id)

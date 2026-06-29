@@ -56,6 +56,7 @@ export interface ArticleFormProps extends BaseFormProps {
   onSave: (item: Article) => void;
   activeItem: Article;
   isPending?: boolean;
+  mode?: 'create' | 'edit';
 }
 
 export interface UrlFormProps extends BaseFormProps {
