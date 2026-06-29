@@ -7,7 +7,6 @@ from app.logger import configure_logging, register_logging
 from app.routers.articles import router as articles_router
 from app.routers.auth import router as auth_router
 from app.routers.authors import router as authors_router
-from app.routers.embedding import router as embedding_router
 from app.routers.health import router as health_router
 from app.routers.search import router as search_router
 from app.routers.tags import router as tags_router
@@ -43,7 +42,6 @@ def create_app(settings: Settings | None = None):
         authors_router,
         tags_router,
         search_router,
-        embedding_router,
     ]
     for r in routers:
         app.include_router(r)
