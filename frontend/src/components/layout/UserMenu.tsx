@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { LogOut, Moon, Sun, User } from 'react-feather';
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -6,7 +6,11 @@ import { useSettings } from '../../contexts/SettingsContext';
 import { useIsDarkMode, useTheme } from '../../contexts/ThemeContext';
 import { useLogout } from '../../hooks/mutations';
 
-export function UserMenu() {
+type UserMenuProps = {
+  includeTestId?: boolean;
+};
+
+export function UserMenu({ includeTestId = true }: Readonly<UserMenuProps>) {
   const { user } = useAuth();
   const { toggle } = useTheme();
   const isDarkMode = useIsDarkMode();
@@ -14,6 +18,7 @@ export function UserMenu() {
   const logoutMutation = useLogout();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const requireSummaryToggleId = useId();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -50,8 +55,10 @@ export function UserMenu() {
 
   if (!user) return null;
 
+  const userInitial = user.name.trim().charAt(0).toUpperCase() || 'U';
+
   return (
-    <div ref={menuRef} className="user-menu relative" data-testid="user-menu">
+    <div ref={menuRef} className="user-menu relative" data-testid={includeTestId ? 'user-menu' : undefined}>
       <button
         type="button"
         onClick={() => setIsOpen((open) => !open)}
@@ -60,19 +67,30 @@ export function UserMenu() {
         aria-expanded={isOpen}
         aria-label={`User menu for ${user.name}`}
       >
-        <User size={18} className="user-menu__icon" />
+        <span className="user-menu__avatar" aria-hidden="true">
+          {userInitial}
+        </span>
       </button>
 
       {isOpen && (
         <div role="menu" className="user-menu__panel">
-          <div className="user-menu__header">{user.name}</div>
+          <div className="user-menu__header">
+            <div className="user-menu__header-avatar" aria-hidden="true">
+              <User size={16} />
+            </div>
+            <div className="min-w-0">
+              <p className="user-menu__eyebrow">Signed in as</p>
+              <p className="user-menu__name">{user.name}</p>
+            </div>
+          </div>
           <div className="user-menu__divider" />
           <div className="user-menu__toggle-row">
-            <label htmlFor="require-summary-toggle" className="user-menu__toggle-label">
-              Require summary when saving
+            <label htmlFor={requireSummaryToggleId} className="user-menu__toggle-label">
+              <span className="user-menu__toggle-title">Require summary</span>
+              <span className="user-menu__toggle-description">When saving consulted articles</span>
             </label>
             <button
-              id="require-summary-toggle"
+              id={requireSummaryToggleId}
               type="button"
               role="menuitemcheckbox"
               aria-checked={requireSummaryOnSave}
@@ -85,8 +103,10 @@ export function UserMenu() {
           </div>
           <div className="user-menu__divider" />
           <button type="button" role="menuitem" onClick={handleThemeToggle} className="user-menu__item">
-            {isDarkMode ? <Sun size={16} className="text-amber-500" /> : <Moon size={16} className="text-indigo-500" />}
-            {isDarkMode ? 'Light mode' : 'Dark mode'}
+            <span className="user-menu__item-icon">
+              {isDarkMode ? <Sun size={16} className="text-amber-500" /> : <Moon size={16} className="text-indigo-500" />}
+            </span>
+            <span>{isDarkMode ? 'Light mode' : 'Dark mode'}</span>
           </button>
           <div className="user-menu__divider" />
           <button
@@ -97,8 +117,10 @@ export function UserMenu() {
             disabled={logoutMutation.isPending}
             className="user-menu__item user-menu__item--danger"
           >
-            <LogOut size={16} />
-            Logout
+            <span className="user-menu__item-icon">
+              <LogOut size={16} />
+            </span>
+            <span>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</span>
           </button>
         </div>
       )}

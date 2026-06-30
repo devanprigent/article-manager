@@ -49,6 +49,11 @@ function matchesApiPath(route: Route, path: string): boolean {
   return url.origin === API_BASE_URL && url.pathname === path;
 }
 
+function isArticlesListResponse(url: string): boolean {
+  const parsedUrl = new URL(url);
+  return parsedUrl.origin === API_BASE_URL && parsedUrl.pathname === '/articles';
+}
+
 function hasAuthCookie(route: Route): boolean {
   const cookieHeader = route.request().headers()['cookie'] ?? '';
   return cookieHeader.includes(`csrf_access_token=${E2E_ACCESS_CSRF}`);
@@ -63,8 +68,11 @@ export async function loginViaUi(page: Page): Promise<void> {
   const password = getPassword(page);
   await username.fill(E2E_USER.name);
   await password.fill(E2E_PASSWORD);
-  await page.getByRole('button', { name: 'Login', exact: true }).click();
-  await page.waitForURL('/articles');
+  await Promise.all([
+    page.waitForURL('/articles'),
+    page.waitForResponse((response) => isArticlesListResponse(response.url()) && response.request().method() === 'GET' && response.ok()),
+    page.getByRole('button', { name: 'Login', exact: true }).click(),
+  ]);
 }
 
 export async function authenticate(page: Page): Promise<void> {

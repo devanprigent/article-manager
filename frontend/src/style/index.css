@@ -372,67 +372,121 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 9999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
   border: 1px solid #cbd5e1;
-  background-color: #f1f5f9;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
   padding: 0;
   color: #334155;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.08);
   transition:
     background-color 0.15s,
     border-color 0.15s,
-    color 0.15s;
+    color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 .user-menu__trigger:hover {
-  background-color: #e2e8f0;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgb(15 23 42 / 0.12);
 }
 
 .user-menu__trigger--open {
-  background-color: #e2e8f0;
-  color: #1e293b;
+  border-color: #818cf8;
+  background: #eef2ff;
+  color: #3730a3;
+  box-shadow: 0 8px 18px rgb(79 70 229 / 0.18);
 }
 
-.user-menu__icon {
-  color: #64748b;
+.user-menu__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 0.75rem;
+  background-color: #e0e7ff;
+  color: #4338ca;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .user-menu__header {
-  padding: 0.625rem 0.75rem 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 0.875rem 0.75rem;
+}
+
+.user-menu__header-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.875rem;
+  background-color: #eef2ff;
+  color: #4f46e5;
+}
+
+.user-menu__eyebrow {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.user-menu__name {
+  margin: 0.125rem 0 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: #1e293b;
 }
 
 .user-menu__panel {
   position: absolute;
   right: 0;
+  bottom: calc(100% + 0.5rem);
   z-index: 30;
-  margin-top: 0.5rem;
-  min-width: 11rem;
+  min-width: 16rem;
   overflow: hidden;
-  border-radius: 0.5rem;
+  border-radius: 1.25rem;
   border: 1px solid #e2e8f0;
-  background-color: #ffffff;
+  background-color: rgb(255 255 255 / 0.96);
+  backdrop-filter: blur(16px);
   box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
+    0 20px 25px -5px rgb(15 23 42 / 0.12),
+    0 8px 10px -6px rgb(15 23 42 / 0.12);
+}
+
+@media (min-width: 1024px) {
+  .user-menu__panel {
+    right: -0.75rem;
+    left: auto;
+  }
 }
 
 .user-menu__item {
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   border: 0;
   background-color: transparent;
-  padding: 0.5rem 0.75rem;
+  padding: 0.625rem 0.875rem;
   text-align: left;
   font-size: 0.875rem;
+  font-weight: 650;
   color: #334155;
   transition:
     background-color 0.15s,
@@ -442,6 +496,17 @@ body {
 .user-menu__item:hover:not(:disabled) {
   background-color: #f1f5f9;
   color: #1e293b;
+}
+
+.user-menu__item-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.75rem;
+  background-color: #f8fafc;
 }
 
 .user-menu__item:disabled {
@@ -464,31 +529,43 @@ body {
 
 .dark .user-menu__trigger {
   border-color: #475569;
-  background-color: #1e293b;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   color: #e2e8f0;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
 }
 
 .dark .user-menu__trigger:hover {
-  background-color: #334155;
+  border-color: #64748b;
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.3);
 }
 
 .dark .user-menu__trigger--open {
-  border-color: #64748b;
-  background-color: #334155;
-  color: #f1f5f9;
+  border-color: #818cf8;
+  background: #312e81;
+  color: #eef2ff;
 }
 
-.dark .user-menu__icon {
-  color: #94a3b8;
+.dark .user-menu__avatar {
+  background-color: #3730a3;
+  color: #e0e7ff;
 }
 
-.dark .user-menu__header {
+.dark .user-menu__header-avatar {
+  background-color: #312e81;
+  color: #c7d2fe;
+}
+
+.dark .user-menu__eyebrow {
+  color: #64748b;
+}
+
+.dark .user-menu__name {
   color: #f1f5f9;
 }
 
 .dark .user-menu__panel {
   border-color: #334155;
-  background-color: #1e293b;
+  background-color: rgb(30 41 59 / 0.96);
   box-shadow:
     0 10px 15px -3px rgb(0 0 0 / 0.4),
     0 4px 6px -4px rgb(0 0 0 / 0.4);
@@ -501,6 +578,10 @@ body {
 .dark .user-menu__item:hover:not(:disabled) {
   background-color: #334155;
   color: #f8fafc;
+}
+
+.dark .user-menu__item-icon {
+  background-color: #0f172a;
 }
 
 .dark .user-menu__item--danger {
@@ -521,22 +602,34 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 0.875rem;
 }
 
 .user-menu__toggle-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
   margin: 0;
-  font-size: 0.8125rem;
   line-height: 1.25;
-  color: #334155;
   cursor: pointer;
+}
+
+.user-menu__toggle-title {
+  font-size: 0.875rem;
+  font-weight: 750;
+  color: #334155;
+}
+
+.user-menu__toggle-description {
+  font-size: 0.75rem;
+  color: #64748b;
 }
 
 .user-menu__switch {
   position: relative;
   flex-shrink: 0;
-  width: 2.25rem;
-  height: 1.25rem;
+  width: 2.5rem;
+  height: 1.375rem;
   border: 0;
   border-radius: 9999px;
   background-color: #cbd5e1;
@@ -551,8 +644,8 @@ body {
 
 .user-menu__switch-thumb {
   position: absolute;
-  top: 0.125rem;
-  left: 0.125rem;
+  top: 0.1875rem;
+  left: 0.1875rem;
   width: 1rem;
   height: 1rem;
   border-radius: 9999px;
@@ -561,11 +654,15 @@ body {
 }
 
 .user-menu__switch--on .user-menu__switch-thumb {
-  transform: translateX(1rem);
+  transform: translateX(1.125rem);
 }
 
-.dark .user-menu__toggle-label {
+.dark .user-menu__toggle-title {
   color: #e2e8f0;
+}
+
+.dark .user-menu__toggle-description {
+  color: #94a3b8;
 }
 
 .dark .user-menu__switch {

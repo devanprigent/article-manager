@@ -49,7 +49,7 @@ export function formatCreatedDate(dateCreation: string): string {
   }).format(createdAt);
 }
 
-const APP_PATHS_AFTER_LOGIN = ['/articles', '/likes', '/read-again', '/stats'] as const;
+const APP_PATHS_AFTER_LOGIN = ['/articles', '/likes', '/read-later', '/stats'] as const;
 
 export function postLoginPath(state: unknown): string {
   const from = (state as { from?: string } | null)?.from;
