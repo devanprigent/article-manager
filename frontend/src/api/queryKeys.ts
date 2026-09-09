@@ -1,4 +1,4 @@
-import type { ArticleListFilters } from '../constants/types';
+import type { ArticleListFilters } from '../types/types';
 
 export const queryKeys = {
   articles: {

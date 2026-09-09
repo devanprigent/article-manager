@@ -2,9 +2,9 @@ import { useState, type ChangeEvent } from 'react';
 import { Input } from 'reactstrap';
 
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import { ArticleSchema } from '../../constants/schema';
-import { UrlFormProps } from '../../constants/types';
-import PopupWrapper from '../features/PopupWrapper';
+import PopupWrapper from '../../core/components/PopupWrapper';
+import { ArticleSchema } from '../../types/schema';
+import { UrlFormProps } from '../../types/types';
 
 const UrlOnlySchema = ArticleSchema.pick({ url: true });
 

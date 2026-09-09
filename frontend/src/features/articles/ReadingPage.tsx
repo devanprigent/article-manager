@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 
+import { LoadingIcon } from '../../core/ui/LoadingIcon';
 import { useArticle } from '../../hooks/queries';
-import { LoadingIcon } from '../features/LoadingIcon';
-import { ContentVisualizer } from '../layout/ContentVisualizer';
-import { MetadataVisualizer } from '../layout/MetadataVisualizer';
+import { ContentVisualizer } from './ContentVisualizer';
+import { MetadataVisualizer } from './MetadataVisualizer';
 
 function ReadingPage() {
   const { id } = useParams();

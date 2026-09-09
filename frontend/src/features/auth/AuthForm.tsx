@@ -3,11 +3,11 @@ import { AlertTriangle, Eye, EyeOff } from 'react-feather';
 import { Input } from 'reactstrap';
 
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import type { Credentials } from '../../constants/types';
-import { AuthMode } from '../../constants/types';
+import PopupWrapper from '../../core/components/PopupWrapper';
 import { useLogin, useRegister } from '../../hooks/mutations';
 import { useHealth } from '../../hooks/queries';
-import PopupWrapper from '../features/PopupWrapper';
+import type { Credentials } from '../../types/types';
+import { AuthMode } from '../../types/types';
 
 interface AuthFormProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Bookmark, CheckCircle, ExternalLink, Heart, Tag } from 'react-feather';
 
-import { Article } from '../../constants/types';
+import { Article } from '../../types/types';
 
 const formatDate = (value: string) =>
   new Date(value).toLocaleDateString('en-GB', {

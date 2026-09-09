@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 
 import { articlesApi, authApi, authorsApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
-import { Message } from '../constants/types';
 import { useAuth } from '../contexts/AuthContext';
 import { postLoginPath } from '../helpers/helpers';
+import { Message } from '../types/types';
 
 function stringifyErrorValue(value: unknown): string | undefined {
   if (typeof value === 'string') {

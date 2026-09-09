@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import { AuthMode } from '../../constants/types';
 import { useAuth } from '../../contexts/AuthContext';
-import AuthForm from '../forms/AuthForm';
+import AuthForm from '../../features/auth/AuthForm';
+import { AuthMode } from '../../types/types';
 import { NavTabs } from './NavTabs';
 import { UserMenu } from './UserMenu';
 

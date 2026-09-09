@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { GitHub } from 'react-feather';
 
-import { AuthMode } from '../../constants/types';
-import ScreenshotCarousel from '../features/ScreenshotCarousel';
-import AuthForm from '../forms/AuthForm';
+import AuthForm from '../../features/auth/AuthForm';
+import { AuthMode } from '../../types/types';
+import ScreenshotCarousel from './ScreenshotCarousel';
 
 function HomePage() {
   const [authMode, setAuthMode] = useState<AuthMode>('login');

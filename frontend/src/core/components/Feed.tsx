@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { XCircle } from 'react-feather';
 
-import { Article } from '../../constants/types';
 import { useIsDarkMode } from '../../contexts/ThemeContext';
+import { ArticleLink } from '../../features/articles/ArticleLink';
 import { formatCreatedDate } from '../../helpers/helpers';
 import { useEditArticle } from '../../hooks/mutations';
-import { ArticleLink } from '../features/ArticleLink';
-import { ErrorMessage } from '../features/ErrorMessage';
-import { LoadingIcon } from '../features/LoadingIcon';
+import { Article } from '../../types/types';
+import { ErrorMessage } from '../ui/ErrorMessage';
+import { LoadingIcon } from '../ui/LoadingIcon';
 
 interface FeedItemProps {
   article: Article;

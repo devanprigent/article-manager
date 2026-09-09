@@ -1,4 +1,4 @@
-import { Article } from '../../constants/types';
+import { Article } from '../../types/types';
 
 type ArticleBlockProps = {
   tag: string;

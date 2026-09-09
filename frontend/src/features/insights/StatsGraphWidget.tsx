@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { LoadingIcon } from './LoadingIcon';
+import { LoadingIcon } from '../../core/ui/LoadingIcon';
 
 interface StatsGraphWidgetProps {
   title: string;

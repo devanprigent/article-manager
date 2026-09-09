@@ -5,12 +5,12 @@ import CreatableSelect from 'react-select/creatable';
 import { Input } from 'reactstrap';
 
 import { buttonSize, buttonStyle } from '../../constants/constants';
-import { ArticleSchema } from '../../constants/schema';
-import { ArticleFormProps } from '../../constants/types';
 import { useSettings } from '../../contexts/SettingsContext';
+import PopupWrapper from '../../core/components/PopupWrapper';
 import { useAuthors } from '../../hooks/queries';
-import PopupWrapper from '../features/PopupWrapper';
-import RemoveButton from '../features/RemoveButton';
+import { ArticleSchema } from '../../types/schema';
+import { ArticleFormProps } from '../../types/types';
+import RemoveButton from './RemoveButton';
 import TagsForm from './TagsForm';
 
 type AuthorOption = { value: string; label: string };

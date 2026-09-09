@@ -1,10 +1,10 @@
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
+import PageHeader from '../../core/components/PageHeader';
 import { getReadPerMonth } from '../../helpers/helpers';
 import { useArticles, useTopAuthors } from '../../hooks/queries';
-import StatsGraphWidget from '../features/StatsGraphWidget';
-import PageHeader from '../layout/PageHeader';
+import StatsGraphWidget from './StatsGraphWidget';
 
 function StatsPage() {
   const { data: { articles = [] } = {}, isLoading: isArticlesLoading } = useArticles();

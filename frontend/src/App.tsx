@@ -2,14 +2,14 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { Toaster } from 'sonner';
 
-import { ProtectedRoute } from './components/layout/ProtectedRoute';
-import ArticlesPage from './components/pages/ArticlesPage';
-import HomePage from './components/pages/HomePage';
-import LikedPage from './components/pages/LikedPage';
-import ReadingPage from './components/pages/ReadingPage';
-import ReadLaterPage from './components/pages/ReadLaterPage';
-import StatsPage from './components/pages/StatsPage';
 import { useIsDarkMode } from './contexts/ThemeContext';
+import HomePage from './core/components/HomePage';
+import { ProtectedRoute } from './core/components/ProtectedRoute';
+import ArticlesPage from './features/articles/ArticlesPage';
+import ReadingPage from './features/articles/ReadingPage';
+import StatsPage from './features/insights/StatsPage';
+import LikedPage from './features/liked/LikedPage';
+import ReadLaterPage from './features/read-later/ReadLaterPage';
 import { useHealth } from './hooks/queries';
 
 function App() {

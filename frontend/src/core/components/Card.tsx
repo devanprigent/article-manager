@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Heart, XCircle } from 'react-feather';
 
-import { ArticleLink } from './ArticleLink';
+import { ArticleLink } from '../../features/articles/ArticleLink';
 
 interface PropsType {
   id: number;

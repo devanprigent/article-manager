@@ -3,6 +3,7 @@ import { ZodError, ZodType } from 'zod';
 import type { infer as ZodInfer } from 'zod';
 
 import { API_URLS } from '../constants/constants';
+import { getCookie, normalizeEntityNames } from '../helpers/helpers';
 import {
   ArticleSchema,
   ArticlesSchema,
@@ -14,9 +15,8 @@ import {
   EntitySchema,
   MessageSchema,
   ParsedMetadataSchema,
-} from '../constants/schema';
-import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../constants/types';
-import { getCookie, normalizeEntityNames } from '../helpers/helpers';
+} from '../types/schema';
+import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../types/types';
 
 const apiClient = axios.create();
 

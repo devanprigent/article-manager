@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Loader, Plus } from 'react-feather';
 
-import { Article, ParsedMetadata } from '../../constants/types';
 import { parseYear } from '../../helpers/helpers';
 import { useCreateArticle, useParsing } from '../../hooks/mutations';
-import ArticleForm from '../forms/ArticleForm';
-import UrlForm from '../forms/UrlForm';
+import { Article, ParsedMetadata } from '../../types/types';
+import ArticleForm from './ArticleForm';
+import UrlForm from './UrlForm';
 
 interface PropsType {
   title: string;
