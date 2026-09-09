@@ -34,7 +34,7 @@ function mobileLinkClass(isActive: boolean) {
 export function Sidebar({ children }: Readonly<SidebarProps>) {
   return (
     <div className="min-h-screen bg-[#f6f3ee] text-slate-950 transition-colors dark:bg-slate-950 dark:text-slate-50">
-      <div className="mx-auto flex min-h-screen w-full max-w-[92rem]">
+      <div className="flex min-h-screen w-full">
         <aside className="sticky top-0 z-40 hidden h-screen w-72 shrink-0 border-r border-slate-200/80 bg-white/70 px-4 py-5 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-950/70 lg:flex lg:flex-col">
           <div className="mb-8 flex items-center gap-3 px-2">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-white shadow-sm dark:border dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
@@ -70,7 +70,7 @@ export function Sidebar({ children }: Readonly<SidebarProps>) {
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <main className="min-w-0 flex-1 px-4 py-4 pb-28 sm:px-6 lg:px-8 lg:py-6">{children}</main>
+          <main className="mx-auto min-w-0 w-full max-w-[92rem] flex-1 px-4 py-4 pb-28 sm:px-6 lg:px-8 lg:py-6">{children}</main>
         </div>
       </div>
 
