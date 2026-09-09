@@ -21,7 +21,13 @@ function ReadLaterPage() {
         </span>
       </PageHeader>
 
-      <Feed articles={articles} emptyMessage={EMPTY_MESSAGE} isLoading={isLoading} error={error} />
+      <Feed
+        articles={articles}
+        emptyMessage={EMPTY_MESSAGE}
+        isLoading={isLoading}
+        error={error}
+        clearPatch={(article) => ({ ...article, read_later: false })}
+      />
     </div>
   );
 }

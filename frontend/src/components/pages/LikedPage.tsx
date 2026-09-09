@@ -1,5 +1,5 @@
 import { useArticles } from '../../hooks/queries';
-import { CardGrid } from '../layout/CardGrid';
+import { Feed } from '../layout/Feed';
 import PageHeader from '../layout/PageHeader';
 
 const EMPTY_MESSAGE = 'No liked articles yet. Mark articles as liked from the Articles page.';
@@ -21,13 +21,12 @@ function LikedPage() {
         </span>
       </PageHeader>
 
-      <CardGrid
+      <Feed
         articles={articles}
         emptyMessage={EMPTY_MESSAGE}
-        clearPatch={(article) => ({ ...article, liked: false })}
-        cardAction="liked"
         isLoading={isLoading}
         error={error}
+        clearPatch={(article) => ({ ...article, liked: false })}
       />
     </div>
   );

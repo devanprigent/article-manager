@@ -9,13 +9,6 @@ import { ArticleLink } from '../features/ArticleLink';
 import { ErrorMessage } from '../features/ErrorMessage';
 import { LoadingIcon } from '../features/LoadingIcon';
 
-interface FeedProps {
-  articles: Article[];
-  emptyMessage: string;
-  isLoading: boolean;
-  error: Error | null;
-}
-
 interface FeedItemProps {
   article: Article;
   onClearReadLater: (article: Article) => void;
@@ -78,12 +71,20 @@ function FeedItem({ article, onClearReadLater, isClearPending, isDarkMode }: Rea
   );
 }
 
-export function Feed({ articles, emptyMessage, isLoading, error }: Readonly<FeedProps>) {
+interface FeedProps {
+  articles: Article[];
+  emptyMessage: string;
+  isLoading: boolean;
+  error: Error | null;
+  clearPatch: (article: Article) => Article;
+}
+
+export function Feed({ articles, emptyMessage, isLoading, error, clearPatch }: Readonly<FeedProps>) {
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
 
-  function handleClearReadLater(article: Article): void {
-    editArticle({ ...article, read_later: false });
+  function handleClear(article: Article): void {
+    editArticle(clearPatch(article));
   }
 
   if (isLoading) {
@@ -117,7 +118,7 @@ export function Feed({ articles, emptyMessage, isLoading, error }: Readonly<Feed
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl py-2 pl-3 pr-6 pt-3">
       {articles.map((article) => (
-        <FeedItem key={article.id} article={article} onClearReadLater={handleClearReadLater} isClearPending={isEditPending} isDarkMode={isDarkMode} />
+        <FeedItem key={article.id} article={article} onClearReadLater={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />
       ))}
     </div>
   );
