@@ -70,6 +70,7 @@ function AuthForm({ isOpen, mode, onClose }: Readonly<AuthFormProps>) {
                 type={isPasswordVisible ? 'text' : 'password'}
                 name="password"
                 placeholder="Password"
+                autoComplete="on"
                 value={credentials.password}
                 onChange={(event) => setCredentials((prev) => ({ ...prev, password: event.target.value }))}
                 className={`${inputClassName} pr-10`}
