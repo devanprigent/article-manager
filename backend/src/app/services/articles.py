@@ -3,7 +3,6 @@ import logging
 from collections.abc import Sequence
 
 import httpx2
-from fastapi import HTTPException
 from sqlalchemy import func, select
 
 from app.exceptions import (
@@ -20,7 +19,6 @@ from app.services.common import (
     get_or_create_by_name,
     update_model_fields,
 )
-from app.services.embedding import generate_tags
 from app.services.parser import MetadataParser
 from app.services.tags import associate_tags
 from app.settings import Settings
@@ -171,9 +169,4 @@ async def resolve_article_tags(
 ):
     if raw_tags:
         return associate_tags(session, raw_tags, user_id)
-    try:
-        generated_tags = await generate_tags(settings, content)
-    except HTTPException as error:
-        logger.info("Request failed to generate tags", exc_info=error)
-        return []
-    return associate_tags(session, generated_tags, user_id)
+    return []
