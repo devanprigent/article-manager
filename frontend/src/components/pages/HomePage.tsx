@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GitHub } from 'react-feather';
 
 import { AuthMode } from '../../constants/types';
 import ScreenshotCarousel from '../features/ScreenshotCarousel';
@@ -41,6 +42,15 @@ function HomePage() {
                   >
                     Login
                   </button>
+                  <a
+                    href="https://github.com/devanprigent/article-manager"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub repository"
+                    className="inline-flex min-h-14 min-w-14 items-center justify-center rounded-2xl border border-slate-300 bg-white/80 text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-400 hover:bg-white hover:shadow-md focus:outline-none focus:ring-4 focus:ring-slate-300/60 dark:border-slate-500 dark:bg-slate-800/80 dark:text-white dark:hover:bg-slate-700"
+                  >
+                    <GitHub size={22} aria-hidden="true" />
+                  </a>
                 </div>
               </div>
             </div>
