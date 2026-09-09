@@ -1,0 +1,99 @@
+import { useCallback } from 'react';
+
+import { DataGrid, GridColDef, GridColumnVisibilityModel, GridFilterModel } from '@mui/x-data-grid';
+
+import { pageSize } from '../../constants/constants';
+import { useIsDarkMode } from '../../contexts/ThemeContext';
+import { ErrorMessage } from '../../core/ui/ErrorMessage';
+import { Article } from '../../types/types';
+
+interface DataTableProps {
+  rows: Article[];
+  columns: GridColDef[];
+  isFetching: boolean;
+  error: Error | null;
+  total: number;
+  paginationModel: {
+    page: number;
+    pageSize: number;
+  };
+  setPaginationModel: React.Dispatch<
+    React.SetStateAction<{
+      page: number;
+      pageSize: number;
+    }>
+  >;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  columnVisibilityModel?: GridColumnVisibilityModel;
+}
+
+export default function DataTable({
+  rows,
+  columns,
+  isFetching,
+  error,
+  total,
+  paginationModel,
+  setPaginationModel,
+  setSearch,
+  columnVisibilityModel,
+}: Readonly<DataTableProps>) {
+  const isDarkMode = useIsDarkMode();
+
+  const onFilterChange = useCallback(
+    (filterModel: GridFilterModel) => {
+      setSearch(filterModel?.quickFilterValues?.[0] || '');
+      setPaginationModel({ page: 0, pageSize: pageSize });
+    },
+    [setSearch, setPaginationModel],
+  );
+
+  if (error) {
+    return ErrorMessage(error.message);
+  }
+
+  return (
+    <div className="min-w-0 w-full bg-white dark:bg-slate-900">
+      <DataGrid
+        className="app-data-grid"
+        rows={rows}
+        columns={columns}
+        columnVisibilityModel={columnVisibilityModel}
+        loading={isFetching}
+        filterMode="server"
+        onFilterModelChange={onFilterChange}
+        paginationMode="server"
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+        rowCount={total}
+        pageSizeOptions={[25]}
+        autoHeight
+        getRowHeight={() => 'auto'}
+        disableColumnFilter
+        disableColumnSelector
+        disableDensitySelector
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+          },
+        }}
+        sx={{
+          border: 0,
+          width: '100%',
+          minWidth: 0,
+          ...(isDarkMode && {
+            '--DataGrid-t-header-background-base': '#1e293b',
+            '--DataGrid-t-cell-background-base': '#0f172a',
+            backgroundColor: '#0f172a',
+            color: '#e2e8f0',
+            '& .MuiDataGrid-main, & .MuiDataGrid-virtualScroller, & .MuiDataGrid-virtualScrollerContent, & .MuiDataGrid-virtualScrollerContent--overflowed, & .MuiDataGrid-overlay, & .MuiDataGrid-filler, & .MuiDataGrid-topContainer, & .MuiDataGrid-bottomContainer':
+              {
+                backgroundColor: '#0f172a',
+              },
+          }),
+        }}
+        showToolbar
+      />
+    </div>
+  );
+}

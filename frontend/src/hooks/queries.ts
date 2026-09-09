@@ -2,7 +2,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { articlesApi, authApi, authorsApi, healthApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
-import type { ArticleListFilters } from '../constants/types';
+import type { ArticleListFilters } from '../types/types';
 
 export function useArticles(isSearching?: boolean, page?: number, pageSize?: number, filters: ArticleListFilters = {}) {
   return useQuery({

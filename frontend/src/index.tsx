@@ -4,7 +4,7 @@ import { scan } from 'react-scan';
 import App from './App';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './style/index.css';
+import './styles/index.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 

@@ -3,6 +3,7 @@ import { ZodError, ZodType } from 'zod';
 import type { infer as ZodInfer } from 'zod';
 
 import { API_URLS } from '../constants/constants';
+import { getCookie, normalizeEntityNames } from '../helpers/helpers';
 import {
   ArticleSchema,
   ArticlesSchema,
@@ -14,9 +15,8 @@ import {
   EntitySchema,
   MessageSchema,
   ParsedMetadataSchema,
-} from '../constants/schema';
-import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../constants/types';
-import { getCookie, normalizeEntityNames } from '../helpers/helpers';
+} from '../types/schema';
+import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../types/types';
 
 const apiClient = axios.create();
 
@@ -113,21 +113,19 @@ export const authApi = {
   },
 };
 
+function setParam(params: URLSearchParams, label: string, value: unknown) {
+  if (value != null && value !== '') {
+    params.set(label, String(value));
+  }
+}
+
 export const articlesApi = {
   list: async (offset?: number, limit?: number, filters: ArticleListFilters = {}): Promise<{ articles: Article[]; total: number }> => {
     const params = new URLSearchParams();
-    if (offset != undefined) {
-      params.set('offset', String(offset));
-    }
-    if (limit != undefined) {
-      params.set('limit', String(limit));
-    }
-    if (filters.read_later != undefined) {
-      params.set('read_later', String(filters.read_later));
-    }
-    if (filters.liked != undefined) {
-      params.set('liked', String(filters.liked));
-    }
+    setParam(params, 'offset', offset);
+    setParam(params, 'limit', limit);
+    setParam(params, 'read_later', filters.read_later);
+    setParam(params, 'liked', filters.liked);
     const query = params.toString();
     const url = query ? `${API_URLS.ARTICLES}?${query}` : API_URLS.ARTICLES;
     const { data } = await apiClient.get(url);

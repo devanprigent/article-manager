@@ -1,4 +1,4 @@
-import type { Article, Entity, ReadByMonthStat } from '../constants/types';
+import type { Article, Entity, ReadByMonthStat } from '../types/types';
 
 export function getCookie(name: string): string | undefined {
   const nameEQ = name + '=';
