@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Trash2 } from 'react-feather';
 
-import ConfirmationForm from '../../core/components/ConfirmationForm';
-import { useRemoveArticle } from '../../hooks/mutations';
+import ConfirmationForm from '../../../core/components/ConfirmationForm';
+import { useRemoveArticle } from '../../../hooks/mutations';
 
 interface PropsType {
   itemId: number;

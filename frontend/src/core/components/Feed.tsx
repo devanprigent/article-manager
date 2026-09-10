@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { XCircle } from 'react-feather';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
-import { ArticleLink } from '../../features/articles/ArticleLink';
+import { ArticleLink } from '../../features/articles/components/ArticleLink';
 import { formatCreatedDate } from '../../helpers/helpers';
 import { useEditArticle } from '../../hooks/mutations';
 import { Article } from '../../types/types';

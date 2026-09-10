@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import { pageSize } from '../../constants/constants';
-import PageHeader from '../../core/components/PageHeader';
-import { useArticles, useSearch } from '../../hooks/queries';
-import { useDebounce } from '../../hooks/useDebounce';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
-import AddButton from './AddButton';
-import { getArticleColumns, getColumnVisibilityModel } from './articleColumns';
-import DataTable from './DataTable';
+import { pageSize } from '../../../constants/constants';
+import PageHeader from '../../../core/components/PageHeader';
+import { useArticles, useSearch } from '../../../hooks/queries';
+import { useDebounce } from '../../../hooks/useDebounce';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import AddButton from '../components/AddButton';
+import DataTable from '../components/DataTable';
+import { getArticleColumns, getColumnVisibilityModel } from '../helpers/articleColumns';
 
 export default function ArticlesPage() {
   const [paginationModel, setPaginationModel] = useState({

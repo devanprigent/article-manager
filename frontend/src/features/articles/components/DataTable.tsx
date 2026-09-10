@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 
 import { DataGrid, GridColDef, GridColumnVisibilityModel, GridFilterModel } from '@mui/x-data-grid';
 
-import { pageSize } from '../../constants/constants';
-import { useIsDarkMode } from '../../contexts/ThemeContext';
-import { ErrorMessage } from '../../core/ui/ErrorMessage';
-import { Article } from '../../types/types';
+import { pageSize } from '../../../constants/constants';
+import { useIsDarkMode } from '../../../contexts/ThemeContext';
+import { ErrorMessage } from '../../../core/ui/ErrorMessage';
+import { Article } from '../../../types/types';
 
 interface DataTableProps {
   rows: Article[];
