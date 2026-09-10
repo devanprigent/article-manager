@@ -3,7 +3,7 @@ import logging
 from collections.abc import Sequence
 
 import httpx2
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 
 from app.exceptions import (
     ClientInputError,
@@ -83,6 +83,11 @@ async def create_article(
     content = await enrich_with_content(session, user_id, data.url)
     tags = await resolve_article_tags(session, settings, data.tags, user_id, content)
     author = get_or_create_by_name(session, Author, data.author, user_id)
+    session.execute(
+        update(Article)
+        .where(Article.user_id == user_id, Article.read_later.is_(True))
+        .values(rank=Article.rank + 1)
+    )
     article = Article(
         user_id=user_id,
         title=data.title,
@@ -90,8 +95,9 @@ async def create_article(
         year=data.year,
         summary=data.summary,
         consulted=data.consulted,
-        read_later=data.read_later,
+        read_later=True,
         liked=data.liked,
+        rank=0,
         author_id=author.id,
         tags=tags,
         content=content,

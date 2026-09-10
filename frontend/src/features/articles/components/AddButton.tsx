@@ -26,7 +26,7 @@ const newArticle: Article = {
   year: new Date().getFullYear(),
   summary: '',
   consulted: false,
-  read_later: false,
+  read_later: true,
   liked: false,
   tags: [],
   date_creation: '',

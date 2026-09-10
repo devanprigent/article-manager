@@ -67,6 +67,19 @@ export const useCreateArticle = () => useEntitiesMutation(articlesApi.create, qu
 export const useEditArticle = () => useEntitiesMutation(articlesApi.update, queryKeys.articles.all, 'Article successfully edited');
 export const useRemoveArticle = () => useEntitiesMutation(articlesApi.remove, queryKeys.articles.all, 'Article successfully deleted');
 
+export const useReorderReadLater = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ old_rank, new_rank }: { old_rank: number; new_rank: number }) => articlesApi.reorderReadLater(old_rank, new_rank),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: queryKeys.articles.all });
+    },
+    onError: (err: unknown) => {
+      toast.error(extractErrorMessage(err));
+    },
+  });
+};
+
 export const useCreateAuthor = () => useEntitiesMutation(authorsApi.create, queryKeys.authors.all, 'Author successfully added');
 export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.tags.all, 'Tag successfully added');
 

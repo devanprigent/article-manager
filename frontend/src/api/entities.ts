@@ -156,6 +156,11 @@ export const articlesApi = {
     const response = parseWithError(DeletedArticlesSchema, data);
     return response.count;
   },
+  reorderReadLater: async (old_rank: number, new_rank: number): Promise<{ articles: Article[]; total: number }> => {
+    const { data } = await apiClient.patch(API_URLS.ARTICLES_READ_LATER_ORDER, { old_rank, new_rank });
+    const response = parseWithError(ArticlesSchema, data);
+    return { articles: response.data, total: response.total };
+  },
   parse: async (url: string): Promise<ParsedMetadata> => {
     const { data } = await apiClient.post(API_URLS.PARSE, {
       name: url,
