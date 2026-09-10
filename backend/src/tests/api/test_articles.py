@@ -122,3 +122,18 @@ def test_list_articles_filters_by_status(
     new_total = response["total"]
     assert len(new_articles) == expected_number
     assert new_total == expected_number
+
+
+def test_read_later_order_endpoint(auth_client, create_list_authors_articles):
+    articles = call_endpoint(auth_client, "/articles", "read_later=true")["data"]
+    assert articles[0]["id"] == 4
+
+    res = auth_client.post(
+        "/articles/read-later/order", json={"old_rank": 2, "new_rank": 0}
+    )
+    assert res.status_code == 200
+
+    reordered_articles = call_endpoint(auth_client, "/articles", "read_later=true")[
+        "data"
+    ]
+    assert reordered_articles[0]["id"] == 1

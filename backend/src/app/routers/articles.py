@@ -51,7 +51,7 @@ def list_articles(
     )
 
 
-@router.patch("/read-later/order")
+@router.post("/read-later/order")
 def update_ranking(
     db: DbSession, payload: RankSchema, user_id: UserId
 ) -> PaginatedArticlesResponse:

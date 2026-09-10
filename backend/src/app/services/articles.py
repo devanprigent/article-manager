@@ -95,7 +95,7 @@ async def create_article(
         year=data.year,
         summary=data.summary,
         consulted=data.consulted,
-        read_later=True,
+        read_later=data.read_later,
         liked=data.liked,
         rank=0,
         author_id=author.id,
