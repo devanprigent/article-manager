@@ -27,3 +27,8 @@ class IDSchema(BaseModel):
 class UserSchema(BaseModel):
     name: str = Field(..., min_length=1)
     password: str = Field(..., min_length=8)
+
+
+class RankSchema(BaseModel):
+    old_rank: int
+    new_rank: int

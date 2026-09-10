@@ -3,7 +3,7 @@ import logging
 from collections.abc import Sequence
 
 import httpx2
-from sqlalchemy import func, select
+from sqlalchemy import func, select, update
 
 from app.exceptions import (
     ClientInputError,
@@ -11,7 +11,7 @@ from app.exceptions import (
     MetadataParsingError,
 )
 from app.models import Article, Author
-from app.schemas import ArticleSchema
+from app.schemas import ArticleSchema, RankSchema
 from app.services.common import (
     check_url_uniqueness,
     get_entities,
@@ -35,11 +35,7 @@ def get_articles(
     read_later: bool | None,
     liked: bool | None,
 ) -> tuple[Sequence[Article], int]:
-    stmt = (
-        select(Article)
-        .where(Article.user_id == user_id)
-        .order_by(Article.date_modification.desc(), Article.id.desc())
-    )
+    stmt = select(Article).where(Article.user_id == user_id)
     count_stmt = (
         select(func.count()).select_from(Article).where(Article.user_id == user_id)
     )
@@ -49,6 +45,12 @@ def get_articles(
     if liked is not None:
         stmt = stmt.where(Article.liked == liked)
         count_stmt = count_stmt.where(Article.liked == liked)
+
+    if read_later is True:
+        stmt = stmt.order_by(Article.rank.asc(), Article.id.asc())
+    else:
+        stmt = stmt.order_by(Article.date_modification.desc(), Article.id.desc())
+
     if offset is not None:
         stmt = stmt.offset(offset)
     if limit is not None:
@@ -81,6 +83,11 @@ async def create_article(
     content = await enrich_with_content(session, user_id, data.url)
     tags = await resolve_article_tags(session, settings, data.tags, user_id, content)
     author = get_or_create_by_name(session, Author, data.author, user_id)
+    session.execute(
+        update(Article)
+        .where(Article.user_id == user_id, Article.read_later.is_(True))
+        .values(rank=Article.rank + 1)
+    )
     article = Article(
         user_id=user_id,
         title=data.title,
@@ -90,6 +97,7 @@ async def create_article(
         consulted=data.consulted,
         read_later=data.read_later,
         liked=data.liked,
+        rank=0,
         author_id=author.id,
         tags=tags,
         content=content,
@@ -97,6 +105,32 @@ async def create_article(
     session.add(article)
     session.commit()
     return article
+
+
+def rank_list_in_place(elements: list[int], old_rank: int, new_rank: int) -> None:
+    if old_rank == new_rank:
+        return
+    item = elements.pop(old_rank)
+    elements.insert(new_rank, item)
+
+
+def update_rank(session: DbSession, data: RankSchema, user_id: int) -> list[Article]:
+    articles, _ = get_articles(session, None, None, user_id, True, None)
+    article_count = len(articles)
+    if not (0 <= data.old_rank < article_count and 0 <= data.new_rank < article_count):
+        raise ClientInputError(
+            f"Ranks must be between 0 and {article_count - 1} (got old_rank={data.old_rank}, new_rank={data.new_rank})"
+            if article_count
+            else "No read-later articles to reorder"
+        )
+
+    ids = [article.id for article in articles]
+    by_id = {article.id: article for article in articles}
+    rank_list_in_place(ids, data.old_rank, data.new_rank)
+    for index, article_id in enumerate(ids):
+        by_id[article_id].rank = index
+    session.commit()
+    return [by_id[article_id] for article_id in ids]
 
 
 def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Article:

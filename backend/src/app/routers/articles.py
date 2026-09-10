@@ -13,6 +13,7 @@ from app.schemas import (
     IDSchema,
     PaginatedArticlesResponse,
     ParsedArticleResponse,
+    RankSchema,
 )
 from app.services import (
     create_article,
@@ -21,6 +22,7 @@ from app.services import (
     get_metadata,
     remove_articles,
     update_article,
+    update_rank,
 )
 from app.types import Pagination
 
@@ -46,6 +48,23 @@ def list_articles(
         total=total,
         offset=pagination.offset,
         limit=pagination.limit,
+    )
+
+
+@router.post("/read-later/order")
+def update_ranking(
+    db: DbSession, payload: RankSchema, user_id: UserId
+) -> PaginatedArticlesResponse:
+    updated_articles = update_rank(db, payload, user_id)
+    logger.info(
+        "Read-later articles's priority updated: user_id=%d",
+        user_id,
+    )
+    return PaginatedArticlesResponse(
+        data=[ArticleResponse.from_model(a) for a in updated_articles],
+        total=len(updated_articles),
+        offset=None,
+        limit=None,
     )
 
 
