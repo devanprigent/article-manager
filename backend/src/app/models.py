@@ -93,6 +93,7 @@ class Article(Base):
     read_later: Mapped[bool] = mapped_column(default=False, nullable=False)
     liked: Mapped[bool] = mapped_column(default=False, nullable=False)
     tags: Mapped[list["Tag"]] = relationship(secondary=article_tag)
+    rank: Mapped[int] = mapped_column(default=0, nullable=False)
     date_creation: Mapped[datetime] = mapped_column(
         default=lambda: datetime.now(UTC), nullable=False
     )

@@ -6,6 +6,7 @@ from app.services.articles import (
     get_metadata,
     remove_articles,
     update_article,
+    update_rank,
 )
 from app.services.auth import login_user, register_user
 from app.services.authors import (
@@ -35,6 +36,7 @@ __all__ = [
     "get_articles",
     "create_article",
     "update_article",
+    "update_rank",
     "remove_articles",
     "get_metadata",
     "get_articles_by_author",

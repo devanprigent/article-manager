@@ -1,4 +1,10 @@
-from app.schemas.requests import ArticleSchema, BasicSchema, IDSchema, UserSchema
+from app.schemas.requests import (
+    ArticleSchema,
+    BasicSchema,
+    IDSchema,
+    RankSchema,
+    UserSchema,
+)
 from app.schemas.responses import (
     ArticleResponse,
     AuthMessageResponse,
@@ -14,6 +20,7 @@ __all__ = [
     "ArticleSchema",
     "BasicSchema",
     "IDSchema",
+    "RankSchema",
     "UserSchema",
     "NamedEntityResponse",
     "PaginatedArticlesResponse",
