@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Loader, Plus } from 'react-feather';
 
-import { parseYear } from '../../helpers/helpers';
-import { useCreateArticle, useParsing } from '../../hooks/mutations';
-import { Article, ParsedMetadata } from '../../types/types';
+import { parseYear } from '../../../helpers/helpers';
+import { useCreateArticle, useParsing } from '../../../hooks/mutations';
+import { Article, ParsedMetadata } from '../../../types/types';
 import ArticleForm from './ArticleForm';
 import UrlForm from './UrlForm';
 

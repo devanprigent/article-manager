@@ -4,12 +4,12 @@ import type { SingleValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Input } from 'reactstrap';
 
-import { buttonSize, buttonStyle } from '../../constants/constants';
-import { useSettings } from '../../contexts/SettingsContext';
-import PopupWrapper from '../../core/components/PopupWrapper';
-import { useAuthors } from '../../hooks/queries';
-import { ArticleSchema } from '../../types/schema';
-import { ArticleFormProps } from '../../types/types';
+import { buttonSize, buttonStyle } from '../../../constants/constants';
+import { useSettings } from '../../../contexts/SettingsContext';
+import PopupWrapper from '../../../core/components/PopupWrapper';
+import { useAuthors } from '../../../hooks/queries';
+import { ArticleSchema } from '../../../types/schema';
+import { ArticleFormProps } from '../../../types/types';
 import RemoveButton from './RemoveButton';
 import TagsForm from './TagsForm';
 

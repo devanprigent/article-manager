@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
-import { LoadingIcon } from '../../core/ui/LoadingIcon';
-import { useArticle } from '../../hooks/queries';
+import { LoadingIcon } from '../../../core/ui/LoadingIcon';
+import { useArticle } from '../../../hooks/queries';
 import { ContentVisualizer } from './ContentVisualizer';
 import { MetadataVisualizer } from './MetadataVisualizer';
 

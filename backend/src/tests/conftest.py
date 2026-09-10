@@ -248,14 +248,6 @@ def mock_requests_get(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
-def mock_generate_tags(monkeypatch):
-    async def fake_generate_tags(settings, content=None):
-        return ["test"]
-
-    monkeypatch.setattr("app.services.articles.generate_tags", fake_generate_tags)
-
-
-@pytest.fixture(autouse=True)
 def mock_getaddrinfo(request, monkeypatch):
     if "nomocksanitizer" in request.keywords:
         return
