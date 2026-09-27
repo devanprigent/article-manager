@@ -2,7 +2,7 @@ import { useState, type CSSProperties, type HTMLAttributes } from 'react';
 import { XCircle } from 'react-feather';
 
 import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
@@ -150,7 +150,6 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
   const { mutate: reorderReadLater, isPending: isReorderPending } = useReorderReadLater();
-  const [orderedArticles, setOrderedArticles] = useState(articles);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -166,13 +165,12 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
       return;
     }
 
-    const oldIndex = orderedArticles.findIndex((article) => article.id === active.id);
-    const newIndex = orderedArticles.findIndex((article) => article.id === over.id);
+    const oldIndex = articles.findIndex((article) => article.id === active.id);
+    const newIndex = articles.findIndex((article) => article.id === over.id);
     if (oldIndex < 0 || newIndex < 0) {
       return;
     }
 
-    setOrderedArticles((current) => arrayMove(current, oldIndex, newIndex));
     reorderReadLater({ old_rank: oldIndex, new_rank: newIndex });
   }
 
@@ -216,11 +214,11 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={orderedArticles.map((article) => article.id)} strategy={verticalListSortingStrategy}>
+      <SortableContext items={articles.map((article) => article.id)} strategy={verticalListSortingStrategy}>
         <div
           className={`mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl py-2 pl-3 pr-6 pt-3 ${isReorderPending ? 'opacity-80' : ''}`}
         >
-          {orderedArticles.map((article) => (
+          {articles.map((article) => (
             <SortableFeedItem key={article.id} article={article} onClear={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />
           ))}
         </div>
