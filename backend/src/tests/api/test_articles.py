@@ -4,7 +4,8 @@ from tests.constants import INVALID_ARTICLE_CASES
 from tests.helpers import call_endpoint, get_article
 
 
-def test_get_article(auth_client, article):
+@pytest.mark.usefixtures("article")
+def test_get_article(auth_client):
     articles = call_endpoint(auth_client, "/articles")["data"]
     assert len(articles) == 1
     article_id = int(articles[0]["id"])
@@ -12,12 +13,14 @@ def test_get_article(auth_client, article):
     assert articles[0]["title"] == fetched_article["title"]
 
 
-def test_get_invalid_article(auth_client, article):
+@pytest.mark.usefixtures("article")
+def test_get_invalid_article(auth_client):
     res = auth_client.get("/articles/999")
     assert res.status_code == 404
 
 
-def test_article_return_content_not_articles(auth_client, article):
+@pytest.mark.usefixtures("article")
+def test_article_return_content_not_articles(auth_client):
     articles = call_endpoint(auth_client, "/articles")["data"]
     assert len(articles) == 1
     assert articles[0]["content"] is None
@@ -27,7 +30,56 @@ def test_article_return_content_not_articles(auth_client, article):
     assert fetched_article["content"] is not None
 
 
-def test_delete_article(auth_client, article):
+@pytest.mark.usefixtures("article")
+def test_edit_article(auth_client):
+    articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(articles) == 1
+
+    article = articles[0]
+    article["title"] = "Modified"
+    res_edit = auth_client.put("/articles", json=article)
+    assert res_edit.status_code == 200
+
+    updated_articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(updated_articles) == 1
+    assert updated_articles[0]["title"] == "Modified"
+
+
+@pytest.mark.usefixtures("article")
+def test_edit_article_missing_id(auth_client):
+    articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(articles) == 1
+
+    article = articles[0]
+    article["id"] = None
+    article["title"] = "Modified"
+    res_edit = auth_client.put("/articles", json=article)
+    assert res_edit.status_code == 400
+
+    updated_articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(updated_articles) == 1
+    assert updated_articles[0]["title"] != "Modified"
+
+
+@pytest.mark.usefixtures("create_list_authors_articles")
+def test_edit_article_duplicate_url(auth_client):
+    articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(articles) == 6
+
+    article = articles[0]
+    article["id"] = None
+    article["title"] = "Modified"
+    article["url"] = articles[1]["url"]
+    res_edit = auth_client.put("/articles", json=article)
+    assert res_edit.status_code == 400
+
+    updated_articles = call_endpoint(auth_client, "/articles")["data"]
+    assert len(updated_articles) == 6
+    assert updated_articles[0]["title"] != "Modified"
+
+
+@pytest.mark.usefixtures("article")
+def test_delete_article(auth_client):
     articles = call_endpoint(auth_client, "/articles")["data"]
     assert len(articles) == 1
 
