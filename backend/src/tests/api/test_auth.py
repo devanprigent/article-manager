@@ -1,4 +1,21 @@
+import pytest
+
 from tests.helpers import get_cookie_value, get_csrf_header, normalized_cookie_value
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [
+        "/auth/session",
+        "/articles",
+        "/authors",
+        "/search",
+        "/tags",
+    ],
+)
+def test_endpoints_protection(client, endpoint):
+    res = client.get(endpoint)
+    assert res.status_code == 401
 
 
 def test_register(client):
@@ -10,7 +27,13 @@ def test_register(client):
     assert get_cookie_value(res, "csrf_refresh_token")
 
 
-def test_register_wrong_password(client):
+@pytest.mark.usefixtures("auth_headers")
+def test_register_username_conflict(client):
+    res = client.post("/auth/register", json={"name": "Test", "password": "987654321"})
+    assert res.status_code == 409
+
+
+def test_register_password_too_short(client):
     res = client.post("/auth/register", json={"name": "Test", "password": "1234567"})
     assert res.status_code == 422
 
@@ -68,11 +91,6 @@ def test_session_verified(auth_client):
     assert res.status_code == 200
     payload = res.json()
     assert payload["name"] == "Test"
-
-
-def test_session_rejected(client):
-    res = client.get("/auth/session")
-    assert res.status_code == 401
 
 
 def test_per_user_isolation(client, mock_article):
