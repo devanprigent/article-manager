@@ -16,6 +16,12 @@ class ArticleSchema(BaseModel):
     tags: list[Annotated[str, Field(min_length=1)]]
 
 
+class RssSchema(BaseModel):
+    site_name: str = Field(..., min_length=1)
+    site_url: str = Field(..., min_length=1)
+    site_rss_feed: str = Field(..., min_length=1)
+
+
 class BasicSchema(BaseModel):
     name: str = Field(..., min_length=1)
 

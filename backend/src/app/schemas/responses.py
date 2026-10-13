@@ -39,6 +39,14 @@ class ArticleResponse(BaseModel):
         )
 
 
+class RssResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    site_name: str
+    site_url: str
+    site_rss_feed: str
+
+
 class NamedEntityResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
