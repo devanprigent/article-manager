@@ -35,7 +35,7 @@ test('login shows navigation tabs for authenticated users', async ({ page }) => 
 
 test('protected routes redirect unauthenticated users to home', async ({ page }) => {
   await page.goto('/articles');
-  await expect(page).toHaveURL('/');
+  await expect(page).toHaveURL('/home');
   await expect(page.getByRole('heading', { name: "Never forget an article you've liked again." })).toBeVisible();
 });
 
