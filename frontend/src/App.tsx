@@ -18,7 +18,7 @@ function App() {
 
   const routes = (
     <Routes>
-      <Route index element={<HomePage />} />
+      <Route path="home" element={<HomePage />} />
       <Route element={<ProtectedRoute />}>
         <Route path="articles" element={<ArticlesPage />} />
         <Route path="articles/:id" element={<ReadingPage />} />

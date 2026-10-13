@@ -7,7 +7,7 @@ export function ProtectedRoute() {
   const { isConnected, isFetching } = useAuth();
 
   if (!isConnected && !isFetching) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   if (!isConnected && isFetching) {

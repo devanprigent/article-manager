@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import jwt
 from fastapi import Response
 
@@ -24,19 +26,19 @@ def _csrf_from_token(encoded_token: str) -> str:
     return str(csrf)
 
 
-def _cookie_flags(settings: Settings) -> dict:
+def _cookie_flags(settings: Settings, max_age: timedelta) -> dict:
     return {
         "secure": settings.jwt_cookie_secure,
         "samesite": settings.jwt_cookie_samesite,
         "domain": settings.jwt_cookie_domain,
-        "max_age": None,  # session cookie; expiry lives in JWT exp claim
+        "max_age": int(max_age.total_seconds()),
     }
 
 
 def set_access_cookies(
     response: Response, access_token: str, settings: Settings
 ) -> None:
-    flags = _cookie_flags(settings)
+    flags = _cookie_flags(settings, settings.jwt_access_token_expires)
     response.set_cookie(
         ACCESS_COOKIE_NAME,
         value=access_token,
@@ -57,7 +59,7 @@ def set_access_cookies(
 def set_refresh_cookies(
     response: Response, refresh_token: str, settings: Settings
 ) -> None:
-    flags = _cookie_flags(settings)
+    flags = _cookie_flags(settings, settings.jwt_refresh_token_expires)
     response.set_cookie(
         REFRESH_COOKIE_NAME,
         value=refresh_token,
