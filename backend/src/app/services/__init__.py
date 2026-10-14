@@ -26,8 +26,13 @@ from app.services.common import (
     post_api,
     update_model_fields,
 )
-from app.services.parser import MetadataParser
-from app.services.rss import create_rss_feed, get_rss_feeds, remove_rss_feeds
+from app.services.parser import MetadataParser, RssParser
+from app.services.rss import (
+    create_rss_feed,
+    get_rss_feeds,
+    refresh_rss_feeds,
+    remove_rss_feeds,
+)
 from app.services.search import search_query
 from app.services.tags import associate_tags, create_tag, get_tags, remove_tags
 
@@ -58,8 +63,10 @@ __all__ = [
     "get_rss_feeds",
     "create_rss_feed",
     "remove_rss_feeds",
+    "refresh_rss_feeds",
     "search_query",
     "MetadataParser",
+    "RssParser",
     "get_api",
     "post_api",
 ]

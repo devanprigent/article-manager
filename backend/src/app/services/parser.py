@@ -1,14 +1,19 @@
 import re
 import socket
+from calendar import timegm
+from dataclasses import dataclass
+from datetime import UTC, datetime
+from io import BytesIO
 from ipaddress import ip_address
 from typing import Any, Literal, NotRequired, TypedDict
 from urllib.parse import urlsplit
 
+import feedparser
 import httpx2
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-from app.exceptions import UrlValidationError
+from app.exceptions import ParsingError, UrlValidationError
 
 
 class Candidate(TypedDict):
@@ -142,7 +147,7 @@ class MetadataParser:
         return text.strip()
 
     @staticmethod
-    async def fetch_document(url: str):
+    async def fetch_response(url: str):
         headers = {"User-Agent": "ArticleManager/1.0"}
         async with httpx2.AsyncClient() as client:
             response = await client.get(
@@ -151,6 +156,11 @@ class MetadataParser:
             if hasattr(response, "is_redirect") and response.is_redirect:
                 raise UrlValidationError("Redirects are not allowed.")
         response.raise_for_status()
+        return response
+
+    @staticmethod
+    async def fetch_document(url: str):
+        response = await MetadataParser.fetch_response(url)
         return BeautifulSoup(response.text, "html.parser")
 
     def get_title(self) -> None:
@@ -253,3 +263,59 @@ class MetadataParser:
             {"name": True, "kwargs": {"attrs": {"id": "main-content"}}},
         ]
         return ContentParser.get_content(candidates, self.doc)
+
+
+@dataclass(frozen=True)
+class RssEntry:
+    title: str
+    url: str
+    author: str
+    published: datetime | None
+
+
+class RssParser:
+    def __init__(self, url: str, last_element: datetime | None = None):
+        self.url = MetadataParser.sanitize_url(url)
+        # Naive datetimes (as stored in the database) are assumed to be UTC.
+        if last_element and last_element.tzinfo is None:
+            last_element = last_element.replace(tzinfo=UTC)
+        self.last_element = last_element
+        self.entries: list[RssEntry] = []
+
+    async def fetch(self) -> None:
+        response = await MetadataParser.fetch_response(self.url)
+        # A file-like object is required: feedparser would treat a raw string
+        # as a URL or a file path to open.
+        feed = feedparser.parse(BytesIO(response.content))
+        if feed.bozo and not feed.entries:
+            raise ParsingError("Unable to parse the RSS feed.")
+        entries = [
+            RssParser.to_entry(entry) for entry in feed.entries if entry.get("link")
+        ]
+        self.entries = [entry for entry in entries if self.is_new(entry)]
+
+    def is_new(self, entry: RssEntry) -> bool:
+        if self.last_element is None:
+            return True
+        # Undated entries can't be compared: skip them to avoid re-importing
+        # them on every fetch.
+        return entry.published is not None and entry.published > self.last_element
+
+    @property
+    def latest_published(self) -> datetime | None:
+        dates = [entry.published for entry in self.entries if entry.published]
+        return max(dates, default=None)
+
+    @staticmethod
+    def to_entry(entry: Any) -> RssEntry:
+        parsed_date = entry.get("published_parsed") or entry.get("updated_parsed")
+        return RssEntry(
+            title=MetadataParser.clean_text(entry.get("title")),
+            url=entry["link"],
+            author=MetadataParser.clean_text(entry.get("author")),
+            published=(
+                datetime.fromtimestamp(timegm(parsed_date), UTC)
+                if parsed_date
+                else None
+            ),
+        )

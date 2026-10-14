@@ -4,17 +4,21 @@ from tests.helpers import get_cookie_value, get_csrf_header, normalized_cookie_v
 
 
 @pytest.mark.parametrize(
-    "endpoint",
+    ("method", "endpoint"),
     [
-        "/auth/session",
-        "/articles",
-        "/authors",
-        "/search",
-        "/tags",
+        ("GET", "/auth/session"),
+        ("GET", "/articles"),
+        ("GET", "/authors"),
+        ("GET", "/search"),
+        ("GET", "/tags"),
+        ("GET", "/rss"),
+        ("POST", "/rss"),
+        ("DELETE", "/rss"),
+        ("POST", "/rss/feeds/refresh"),
     ],
 )
-def test_endpoints_protection(client, endpoint):
-    res = client.get(endpoint)
+def test_endpoints_protection(client, method, endpoint):
+    res = client.request(method, endpoint)
     assert res.status_code == 401
 
 

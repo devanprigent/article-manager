@@ -3,8 +3,19 @@ import logging
 from fastapi import APIRouter
 
 from app.dependencies import DbSession, UserId
-from app.schemas import DeleteResponse, IDSchema, RssResponse, RssSchema
-from app.services import create_rss_feed, get_rss_feeds, remove_rss_feeds
+from app.schemas import (
+    ArticleResponse,
+    DeleteResponse,
+    IDSchema,
+    RssResponse,
+    RssSchema,
+)
+from app.services import (
+    create_rss_feed,
+    get_rss_feeds,
+    refresh_rss_feeds,
+    remove_rss_feeds,
+)
 
 logger = logging.getLogger("article_manager.rss")
 
@@ -28,6 +39,15 @@ def add_rss_feed(db: DbSession, payload: RssSchema, user_id: UserId) -> RssRespo
         user_id,
     )
     return RssResponse.model_validate(rss)
+
+
+@router.post("/feeds/refresh")
+async def refresh_feeds(db: DbSession, user_id: UserId) -> list[ArticleResponse]:
+    articles = await refresh_rss_feeds(db, user_id)
+    logger.info(
+        "RSS feeds refreshed: user_id=%d new_articles=%d", user_id, len(articles)
+    )
+    return [ArticleResponse.from_model(article) for article in articles]
 
 
 @router.delete("")
