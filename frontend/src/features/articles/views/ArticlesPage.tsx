@@ -27,14 +27,13 @@ export default function ArticlesPage() {
   return (
     <div className="flex flex-col gap-5">
       <PageHeader title="Articles" description="Manage your library and track your reading at a glance.">
-        <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-200">
-          <span className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-700">{total} total</span>
+        <div className="flex items-center justify-between gap-3">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+            {total} total
+          </span>
+          <AddButton title={'Add article'} />
         </div>
       </PageHeader>
-
-      <div className="flex justify-end">
-        <AddButton title={'Add article'} />
-      </div>
 
       <div className="min-w-0 overflow-x-auto rounded-2xl border border-slate-200/80 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
         <DataTable
