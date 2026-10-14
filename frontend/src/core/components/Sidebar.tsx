@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { BarChart2, Bookmark, BookOpen, Heart, Layers } from 'react-feather';
+import { BarChart2, Bookmark, BookOpen, Heart, Inbox, Layers, Rss } from 'react-feather';
 import { NavLink } from 'react-router-dom';
 
 import { UserMenu } from './UserMenu';
@@ -8,12 +8,20 @@ type SidebarProps = {
   children: ReactNode;
 };
 
-const navigationItems = [
-  { to: '/articles', label: 'Library', accessibleName: 'Articles', icon: Layers },
-  { to: '/read-later', label: 'Read later', accessibleName: 'Read Later', icon: Bookmark },
-  { to: '/likes', label: 'Liked', accessibleName: 'Likes', icon: Heart },
-  { to: '/stats', label: 'Insights', accessibleName: 'Stats', icon: BarChart2 },
+const navigationGroups = [
+  [
+    { to: '/read-later', label: 'Read later', accessibleName: 'Read Later', icon: Bookmark },
+    { to: '/inbox', label: 'Inbox', accessibleName: 'Inbox', icon: Inbox },
+    { to: '/likes', label: 'Liked', accessibleName: 'Likes', icon: Heart },
+  ],
+  [
+    { to: '/articles', label: 'Library', accessibleName: 'Articles', icon: Layers },
+    { to: '/rss', label: 'RSS', accessibleName: 'RSS', icon: Rss },
+    { to: '/stats', label: 'Insights', accessibleName: 'Stats', icon: BarChart2 },
+  ],
 ] as const;
+
+const navigationItems = navigationGroups.flat();
 
 function workspaceLinkClass(isActive: boolean) {
   return `flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-sm font-semibold transition ${
@@ -46,12 +54,16 @@ export function Sidebar({ children }: Readonly<SidebarProps>) {
             </div>
           </div>
 
-          <nav className="flex flex-1 flex-col gap-1" aria-label="Workspace navigation">
-            {navigationItems.map(({ to, label, accessibleName, icon: Icon }) => (
-              <NavLink key={to} to={to} aria-label={accessibleName} className={({ isActive }) => workspaceLinkClass(isActive)}>
-                <Icon size={18} aria-hidden="true" />
-                {label}
-              </NavLink>
+          <nav className="flex flex-1 flex-col gap-5" aria-label="Workspace navigation">
+            {navigationGroups.map((group) => (
+              <div key={group[0].to} className="flex flex-col gap-1">
+                {group.map(({ to, label, accessibleName, icon: Icon }) => (
+                  <NavLink key={to} to={to} aria-label={accessibleName} className={({ isActive }) => workspaceLinkClass(isActive)}>
+                    <Icon size={18} aria-hidden="true" />
+                    {label}
+                  </NavLink>
+                ))}
+              </div>
             ))}
           </nav>
 

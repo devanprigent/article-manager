@@ -11,12 +11,15 @@ import {
   AuthorStatSchema,
   DeletedArticlesSchema,
   DeletedEntitiesSchema,
+  DeletedRssFeedsSchema,
   EntitiesSchema,
   EntitySchema,
   MessageSchema,
   ParsedMetadataSchema,
+  RssFeedSchema,
+  RssFeedsSchema,
 } from '../types/schema';
-import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, User } from '../types/types';
+import type { Article, ArticleListFilters, AuthorStat, Credentials, Message, ParsedMetadata, RssFeed, RssFeedInput, User } from '../types/types';
 
 const apiClient = axios.create();
 
@@ -126,6 +129,7 @@ export const articlesApi = {
     setParam(params, 'limit', limit);
     setParam(params, 'read_later', filters.read_later);
     setParam(params, 'liked', filters.liked);
+    setParam(params, 'rss', filters.rss);
     const query = params.toString();
     const url = query ? `${API_URLS.ARTICLES}?${query}` : API_URLS.ARTICLES;
     const { data } = await apiClient.get(url);
@@ -232,6 +236,26 @@ export const tagsApi = {
       data: { ids },
     });
     const response = parseWithError(DeletedEntitiesSchema, data);
+    return response.count;
+  },
+};
+
+export const rssApi = {
+  list: async (): Promise<RssFeed[]> => {
+    const { data } = await apiClient.get(API_URLS.RSS);
+    const response = parseWithError(RssFeedsSchema, data);
+    return response;
+  },
+  create: async (feed: RssFeedInput): Promise<RssFeed> => {
+    const { data } = await apiClient.post(API_URLS.RSS, feed);
+    const response = parseWithError(RssFeedSchema, data);
+    return response;
+  },
+  remove: async (ids: number[]): Promise<number> => {
+    const { data } = await apiClient.delete(API_URLS.RSS, {
+      data: { ids },
+    });
+    const response = parseWithError(DeletedRssFeedsSchema, data);
     return response.count;
   },
 };

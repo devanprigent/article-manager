@@ -35,9 +35,29 @@ export const sampleArticle = {
   consulted: false,
   read_later: false,
   liked: false,
+  rss: false,
   tags: ['productivity'],
   date_creation: '2024-01-15T10:00:00.000Z',
   date_modification: '2024-01-15T10:00:00.000Z',
+};
+
+export const sampleInboxArticle = {
+  ...sampleArticle,
+  id: 2,
+  title: 'Fresh from the feed',
+  author: 'Example Blog',
+  url: 'https://example.com/fresh-post',
+  year: 2026,
+  summary: null,
+  tags: [],
+  rss: true,
+};
+
+export const sampleRssFeed = {
+  id: 1,
+  site_name: 'Example Blog',
+  site_url: 'https://example.com',
+  site_rss_feed: 'https://example.com/feed.xml',
 };
 
 export interface MockApi {
@@ -81,6 +101,8 @@ export async function authenticate(page: Page): Promise<void> {
 
 export async function installMockApi(page: Page): Promise<MockApi> {
   let isAuthenticated = false;
+  let rssFeeds = [sampleRssFeed];
+  let inboxArticles = [sampleInboxArticle];
 
   async function login() {
     isAuthenticated = true;
@@ -153,7 +175,7 @@ export async function installMockApi(page: Page): Promise<MockApi> {
       const url = new URL(request.url());
       const readLaterFilter = url.searchParams.get('read_later');
       const likedFilter = url.searchParams.get('liked');
-      let articles = [sampleArticle];
+      let articles = url.searchParams.get('rss') === 'true' ? inboxArticles : [sampleArticle];
 
       if (readLaterFilter === 'true' && !sampleArticle.read_later) {
         articles = [];
@@ -171,6 +193,49 @@ export async function installMockApi(page: Page): Promise<MockApi> {
           offset: 0,
           limit: 25,
         }),
+      });
+      return;
+    }
+
+    if (matchesApiPath(route, '/articles') && request.method() === 'PUT') {
+      const article = request.postDataJSON();
+      inboxArticles = inboxArticles.filter((a) => a.id !== article.id || article.rss);
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(article),
+      });
+      return;
+    }
+
+    if (matchesApiPath(route, '/rss') && request.method() === 'GET') {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(rssFeeds),
+      });
+      return;
+    }
+
+    if (matchesApiPath(route, '/rss') && request.method() === 'POST') {
+      const feed = { id: Math.max(0, ...rssFeeds.map((f) => f.id)) + 1, ...request.postDataJSON() };
+      rssFeeds = [...rssFeeds, feed];
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify(feed),
+      });
+      return;
+    }
+
+    if (matchesApiPath(route, '/rss') && request.method() === 'DELETE') {
+      const { ids } = request.postDataJSON() as { ids: number[] };
+      const deleted = rssFeeds.filter((feed) => ids.includes(feed.id));
+      rssFeeds = rssFeeds.filter((feed) => !ids.includes(feed.id));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ deleted, count: deleted.length }),
       });
       return;
     }

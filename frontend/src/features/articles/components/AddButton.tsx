@@ -28,6 +28,7 @@ const newArticle: Article = {
   consulted: false,
   read_later: true,
   liked: false,
+  rss: false,
   tags: [],
   date_creation: '',
   date_modification: '',

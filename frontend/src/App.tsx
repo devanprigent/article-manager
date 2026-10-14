@@ -7,9 +7,11 @@ import HomePage from './core/components/HomePage';
 import { ProtectedRoute } from './core/components/ProtectedRoute';
 import ReadingPage from './features/articles/components/ReadingPage';
 import ArticlesPage from './features/articles/views/ArticlesPage';
+import InboxPage from './features/inbox/InboxPage';
 import StatsPage from './features/insights/StatsPage';
 import LikedPage from './features/liked/LikedPage';
 import ReadLaterPage from './features/read-later/ReadLaterPage';
+import RssPage from './features/rss/RssPage';
 import { useHealth } from './hooks/queries';
 
 function App() {
@@ -22,10 +24,12 @@ function App() {
       <Route element={<ProtectedRoute />}>
         <Route path="articles" element={<ArticlesPage />} />
         <Route path="articles/:id" element={<ReadingPage />} />
+        <Route path="inbox" element={<InboxPage />} />
         <Route path="likes" element={<LikedPage />} />
         <Route path="read-later" element={<ReadLaterPage />} />
+        <Route path="rss" element={<RssPage />} />
         <Route path="stats" element={<StatsPage />} />
-        <Route path="*" element={<Navigate to="/articles" replace />} />
+        <Route path="*" element={<Navigate to="/read-later" replace />} />
       </Route>
     </Routes>
   );

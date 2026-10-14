@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import { articlesApi, authApi, authorsApi, healthApi, tagsApi } from '../api/entities';
+import { articlesApi, authApi, authorsApi, healthApi, rssApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
 import type { ArticleListFilters } from '../types/types';
 
@@ -58,6 +58,13 @@ export function useAuthors() {
   return useQuery({
     queryKey: queryKeys.authors.list(),
     queryFn: authorsApi.list,
+  });
+}
+
+export function useRssFeeds() {
+  return useQuery({
+    queryKey: queryKeys.rss.list(),
+    queryFn: rssApi.list,
   });
 }
 

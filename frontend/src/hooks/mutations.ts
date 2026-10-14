@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
 
-import { articlesApi, authApi, authorsApi, tagsApi } from '../api/entities';
+import { articlesApi, authApi, authorsApi, rssApi, tagsApi } from '../api/entities';
 import { queryKeys } from '../api/queryKeys';
 import { useAuth } from '../contexts/AuthContext';
 import { postLoginPath } from '../helpers/helpers';
@@ -82,6 +82,9 @@ export const useReorderReadLater = () => {
 
 export const useCreateAuthor = () => useEntitiesMutation(authorsApi.create, queryKeys.authors.all, 'Author successfully added');
 export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.tags.all, 'Tag successfully added');
+
+export const useCreateRssFeed = () => useEntitiesMutation(rssApi.create, queryKeys.rss.all, 'RSS feed successfully added');
+export const useRemoveRssFeed = () => useEntitiesMutation(rssApi.remove, queryKeys.rss.all, 'RSS feed successfully deleted');
 
 function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Message>) {
   const { login } = useAuth();
