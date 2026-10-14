@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Protocol, TypeAlias
+from typing import Protocol
 
 from sqlalchemy.orm import Session
 
@@ -20,7 +20,7 @@ class NamedEntity(UserScoped, Protocol):
                  user_id: int) -> None: ...
 
 
-DbSession: TypeAlias = Session
+DbSession = Session
 
 
 @dataclass(frozen=True)

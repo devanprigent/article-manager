@@ -215,9 +215,7 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={articles.map((article) => article.id)} strategy={verticalListSortingStrategy}>
-        <div
-          className={`mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl pb-2 pl-3 pr-6 ${isReorderPending ? 'opacity-80' : ''}`}
-        >
+        <div className={`mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl pb-2 pl-3 pr-6 ${isReorderPending ? 'opacity-80' : ''}`}>
           {articles.map((article) => (
             <SortableFeedItem key={article.id} article={article} onClear={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />
           ))}
