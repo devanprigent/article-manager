@@ -204,7 +204,7 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
 
   if (!reorderable) {
     return (
-      <div className="mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl py-2 pl-3 pr-6 pt-3">
+      <div className="mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl pb-2 pl-3 pr-6">
         {articles.map((article) => (
           <FeedItem key={article.id} article={article} onClear={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />
         ))}
@@ -216,7 +216,7 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={articles.map((article) => article.id)} strategy={verticalListSortingStrategy}>
         <div
-          className={`mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl py-2 pl-3 pr-6 pt-3 ${isReorderPending ? 'opacity-80' : ''}`}
+          className={`mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl pb-2 pl-3 pr-6 ${isReorderPending ? 'opacity-80' : ''}`}
         >
           {articles.map((article) => (
             <SortableFeedItem key={article.id} article={article} onClear={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />

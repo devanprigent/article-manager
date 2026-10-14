@@ -88,7 +88,7 @@ function RssPage() {
     content = <p className="m-0 p-6 text-center text-sm text-slate-500 dark:text-slate-400">{EMPTY_MESSAGE}</p>;
   } else {
     content = (
-      <ul className="mx-auto my-0 flex max-w-3xl list-none flex-col gap-3 py-2 pl-3 pr-6 pt-3">
+      <ul className="mx-auto flex max-w-3xl list-none flex-col gap-3 pb-2 pl-3 pr-6">
         {feeds.map((feed) => (
           <RssFeedRow key={feed.id} feed={feed} />
         ))}

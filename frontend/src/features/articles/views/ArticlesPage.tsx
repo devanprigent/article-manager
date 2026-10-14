@@ -25,7 +25,7 @@ export default function ArticlesPage() {
   const columnVisibilityModel = getColumnVisibilityModel(isMdUp);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="space-y-5">
       <PageHeader title="Articles" description="Manage your library and track your reading at a glance.">
         <div className="flex items-center justify-between gap-3">
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
