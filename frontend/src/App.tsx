@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
 import { useIsDarkMode } from './contexts/ThemeContext';
+import { HealthPoller } from './core/components/HealthPoller';
 import HomePage from './core/components/HomePage';
 import { ProtectedRoute } from './core/components/ProtectedRoute';
 import ReadingPage from './features/articles/components/ReadingPage';
@@ -12,11 +13,9 @@ import StatsPage from './features/insights/StatsPage';
 import LikedPage from './features/liked/LikedPage';
 import ReadLaterPage from './features/read-later/ReadLaterPage';
 import RssPage from './features/rss/RssPage';
-import { useHealth } from './hooks/queries';
 
 function App() {
   const isDarkMode = useIsDarkMode();
-  useHealth();
 
   const routes = (
     <Routes>
@@ -36,6 +35,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <HealthPoller />
       {routes}
 
       <Toaster position="top-center" theme={isDarkMode ? 'dark' : 'light'} richColors closeButton />
