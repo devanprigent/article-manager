@@ -4,7 +4,7 @@ import { useArticles } from '../../hooks/queries';
 
 const EMPTY_MESSAGE = 'No liked articles yet. Mark articles as liked from the Articles page.';
 
-function LikedPage() {
+function LikesPage() {
   const {
     data: { articles = [], total = 0 } = {},
     error,
@@ -32,4 +32,4 @@ function LikedPage() {
   );
 }
 
-export default LikedPage;
+export default LikesPage;

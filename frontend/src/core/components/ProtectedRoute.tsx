@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { RssRefresher } from './RssRefresher';
 import { Sidebar } from './Sidebar';
 
 export function ProtectedRoute() {
@@ -16,6 +17,7 @@ export function ProtectedRoute() {
 
   return (
     <Sidebar>
+      <RssRefresher />
       <Outlet />
     </Sidebar>
   );

@@ -10,9 +10,9 @@ type SidebarProps = {
 
 const navigationGroups = [
   [
-    { to: '/read-later', label: 'Read later', accessibleName: 'Read Later', icon: Bookmark },
+    { to: '/read-later', label: 'Read Later', accessibleName: 'Read Later', icon: Bookmark },
     { to: '/inbox', label: 'Inbox', accessibleName: 'Inbox', icon: Inbox },
-    { to: '/likes', label: 'Liked', accessibleName: 'Likes', icon: Heart },
+    { to: '/likes', label: 'Likes', accessibleName: 'Likes', icon: Heart },
   ],
   [
     { to: '/articles', label: 'Library', accessibleName: 'Articles', icon: Layers },

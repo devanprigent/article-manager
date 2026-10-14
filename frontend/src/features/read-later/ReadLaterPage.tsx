@@ -15,7 +15,7 @@ function ReadLaterPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Read later" description="Articles you plan to revisit. Drag the handle to reorder.">
+      <PageHeader title="Read Later" description="Articles you plan to revisit. Drag the handle to reorder.">
         <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-800 dark:bg-violet-900/40 dark:text-violet-200">
           {total} marked
         </span>

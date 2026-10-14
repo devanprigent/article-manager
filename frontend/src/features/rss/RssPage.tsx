@@ -98,7 +98,7 @@ function RssPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="RSS feeds" description="Follow websites and import their new articles.">
+      <PageHeader title="RSS" description="Include the RSS feeds you want to follow. Automatically download their articles to your inbox.">
         <div className="flex items-center justify-between gap-3">
           <span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
             {feeds.length} {feeds.length === 1 ? 'feed' : 'feeds'}

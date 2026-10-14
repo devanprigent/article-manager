@@ -14,7 +14,7 @@ from tests.helpers import get_cookie_value, get_csrf_header, normalized_cookie_v
         ("GET", "/rss"),
         ("POST", "/rss"),
         ("DELETE", "/rss"),
-        ("POST", "/rss/feeds/refresh"),
+        ("POST", "/rss/refresh"),
     ],
 )
 def test_endpoints_protection(client, method, endpoint):

@@ -6,6 +6,7 @@ from datetime import UTC, datetime
 import httpx2
 from sqlalchemy import select
 
+from app.constants import RSS_REFRESH_INTERVAL
 from app.exceptions import ParsingError
 from app.models import RSS, Article, Author
 from app.schemas import RssSchema
@@ -79,8 +80,15 @@ def create_rss_article(
     return article
 
 
+def get_stale_rss_feeds(session: DbSession, user_id: int) -> Sequence[RSS]:
+    threshold = datetime.now(UTC) - RSS_REFRESH_INTERVAL
+    stmt = select(RSS).where(RSS.user_id == user_id, RSS.last_fetched_at < threshold)
+    return session.execute(stmt).scalars().all()
+
+
 async def refresh_rss_feeds(session: DbSession, user_id: int) -> list[Article]:
-    rss_feeds = get_rss_feeds(session, user_id)
+    # Feeds fetched recently are skipped, so clients can call this freely.
+    rss_feeds = get_stale_rss_feeds(session, user_id)
     # A failing feed must not prevent the others from being refreshed.
     parsers = await asyncio.gather(*(fetch_new_entries(rss) for rss in rss_feeds))
     fetched_at = datetime.now(UTC)

@@ -9,6 +9,7 @@ export const API_URLS = {
   TOP_AUTHORS: `${baseURL}/authors/top`,
   TAGS: `${baseURL}/tags`,
   RSS: `${baseURL}/rss`,
+  RSS_REFRESH: `${baseURL}/rss/refresh`,
   LOGIN: `${baseURL}/auth/login`,
   LOGOUT: `${baseURL}/auth/logout`,
   REGISTER: `${baseURL}/auth/register`,

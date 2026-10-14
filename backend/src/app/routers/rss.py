@@ -41,7 +41,7 @@ def add_rss_feed(db: DbSession, payload: RssSchema, user_id: UserId) -> RssRespo
     return RssResponse.model_validate(rss)
 
 
-@router.post("/feeds/refresh")
+@router.post("/refresh")
 async def refresh_feeds(db: DbSession, user_id: UserId) -> list[ArticleResponse]:
     articles = await refresh_rss_feeds(db, user_id)
     logger.info(

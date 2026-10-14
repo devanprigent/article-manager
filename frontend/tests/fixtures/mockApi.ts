@@ -228,6 +228,15 @@ export async function installMockApi(page: Page): Promise<MockApi> {
       return;
     }
 
+    if (matchesApiPath(route, '/rss/refresh') && request.method() === 'POST') {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([]),
+      });
+      return;
+    }
+
     if (matchesApiPath(route, '/rss') && request.method() === 'DELETE') {
       const { ids } = request.postDataJSON() as { ids: number[] };
       const deleted = rssFeeds.filter((feed) => ids.includes(feed.id));

@@ -15,7 +15,7 @@ function InboxPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Inbox" description="Triage the new articles imported from your RSS feeds.">
+      <PageHeader title="Inbox" description="New articles from your RSS feeds.">
         <span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
           {total} new
         </span>

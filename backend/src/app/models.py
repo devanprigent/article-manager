@@ -25,8 +25,14 @@ class RSS(Base):
     site_name: Mapped[str] = mapped_column(nullable=False)
     site_url: Mapped[str] = mapped_column(nullable=False)
     site_rss_feed: Mapped[str] = mapped_column(nullable=False)
-    last_element: Mapped[datetime | None] = mapped_column(nullable=True)
-    last_fetched_at: Mapped[datetime | None] = mapped_column(nullable=True)
+    # Starts at creation time so only entries published afterwards are imported.
+    last_element: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(UTC), nullable=False
+    )
+    # Nothing can be published between creation and now: no need to fetch yet.
+    last_fetched_at: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(UTC), nullable=False
+    )
     date_creation: Mapped[datetime] = mapped_column(
         default=lambda: datetime.now(UTC), nullable=False
     )

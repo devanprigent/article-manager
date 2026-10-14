@@ -258,4 +258,9 @@ export const rssApi = {
     const response = parseWithError(DeletedRssFeedsSchema, data);
     return response.count;
   },
+  refresh: async (): Promise<Article[]> => {
+    const { data } = await apiClient.post(API_URLS.RSS_REFRESH);
+    const response = parseWithError(ArticleSchema.array(), data);
+    return response;
+  },
 };

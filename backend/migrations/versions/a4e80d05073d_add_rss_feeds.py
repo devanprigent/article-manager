@@ -25,8 +25,8 @@ def upgrade():
         sa.Column("site_name", sa.String(), nullable=False),
         sa.Column("site_url", sa.String(), nullable=False),
         sa.Column("site_rss_feed", sa.String(), nullable=False),
-        sa.Column("last_element", sa.DateTime(), nullable=True),
-        sa.Column("last_fetched_at", sa.DateTime(), nullable=True),
+        sa.Column("last_element", sa.DateTime(), nullable=False),
+        sa.Column("last_fetched_at", sa.DateTime(), nullable=False),
         sa.Column("date_creation", sa.DateTime(), nullable=False),
         sa.Column("date_modification", sa.DateTime(), nullable=False),
         sa.ForeignKeyConstraint(

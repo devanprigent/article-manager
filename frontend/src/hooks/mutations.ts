@@ -86,6 +86,19 @@ export const useCreateTag = () => useEntitiesMutation(tagsApi.create, queryKeys.
 export const useCreateRssFeed = () => useEntitiesMutation(rssApi.create, queryKeys.rss.all, 'RSS feed successfully added');
 export const useRemoveRssFeed = () => useEntitiesMutation(rssApi.remove, queryKeys.rss.all, 'RSS feed successfully deleted');
 
+// Runs in the background, so failures stay silent instead of toasting.
+export const useRefreshRssFeeds = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: rssApi.refresh,
+    onSuccess: (articles) => {
+      if (articles.length > 0) {
+        qc.invalidateQueries({ queryKey: queryKeys.articles.all });
+      }
+    },
+  });
+};
+
 function useAuthMutation<TArgs>(mutationFn: (args: TArgs) => Promise<Message>) {
   const { login } = useAuth();
   const navigate = useNavigate();
