@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Protocol, TypeAlias
 
 from sqlalchemy.orm import Session
 
@@ -16,10 +16,11 @@ class NamedEntity(UserScoped, Protocol):
     normalized_name: str
     name: str
 
-    def __init__(self, *, name: str, normalized_name: str, user_id: int) -> None: ...
+    def __init__(self, *, name: str, normalized_name: str,
+                 user_id: int) -> None: ...
 
 
-DbSession = Session
+DbSession: TypeAlias = Session
 
 
 @dataclass(frozen=True)

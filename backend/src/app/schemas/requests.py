@@ -13,6 +13,7 @@ class ArticleSchema(BaseModel):
     consulted: bool
     read_later: bool
     liked: bool
+    rss: bool = False
     tags: list[Annotated[str, Field(min_length=1)]]
 
 

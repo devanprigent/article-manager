@@ -34,6 +34,7 @@ def get_articles(
     user_id: int,
     read_later: bool | None,
     liked: bool | None,
+    rss: bool | None = None,
 ) -> tuple[Sequence[Article], int]:
     stmt = select(Article).where(Article.user_id == user_id)
     count_stmt = (
@@ -45,6 +46,9 @@ def get_articles(
     if liked is not None:
         stmt = stmt.where(Article.liked == liked)
         count_stmt = count_stmt.where(Article.liked == liked)
+    if rss is not None:
+        stmt = stmt.where(Article.rss == rss)
+        count_stmt = count_stmt.where(Article.rss == rss)
 
     if read_later is True:
         stmt = stmt.order_by(Article.rank.asc(), Article.id.asc())
@@ -157,6 +161,7 @@ def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
             "consulted",
             "read_later",
             "liked",
+            "rss",
         },
     )
     session.commit()

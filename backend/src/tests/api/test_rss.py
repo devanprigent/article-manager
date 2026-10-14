@@ -141,6 +141,43 @@ def test_refresh_feeds_skips_existing_articles(
     assert [a["url"] for a in res.json()] == ["https://example.com/old-post"]
 
 
+@pytest.mark.parametrize(
+    "param, expected_urls",
+    [
+        (
+            "rss=true",
+            {"https://example.com/first-post", "https://example.com/old-post"},
+        ),
+        ("rss=false", {"https://example.com/article-1"}),
+    ],
+)
+def test_list_articles_filters_by_rss(
+    auth_client, rss, mock_article, monkeypatch, param, expected_urls
+):
+    res = auth_client.post("/articles", json=mock_article)
+    assert res.status_code == 201
+    # Patched afterwards: article creation also fetches the page content
+    patch_feed(monkeypatch)
+    assert auth_client.post("/rss/feeds/refresh").status_code == 200
+
+    response = call_endpoint(auth_client, "/articles", param)
+    assert {article["url"] for article in response["data"]} == expected_urls
+    assert response["total"] == len(expected_urls)
+
+
+def test_remove_article_from_inbox(auth_client, rss, mock_feed):
+    articles = auth_client.post("/rss/feeds/refresh").json()
+    article = next(a for a in articles if a["url"] == "https://example.com/old-post")
+    assert article["rss"] is True
+
+    res = auth_client.put("/articles", json={**article, "rss": False})
+    assert res.status_code == 200
+    assert res.json()["rss"] is False
+
+    inbox = call_endpoint(auth_client, "/articles", "rss=true")["data"]
+    assert [a["url"] for a in inbox] == ["https://example.com/first-post"]
+
+
 def test_refresh_feeds_ignores_failing_feed(auth_client, rss, monkeypatch):
     async def fake_get(*args, **kwargs):
         raise httpx2.ConnectError("unreachable")
