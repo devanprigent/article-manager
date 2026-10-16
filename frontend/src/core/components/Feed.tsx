@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type HTMLAttributes } from 'react';
-import { XCircle } from 'react-feather';
+import { Bookmark, XCircle } from 'react-feather';
 
 import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -17,6 +17,7 @@ import { GripIcon } from './GripIcon';
 interface FeedItemProps {
   article: Article;
   onClear: (article: Article) => void;
+  onReadLater?: (article: Article) => void;
   isClearPending: boolean;
   isDarkMode: boolean;
   reorderable?: boolean;
@@ -29,6 +30,7 @@ interface FeedItemProps {
 function FeedItem({
   article,
   onClear,
+  onReadLater,
   isClearPending,
   isDarkMode,
   reorderable = false,
@@ -40,6 +42,11 @@ function FeedItem({
   const [isActionVisible, setIsActionVisible] = useState(false);
   const showActions = isActionVisible || isDragging;
   const actionVisibilityClass = showActions ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0';
+  const actionButtonClass = `absolute top-0 z-20 inline-flex h-8 w-8 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
+    isDarkMode
+      ? 'border-slate-500 bg-slate-700 text-violet-300 shadow-md shadow-black/40 hover:bg-violet-900/40 hover:text-violet-200'
+      : 'border-slate-200 bg-white text-violet-500 hover:bg-violet-50 hover:text-violet-600'
+  } ${actionVisibilityClass}`;
 
   return (
     <div
@@ -91,17 +98,26 @@ function FeedItem({
         </div>
       </article>
 
+      {onReadLater && (
+        <button
+          type="button"
+          aria-label={`Read later: ${article.title}`}
+          title="Read later"
+          onClick={() => onReadLater(article)}
+          disabled={isClearPending}
+          className={`right-10 ${actionButtonClass}`}
+        >
+          <Bookmark size={16} strokeWidth={2} aria-hidden="true" />
+        </button>
+      )}
+
       <button
         type="button"
         aria-label={`Remove: ${article.title}`}
         title="Remove"
         onClick={() => onClear(article)}
         disabled={isClearPending}
-        className={`absolute right-0 top-0 z-20 inline-flex h-8 w-8 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
-          isDarkMode
-            ? 'border-slate-500 bg-slate-700 text-violet-300 shadow-md shadow-black/40 hover:bg-violet-900/40 hover:text-violet-200'
-            : 'border-slate-200 bg-white text-violet-500 hover:bg-violet-50 hover:text-violet-600'
-        } ${actionVisibilityClass}`}
+        className={`right-0 ${actionButtonClass}`}
       >
         <XCircle size={18} strokeWidth={2} aria-hidden="true" />
       </button>
@@ -143,10 +159,11 @@ interface FeedProps {
   isLoading: boolean;
   error: Error | null;
   clearPatch: (article: Article) => Article;
+  readLaterPatch?: (article: Article) => Article;
   reorderable?: boolean;
 }
 
-export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reorderable = false }: Readonly<FeedProps>) {
+export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, readLaterPatch, reorderable = false }: Readonly<FeedProps>) {
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
   const { mutate: reorderReadLater, isPending: isReorderPending } = useReorderReadLater();
@@ -158,6 +175,8 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
   function handleClear(article: Article): void {
     editArticle(clearPatch(article));
   }
+
+  const handleReadLater = readLaterPatch ? (article: Article) => editArticle(readLaterPatch(article)) : undefined;
 
   function handleDragEnd(event: DragEndEvent): void {
     const { active, over } = event;
@@ -206,7 +225,14 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, reo
     return (
       <div className="mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl pb-2 pl-3 pr-6">
         {articles.map((article) => (
-          <FeedItem key={article.id} article={article} onClear={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />
+          <FeedItem
+            key={article.id}
+            article={article}
+            onClear={handleClear}
+            onReadLater={handleReadLater}
+            isClearPending={isEditPending}
+            isDarkMode={isDarkMode}
+          />
         ))}
       </div>
     );

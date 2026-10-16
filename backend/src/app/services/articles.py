@@ -87,11 +87,7 @@ async def create_article(
     content = await enrich_with_content(session, user_id, data.url)
     tags = await resolve_article_tags(session, settings, data.tags, user_id, content)
     author = get_or_create_by_name(session, Author, data.author, user_id)
-    session.execute(
-        update(Article)
-        .where(Article.user_id == user_id, Article.read_later.is_(True))
-        .values(rank=Article.rank + 1)
-    )
+    shift_read_later_ranks(session, user_id)
     article = Article(
         user_id=user_id,
         title=data.title,
@@ -109,6 +105,15 @@ async def create_article(
     session.add(article)
     session.commit()
     return article
+
+
+def shift_read_later_ranks(session: DbSession, user_id: int) -> None:
+    # Frees rank 0 so the next read-later article lands at the top of the list.
+    session.execute(
+        update(Article)
+        .where(Article.user_id == user_id, Article.read_later.is_(True))
+        .values(rank=Article.rank + 1)
+    )
 
 
 def rank_list_in_place(elements: list[int], old_rank: int, new_rank: int) -> None:
@@ -145,6 +150,9 @@ def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
     article = get_entity(session, data.id, Article, user_id)
     tags = associate_tags(session, data.tags, user_id)
     author = get_or_create_by_name(session, Author, data.author, user_id)
+    if data.read_later and not article.read_later:
+        shift_read_later_ranks(session, user_id)
+        article.rank = 0
     payload = data.model_dump()
     payload["author_id"] = author.id
     payload["tags"] = tags

@@ -213,6 +213,23 @@ def test_remove_article_from_inbox(auth_client, rss, mock_feed):
     assert [a["url"] for a in inbox] == ["https://example.com/first-post"]
 
 
+def test_move_inbox_articles_to_read_later_top(auth_client, rss, mock_feed):
+    articles = auth_client.post("/rss/refresh").json()
+    for article in articles:
+        res = auth_client.put(
+            "/articles", json={**article, "rss": False, "read_later": True}
+        )
+        assert res.status_code == 200
+
+    assert call_endpoint(auth_client, "/articles", "rss=true")["data"] == []
+    read_later = call_endpoint(auth_client, "/articles", "read_later=true")["data"]
+    # The last article moved goes to the top, like a newly created one
+    assert [a["url"] for a in read_later[:2]] == [
+        articles[1]["url"],
+        articles[0]["url"],
+    ]
+
+
 def test_refresh_feeds_ignores_failing_feed(auth_client, rss, monkeypatch):
     async def fake_get(*args, **kwargs):
         raise httpx2.ConnectError("unreachable")
