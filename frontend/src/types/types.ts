@@ -8,6 +8,7 @@ export interface Article {
   consulted: boolean;
   read_later: boolean;
   liked: boolean;
+  rss: boolean;
   tags: string[];
   date_creation: string;
   date_modification: string;
@@ -66,6 +67,7 @@ export interface UrlFormProps extends BaseFormProps {
 export type ArticleListFilters = {
   read_later?: boolean;
   liked?: boolean;
+  rss?: boolean;
 };
 
 export type GridPageCardAction = 'liked' | 'readLater';
@@ -76,6 +78,16 @@ export interface User {
 }
 
 export type AuthMode = 'login' | 'register';
+
+export interface RssFeedInput {
+  site_name: string;
+  site_url: string;
+  site_rss_feed: string;
+}
+
+export interface RssFeed extends RssFeedInput {
+  id: number;
+}
 
 export type ReadByMonthStat = {
   monthKey: string;

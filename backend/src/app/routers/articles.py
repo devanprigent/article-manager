@@ -38,9 +38,10 @@ def list_articles(
     pagination: Annotated[Pagination, Depends(get_pagination)],
     read_later: bool | None = None,
     liked: bool | None = None,
+    rss: bool | None = None,
 ) -> PaginatedArticlesResponse:
     articles, total = get_articles(
-        db, pagination.offset, pagination.limit, user_id, read_later, liked
+        db, pagination.offset, pagination.limit, user_id, read_later, liked, rss
     )
     logger.debug("Listed %d articles for user_id=%d", len(articles), user_id)
     return PaginatedArticlesResponse(

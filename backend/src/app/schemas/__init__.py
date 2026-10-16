@@ -3,6 +3,7 @@ from app.schemas.requests import (
     BasicSchema,
     IDSchema,
     RankSchema,
+    RssSchema,
     UserSchema,
 )
 from app.schemas.responses import (
@@ -12,6 +13,7 @@ from app.schemas.responses import (
     NamedEntityResponse,
     PaginatedArticlesResponse,
     ParsedArticleResponse,
+    RssResponse,
     TopAuthorResponse,
 )
 
@@ -21,6 +23,8 @@ __all__ = [
     "BasicSchema",
     "IDSchema",
     "RankSchema",
+    "RssSchema",
+    "RssResponse",
     "UserSchema",
     "NamedEntityResponse",
     "PaginatedArticlesResponse",

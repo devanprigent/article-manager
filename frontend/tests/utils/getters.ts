@@ -20,6 +20,14 @@ export function getReadLaterTab(page: Page): Locator {
   return page.getByRole('link', { name: 'Read Later' });
 }
 
+export function getInboxTab(page: Page): Locator {
+  return page.getByRole('link', { name: 'Inbox' });
+}
+
+export function getRssTab(page: Page): Locator {
+  return page.getByRole('link', { name: 'RSS' });
+}
+
 export function getStatsTab(page: Page): Locator {
   return page.getByRole('link', { name: 'Stats' });
 }

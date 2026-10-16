@@ -19,6 +19,10 @@ plugins = ["pydantic.mypy", "sqlalchemy.ext.mypy.plugin"]
 [[tool.mypy.overrides]]
 module = "app.models"
 disable_error_code = ["name-defined"]
+
+[[tool.mypy.overrides]]
+module = "feedparser"
+ignore_missing_imports = true
 [project]
 name = "backend"
 version = "0.1.0"
@@ -40,6 +44,7 @@ dependencies = [
     "uvicorn (>=0.49.0,<0.50.0)",
     "pwdlib[argon2] (>=0.3.0,<0.4.0)",
     "httpx2 (>=2.4.0,<3.0.0)",
+    "feedparser (>=6.0.14,<7.0.0)",
 ]
 
 

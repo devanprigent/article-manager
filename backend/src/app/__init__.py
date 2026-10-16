@@ -8,6 +8,7 @@ from app.routers.articles import router as articles_router
 from app.routers.auth import router as auth_router
 from app.routers.authors import router as authors_router
 from app.routers.health import router as health_router
+from app.routers.rss import router as rss_router
 from app.routers.search import router as search_router
 from app.routers.tags import router as tags_router
 from app.settings import Settings
@@ -41,6 +42,7 @@ def create_app(settings: Settings | None = None):
         articles_router,
         authors_router,
         tags_router,
+        rss_router,
         search_router,
     ]
     for r in routers:

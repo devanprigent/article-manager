@@ -179,6 +179,22 @@ def tag(auth_client):
 
 
 @pytest.fixture()
+def mock_rss():
+    return {
+        "site_name": "Example Blog",
+        "site_url": "https://example.com",
+        "site_rss_feed": "https://example.com/feed.xml",
+    }
+
+
+@pytest.fixture()
+def rss(auth_client, mock_rss):
+    r = auth_client.post("/rss", json=mock_rss)
+    assert r.status_code == 201
+    return r.json()
+
+
+@pytest.fixture()
 def mock_article():
     return {
         "title": "My article",

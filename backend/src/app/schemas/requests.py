@@ -13,7 +13,14 @@ class ArticleSchema(BaseModel):
     consulted: bool
     read_later: bool
     liked: bool
+    rss: bool = False
     tags: list[Annotated[str, Field(min_length=1)]]
+
+
+class RssSchema(BaseModel):
+    site_name: str = Field(..., min_length=1)
+    site_url: str = Field(..., min_length=1)
+    site_rss_feed: str = Field(..., min_length=1)
 
 
 class BasicSchema(BaseModel):

@@ -15,6 +15,7 @@ class ArticleResponse(BaseModel):
     consulted: bool
     read_later: bool
     liked: bool
+    rss: bool
     tags: list[str]
     date_creation: datetime
     date_modification: datetime
@@ -32,11 +33,20 @@ class ArticleResponse(BaseModel):
             consulted=article.consulted,
             read_later=article.read_later,
             liked=article.liked,
+            rss=article.rss,
             tags=[t.normalized_name for t in article.tags],
             date_creation=article.date_creation,
             date_modification=article.date_modification,
             content=article.content if include_content else None,
         )
+
+
+class RssResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    site_name: str
+    site_url: str
+    site_rss_feed: str
 
 
 class NamedEntityResponse(BaseModel):

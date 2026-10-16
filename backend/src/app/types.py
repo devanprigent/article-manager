@@ -16,7 +16,8 @@ class NamedEntity(UserScoped, Protocol):
     normalized_name: str
     name: str
 
-    def __init__(self, *, name: str, normalized_name: str, user_id: int) -> None: ...
+    def __init__(self, *, name: str, normalized_name: str,
+                 user_id: int) -> None: ...
 
 
 DbSession = Session

@@ -36,6 +36,7 @@ export const ArticleSchema = z.object({
   consulted: z.boolean(),
   read_later: z.boolean(),
   liked: z.boolean(),
+  rss: z.boolean(),
   tags: z.array(z.string()),
   date_creation: z.string(),
   date_modification: z.string(),
@@ -59,6 +60,18 @@ export const ParsedMetadataSchema = z.object({
   url: z.string(),
 });
 
+export const RssFeedInputSchema = z.object({
+  site_name: z.string().trim().min(1, 'Name is required'),
+  site_url: z.url('Invalid URL'),
+  site_rss_feed: z.url('Invalid URL'),
+});
+
+export const RssFeedSchema = RssFeedInputSchema.extend({
+  id: z.int(),
+});
+
+export const RssFeedsSchema = z.array(RssFeedSchema);
+
 const makeDeletedSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
   z.object({
     deleted: z.array(itemSchema),
@@ -67,3 +80,4 @@ const makeDeletedSchema = <T extends z.ZodTypeAny>(itemSchema: T) =>
 
 export const DeletedArticlesSchema = makeDeletedSchema(ArticleSchema);
 export const DeletedEntitiesSchema = makeDeletedSchema(EntitySchema);
+export const DeletedRssFeedsSchema = makeDeletedSchema(RssFeedSchema);

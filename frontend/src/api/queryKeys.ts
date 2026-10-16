@@ -17,6 +17,10 @@ export const queryKeys = {
     list: () => [...queryKeys.authors.all, 'list'],
     list_top: () => [...queryKeys.authors.all, 'list_top'],
   },
+  rss: {
+    all: ['rss'],
+    list: () => [...queryKeys.rss.all, 'list'],
+  },
   auth: {
     all: ['auth'],
     session: () => [...queryKeys.auth.all, 'session'],

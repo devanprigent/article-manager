@@ -1,9 +1,46 @@
 from datetime import UTC, datetime
 
-from sqlalchemy import JSON, Column, ForeignKey, Integer, Table, UniqueConstraint
+from sqlalchemy import (
+    JSON,
+    CheckConstraint,
+    Column,
+    ForeignKey,
+    Integer,
+    Table,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
+
+
+class RSS(Base):
+    __tablename__ = "rss"
+    __table_args__ = (
+        UniqueConstraint("user_id", "site_rss_feed", name="uq_rss_feed_per_user"),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    site_name: Mapped[str] = mapped_column(nullable=False)
+    site_url: Mapped[str] = mapped_column(nullable=False)
+    site_rss_feed: Mapped[str] = mapped_column(nullable=False)
+    # Starts at creation time so only entries published afterwards are imported.
+    last_element: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(UTC), nullable=False
+    )
+    # Nothing can be published between creation and now: no need to fetch yet.
+    last_fetched_at: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(UTC), nullable=False
+    )
+    date_creation: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(UTC), nullable=False
+    )
+    date_modification: Mapped[datetime] = mapped_column(
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
+        nullable=False,
+    )
 
 
 class User(Base):
@@ -78,7 +115,13 @@ article_tag = Table(
 
 class Article(Base):
     __tablename__ = "article"
-    __table_args__ = (UniqueConstraint("user_id", "url", name="uq_article_user_url"),)
+    __table_args__ = (
+        UniqueConstraint("user_id", "url", name="uq_article_user_url"),
+        CheckConstraint(
+            "NOT rss OR (NOT read_later AND NOT consulted)",
+            name="ck_article_rss_not_read_later_or_consulted",
+        ),
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(nullable=False)
@@ -92,6 +135,7 @@ class Article(Base):
     consulted: Mapped[bool] = mapped_column(default=False, nullable=False)
     read_later: Mapped[bool] = mapped_column(default=False, nullable=False)
     liked: Mapped[bool] = mapped_column(default=False, nullable=False)
+    rss: Mapped[bool] = mapped_column(default=False, nullable=False)
     tags: Mapped[list["Tag"]] = relationship(secondary=article_tag)
     rank: Mapped[int] = mapped_column(default=0, nullable=False)
     date_creation: Mapped[datetime] = mapped_column(
