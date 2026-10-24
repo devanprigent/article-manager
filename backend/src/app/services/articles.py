@@ -21,7 +21,6 @@ from app.services.common import (
 )
 from app.services.parser import MetadataParser
 from app.services.tags import associate_tags
-from app.settings import Settings
 from app.types import DbSession
 
 logger = logging.getLogger("article_manager.services.articles")
@@ -38,7 +37,8 @@ def get_articles(
 ) -> tuple[Sequence[Article], int]:
     stmt = select(Article).where(Article.user_id == user_id)
     count_stmt = (
-        select(func.count()).select_from(Article).where(Article.user_id == user_id)
+        select(func.count()).select_from(
+            Article).where(Article.user_id == user_id)
     )
     if read_later is not None:
         stmt = stmt.where(Article.read_later == read_later)
@@ -53,7 +53,8 @@ def get_articles(
     if read_later is True:
         stmt = stmt.order_by(Article.rank.asc(), Article.id.asc())
     else:
-        stmt = stmt.order_by(Article.date_modification.desc(), Article.id.desc())
+        stmt = stmt.order_by(
+            Article.date_modification.desc(), Article.id.desc())
 
     if offset is not None:
         stmt = stmt.offset(offset)
@@ -82,10 +83,10 @@ async def enrich_with_content(
 
 
 async def create_article(
-    session: DbSession, settings: Settings, data: ArticleSchema, user_id: int
+    session: DbSession, data: ArticleSchema, user_id: int
 ) -> Article:
     content = await enrich_with_content(session, user_id, data.url)
-    tags = await resolve_article_tags(session, settings, data.tags, user_id, content)
+    tags = await resolve_article_tags(session, data.tags, user_id)
     author = get_or_create_by_name(session, Author, data.author, user_id)
     shift_read_later_ranks(session, user_id)
     article = Article(
@@ -209,10 +210,8 @@ async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataPa
 
 async def resolve_article_tags(
     session: DbSession,
-    settings: Settings,
     raw_tags: list[str],
     user_id: int,
-    content: list[dict] | None,
 ):
     if raw_tags:
         return associate_tags(session, raw_tags, user_id)
