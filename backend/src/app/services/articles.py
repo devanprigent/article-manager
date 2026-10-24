@@ -14,7 +14,7 @@ from app.models import Article, Author
 from app.schemas import ArticleSchema, RankSchema
 from app.services.common import (
     check_url_uniqueness,
-    get_entities,
+    get_entities_by_ids,
     get_entity,
     get_or_create_by_name,
     update_model_fields,
@@ -180,7 +180,8 @@ def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
 def remove_articles(
     session: DbSession, article_ids: list[int], user_id: int
 ) -> Sequence[Article]:
-    articles = list(get_entities(session, article_ids, Article, user_id))
+    articles = list(get_entities_by_ids(
+        session, article_ids, Article, user_id))
 
     for article in articles:
         # force relationships into memory before delete + commit

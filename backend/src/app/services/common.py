@@ -27,7 +27,8 @@ def get_or_create_by_name[T: NamedEntity](
     )
     entity = session.execute(stmt).scalars().first()
     if entity is None:
-        new_entity = model(name=name, normalized_name=normalized_name, user_id=user_id)
+        new_entity = model(
+            name=name, normalized_name=normalized_name, user_id=user_id)
         session.add(new_entity)
         session.flush()
         return new_entity
@@ -37,7 +38,8 @@ def get_or_create_by_name[T: NamedEntity](
 def check_url_uniqueness(
     session: DbSession, url: str, user_id: int, existing_id: int | None = None
 ) -> bool:
-    stmt = select(Article).where(Article.url == url, Article.user_id == user_id)
+    stmt = select(Article).where(
+        Article.url == url, Article.user_id == user_id)
     entity = session.execute(stmt).scalars().first()
     return entity is None or entity.id == existing_id
 
@@ -74,25 +76,24 @@ def get_entity[T: HasPrimaryKey](
 
 
 @overload
-def get_entities[T: HasPrimaryKey](
+def get_entities_by_ids[T: HasPrimaryKey](
     session: DbSession, ids: Sequence[int], model: type[T], user_id: None = None
 ) -> Sequence[T]: ...
 
 
 @overload
-def get_entities[T: UserScoped](
+def get_entities_by_ids[T: UserScoped](
     session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]: ...
 
 
-def get_entities[T: HasPrimaryKey](
+def get_entities_by_ids[T: HasPrimaryKey](
     session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]:
     dedup_ids = set(ids)
-    query_model: Any = model
-    stmt = select(model).where(query_model.id.in_(dedup_ids))
+    stmt = select(model).where(model.id.in_(dedup_ids))
     if user_id is not None:
-        stmt = stmt.where(query_model.user_id == user_id)
+        stmt = stmt.where(model.user_id == user_id)
     entities = session.execute(stmt).scalars().all()
 
     if len(entities) == len(dedup_ids):

@@ -4,7 +4,7 @@ from sqlalchemy import Row, func, select
 
 from app.exceptions import EntityDuplicatedError
 from app.models import Article, Author
-from app.services.common import get_entities, get_or_create_by_name
+from app.services.common import get_entities_by_ids, get_or_create_by_name
 from app.types import DbSession
 
 
@@ -48,7 +48,7 @@ def get_articles_by_author(
 def remove_authors(
     session: DbSession, author_ids: list[int], user_id: int
 ) -> Sequence[Author]:
-    authors = list(get_entities(session, author_ids, Author, user_id))
+    authors = list(get_entities_by_ids(session, author_ids, Author, user_id))
     for author in authors:
         articles = get_articles_by_author(session, author.id, user_id)
         if articles:

@@ -12,7 +12,7 @@ from app.models import RSS, Article, Author
 from app.schemas import RssSchema
 from app.services.common import (
     check_url_uniqueness,
-    get_entities,
+    get_entities_by_ids,
     get_or_create_by_name,
 )
 from app.services.parser import RssEntry, RssParser
@@ -40,7 +40,7 @@ def create_rss_feed(session: DbSession, data: RssSchema, user_id: int) -> RSS:
 
 
 def remove_rss_feeds(session: DbSession, rss_ids: list[int], user_id: int) -> list[RSS]:
-    rss_feeds = list(get_entities(session, rss_ids, RSS, user_id))
+    rss_feeds = list(get_entities_by_ids(session, rss_ids, RSS, user_id))
     for rss in rss_feeds:
         session.delete(rss)
     session.commit()
@@ -82,7 +82,8 @@ def create_rss_article(
 
 def get_stale_rss_feeds(session: DbSession, user_id: int) -> Sequence[RSS]:
     threshold = datetime.now(UTC) - RSS_REFRESH_INTERVAL
-    stmt = select(RSS).where(RSS.user_id == user_id, RSS.last_fetched_at < threshold)
+    stmt = select(RSS).where(RSS.user_id == user_id,
+                             RSS.last_fetched_at < threshold)
     return session.execute(stmt).scalars().all()
 
 

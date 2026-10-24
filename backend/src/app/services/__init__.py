@@ -19,7 +19,7 @@ from app.services.authors import (
 from app.services.common import (
     check_url_uniqueness,
     get_api,
-    get_entities,
+    get_entities_by_ids,
     get_entity,
     get_or_create_by_name,
     normalize_name,
@@ -46,7 +46,7 @@ __all__ = [
     "remove_articles",
     "get_metadata",
     "get_articles_by_author",
-    "get_entities",
+    "get_entities_by_ids",
     "get_entity",
     "get_or_create_by_name",
     "normalize_name",
