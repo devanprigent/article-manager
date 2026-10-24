@@ -1,15 +1,15 @@
 from collections.abc import Sequence
 
 from sqlalchemy import Row, func, select
+from sqlalchemy.orm import Session
 
 from app.exceptions import EntityInUseError
 from app.models import Article, Author
 from app.services.common import get_or_create_by_name, remove_owned
-from app.types import DbSession
 
 
 def get_top_authors(
-    session: DbSession, user_id: int
+    session: Session, user_id: int
 ) -> Sequence[Row[tuple[Author, int]]]:
     nb_articles = func.count(Article.id).label("nb_articles")
     stmt = (
@@ -23,14 +23,14 @@ def get_top_authors(
     return authors_count
 
 
-def create_author(session: DbSession, name: str, user_id: int) -> Author:
+def create_author(session: Session, name: str, user_id: int) -> Author:
     author = get_or_create_by_name(session, Author, name, user_id)
     session.commit()
     return author
 
 
 def remove_authors(
-    session: DbSession, author_ids: list[int], user_id: int
+    session: Session, author_ids: list[int], user_id: int
 ) -> Sequence[Author]:
     stmt = (
         select(Author.name)

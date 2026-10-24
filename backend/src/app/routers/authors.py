@@ -18,7 +18,7 @@ from app.services import (
     remove_authors,
 )
 
-logger = logging.getLogger("article_manager.authors")
+logger = logging.getLogger("article_manager.routers.authors")
 
 router = APIRouter(prefix="/authors")
 

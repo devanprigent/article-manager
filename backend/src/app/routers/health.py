@@ -1,10 +1,6 @@
-import logging
-
 from fastapi import APIRouter
 
 router = APIRouter(prefix="/health")
-
-logger = logging.getLogger("article_manager.routers.health")
 
 
 @router.get("")

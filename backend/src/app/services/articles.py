@@ -4,6 +4,7 @@ from collections.abc import Sequence
 
 import httpx2
 from sqlalchemy import func, select, update
+from sqlalchemy.orm import Session
 
 from app.exceptions import (
     ClientInputError,
@@ -21,13 +22,12 @@ from app.services.common import (
 )
 from app.services.parser import MetadataParser
 from app.services.tags import associate_tags
-from app.types import DbSession
 
 logger = logging.getLogger("article_manager.services.articles")
 
 
 def get_articles(
-    session: DbSession,
+    session: Session,
     offset: int | None,
     limit: int | None,
     user_id: int,
@@ -67,7 +67,7 @@ def get_articles(
 
 
 async def enrich_with_content(
-    session: DbSession, user_id: int, url: str
+    session: Session, user_id: int, url: str
 ) -> list[dict] | None:
     try:
         parser = await get_metadata(session, url, user_id)
@@ -83,10 +83,10 @@ async def enrich_with_content(
 
 
 async def create_article(
-    session: DbSession, data: ArticleSchema, user_id: int
+    session: Session, data: ArticleSchema, user_id: int
 ) -> Article:
     content = await enrich_with_content(session, user_id, data.url)
-    tags = await resolve_article_tags(session, data.tags, user_id)
+    tags = associate_tags(session, data.tags, user_id)
     author = get_or_create_by_name(session, Author, data.author, user_id)
     shift_read_later_ranks(session, user_id)
     article = Article(
@@ -108,7 +108,7 @@ async def create_article(
     return article
 
 
-def shift_read_later_ranks(session: DbSession, user_id: int) -> None:
+def shift_read_later_ranks(session: Session, user_id: int) -> None:
     # Frees rank 0 so the next read-later article lands at the top of the list.
     session.execute(
         update(Article)
@@ -124,7 +124,7 @@ def rank_list_in_place(elements: list[int], old_rank: int, new_rank: int) -> Non
     elements.insert(new_rank, item)
 
 
-def update_rank(session: DbSession, data: RankSchema, user_id: int) -> list[Article]:
+def update_rank(session: Session, data: RankSchema, user_id: int) -> list[Article]:
     articles, _ = get_articles(session, None, None, user_id, True, None)
     article_count = len(articles)
     if not (0 <= data.old_rank < article_count and 0 <= data.new_rank < article_count):
@@ -143,7 +143,7 @@ def update_rank(session: DbSession, data: RankSchema, user_id: int) -> list[Arti
     return [by_id[article_id] for article_id in ids]
 
 
-def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Article:
+def update_article(session: Session, data: ArticleSchema, user_id: int) -> Article:
     if data.id is None:
         raise ClientInputError("Article id is required for update")
     if not check_url_uniqueness(session, data.url, user_id, data.id):
@@ -178,7 +178,7 @@ def update_article(session: DbSession, data: ArticleSchema, user_id: int) -> Art
 
 
 def remove_articles(
-    session: DbSession, article_ids: list[int], user_id: int
+    session: Session, article_ids: list[int], user_id: int
 ) -> Sequence[Article]:
     articles = list(get_entities_by_ids(
         session, article_ids, Article, user_id))
@@ -193,7 +193,7 @@ def remove_articles(
     return articles
 
 
-async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataParser:
+async def get_metadata(session: Session, url: str, user_id: int) -> MetadataParser:
     if not check_url_uniqueness(session, url, user_id):
         raise EntityDuplicatedError("Add article", user_id, "URL", url)
     try:
@@ -207,13 +207,3 @@ async def get_metadata(session: DbSession, url: str, user_id: int) -> MetadataPa
             "Unable to fetch metadata from the provided URL. "
             "Please check that the URL is valid and reachable."
         ) from error
-
-
-async def resolve_article_tags(
-    session: DbSession,
-    raw_tags: list[str],
-    user_id: int,
-):
-    if raw_tags:
-        return associate_tags(session, raw_tags, user_id)
-    return []

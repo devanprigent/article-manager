@@ -3,12 +3,12 @@ import unicodedata
 from collections.abc import Sequence
 from typing import Any, overload
 
-import httpx2
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.exceptions import EntitiesNotFoundError
 from app.models import Article
-from app.types import DbSession, HasPrimaryKey, NamedEntity, UserScoped
+from app.types import HasPrimaryKey, NamedEntity, UserScoped
 
 
 def normalize_name(raw: str) -> str:
@@ -18,7 +18,7 @@ def normalize_name(raw: str) -> str:
 
 
 def get_or_create_by_name[T: NamedEntity](
-    session: DbSession, model: type[T], name: str, user_id: int
+    session: Session, model: type[T], name: str, user_id: int
 ) -> T:
     normalized_name = normalize_name(name)
     query_model: Any = model
@@ -36,7 +36,7 @@ def get_or_create_by_name[T: NamedEntity](
 
 
 def check_url_uniqueness(
-    session: DbSession, url: str, user_id: int, existing_id: int | None = None
+    session: Session, url: str, user_id: int, existing_id: int | None = None
 ) -> bool:
     stmt = select(Article).where(
         Article.url == url, Article.user_id == user_id)
@@ -51,7 +51,7 @@ def update_model_fields(instance, payload: dict, allowed_fields: set[str]) -> No
 
 
 def list_owned[T: UserScoped](
-    session: DbSession, model: type[T], user_id: int
+    session: Session, model: type[T], user_id: int
 ) -> Sequence[T]:
     query_model: Any = model
     stmt = select(model).where(query_model.user_id == user_id)
@@ -59,7 +59,7 @@ def list_owned[T: UserScoped](
 
 
 def remove_owned[T: UserScoped](
-    session: DbSession, model: type[T], ids: Sequence[int], user_id: int
+    session: Session, model: type[T], ids: Sequence[int], user_id: int
 ) -> list[T]:
     entities = list(get_entities_by_ids(session, ids, model, user_id))
     for entity in entities:
@@ -70,18 +70,18 @@ def remove_owned[T: UserScoped](
 
 @overload
 def get_entity[T: HasPrimaryKey](
-    session: DbSession, entity_id: int, model: type[T], user_id: None = None
+    session: Session, entity_id: int, model: type[T], user_id: None = None
 ) -> T: ...
 
 
 @overload
 def get_entity[T: UserScoped](
-    session: DbSession, entity_id: int, model: type[T], user_id: int | None = None
+    session: Session, entity_id: int, model: type[T], user_id: int | None = None
 ) -> T: ...
 
 
 def get_entity[T: HasPrimaryKey](
-    session: DbSession, entity_id: int, model: type[T], user_id: int | None = None
+    session: Session, entity_id: int, model: type[T], user_id: int | None = None
 ) -> T:
     query_model: Any = model
     stmt = select(model).where(query_model.id == entity_id)
@@ -95,18 +95,18 @@ def get_entity[T: HasPrimaryKey](
 
 @overload
 def get_entities_by_ids[T: HasPrimaryKey](
-    session: DbSession, ids: Sequence[int], model: type[T], user_id: None = None
+    session: Session, ids: Sequence[int], model: type[T], user_id: None = None
 ) -> Sequence[T]: ...
 
 
 @overload
 def get_entities_by_ids[T: UserScoped](
-    session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
+    session: Session, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]: ...
 
 
 def get_entities_by_ids[T: HasPrimaryKey](
-    session: DbSession, ids: Sequence[int], model: type[T], user_id: int | None = None
+    session: Session, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]:
     dedup_ids = set(ids)
     stmt = select(model).where(model.id.in_(dedup_ids))
@@ -124,18 +124,3 @@ def get_entities_by_ids[T: HasPrimaryKey](
         missing_ids, "One or several entities weren't found based on the provided ids"
     )
 
-
-async def get_api(url: str, api_key: str, timeout: int = 10):
-    headers = {"X-Api-Key": api_key}
-    async with httpx2.AsyncClient() as client:
-        response = await client.get(url, headers=headers, timeout=timeout)
-        response.raise_for_status()
-        return response
-
-
-async def post_api(url: str, api_key: str, json: dict | None = None, timeout: int = 10):
-    headers = {"X-Api-Key": api_key}
-    async with httpx2.AsyncClient() as client:
-        response = await client.post(url, headers=headers, json=json, timeout=timeout)
-        response.raise_for_status()
-        return response

@@ -14,7 +14,7 @@ from app.models import User
 from app.schemas import AuthMessageResponse, NamedEntityResponse, UserSchema
 from app.services import get_entity, login_user, register_user
 
-logger = logging.getLogger("article_manager.auth")
+logger = logging.getLogger("article_manager.routers.auth")
 
 router = APIRouter(prefix="/auth")
 

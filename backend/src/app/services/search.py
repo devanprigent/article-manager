@@ -1,13 +1,13 @@
 from collections.abc import Sequence
 
 from sqlalchemy import String, cast, func, or_, select
+from sqlalchemy.orm import Session
 
 from app.models import Article, Author
-from app.types import DbSession
 
 
 def search_query(
-    session: DbSession, query: str, offset: int | None, limit: int | None, user_id: int
+    session: Session, query: str, offset: int | None, limit: int | None, user_id: int
 ) -> tuple[Sequence[Article], int]:
     pattern = f"%{query}%"
     stmt = (

@@ -16,13 +16,11 @@ from app.services.authors import (
 )
 from app.services.common import (
     check_url_uniqueness,
-    get_api,
     get_entities_by_ids,
     get_entity,
     get_or_create_by_name,
     list_owned,
     normalize_name,
-    post_api,
     remove_owned,
     update_model_fields,
 )
@@ -61,6 +59,4 @@ __all__ = [
     "search_query",
     "MetadataParser",
     "RssParser",
-    "get_api",
-    "post_api",
 ]

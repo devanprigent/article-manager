@@ -7,7 +7,7 @@ from app.models import Tag
 from app.schemas import BasicSchema, DeleteResponse, IDSchema, NamedEntityResponse
 from app.services import create_tag, list_owned, remove_owned
 
-logger = logging.getLogger("article_manager.tags")
+logger = logging.getLogger("article_manager.routers.tags")
 
 router = APIRouter(prefix="/tags")
 

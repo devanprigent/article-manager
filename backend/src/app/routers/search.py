@@ -9,7 +9,7 @@ from app.schemas import ArticleResponse, PaginatedArticlesResponse
 from app.services import search_query
 from app.types import Pagination
 
-logger = logging.getLogger("article_manager.search")
+logger = logging.getLogger("article_manager.routers.search")
 
 router = APIRouter(prefix="/search")
 

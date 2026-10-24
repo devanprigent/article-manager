@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 
 import httpx2
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.constants import RSS_REFRESH_INTERVAL
 from app.exceptions import ParsingError
@@ -15,12 +16,11 @@ from app.services.common import (
     get_or_create_by_name,
 )
 from app.services.parser import RssEntry, RssParser
-from app.types import DbSession
 
 logger = logging.getLogger("article_manager.services.rss")
 
 
-def create_rss_feed(session: DbSession, data: RssSchema, user_id: int) -> RSS:
+def create_rss_feed(session: Session, data: RssSchema, user_id: int) -> RSS:
     rss = RSS(
         user_id=user_id,
         site_name=data.site_name,
@@ -48,7 +48,7 @@ async def fetch_new_entries(rss: RSS) -> RssParser | None:
 
 
 def create_rss_article(
-    session: DbSession, rss: RSS, entry: RssEntry, user_id: int
+    session: Session, rss: RSS, entry: RssEntry, user_id: int
 ) -> Article:
     author = get_or_create_by_name(
         session, Author, entry.author or rss.site_name, user_id
@@ -65,14 +65,14 @@ def create_rss_article(
     return article
 
 
-def get_stale_rss_feeds(session: DbSession, user_id: int) -> Sequence[RSS]:
+def get_stale_rss_feeds(session: Session, user_id: int) -> Sequence[RSS]:
     threshold = datetime.now(UTC) - RSS_REFRESH_INTERVAL
     stmt = select(RSS).where(RSS.user_id == user_id,
                              RSS.last_fetched_at < threshold)
     return session.execute(stmt).scalars().all()
 
 
-async def refresh_rss_feeds(session: DbSession, user_id: int) -> list[Article]:
+async def refresh_rss_feeds(session: Session, user_id: int) -> list[Article]:
     # Feeds fetched recently are skipped, so clients can call this freely.
     rss_feeds = get_stale_rss_feeds(session, user_id)
     # A failing feed must not prevent the others from being refreshed.

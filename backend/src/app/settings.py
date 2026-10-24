@@ -57,8 +57,6 @@ class Settings(BaseSettings):
 
     @property
     def frontend_origins_list(self) -> list[str]:
-        if isinstance(self.frontend_origins, list):
-            return self.frontend_origins
         return [o.strip() for o in self.frontend_origins.split(",") if o.strip()]
 
 

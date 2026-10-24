@@ -26,7 +26,7 @@ from app.services import (
 )
 from app.types import Pagination
 
-logger = logging.getLogger("article_manager.articles")
+logger = logging.getLogger("article_manager.routers.articles")
 
 router = APIRouter(prefix="/articles")
 

@@ -18,7 +18,7 @@ from app.services import (
     remove_owned,
 )
 
-logger = logging.getLogger("article_manager.rss")
+logger = logging.getLogger("article_manager.routers.rss")
 
 router = APIRouter(prefix="/rss")
 
