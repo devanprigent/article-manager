@@ -23,20 +23,21 @@ from app.services.common import (
     list_owned,
     normalize_name,
     post_api,
+    remove_owned,
     update_model_fields,
 )
 from app.services.parser import MetadataParser, RssParser
 from app.services.rss import (
     create_rss_feed,
     refresh_rss_feeds,
-    remove_rss_feeds,
 )
 from app.services.search import search_query
-from app.services.tags import associate_tags, create_tag, remove_tags
+from app.services.tags import associate_tags, create_tag
 
 __all__ = [
     "associate_tags",
     "check_url_uniqueness",
+    "remove_owned",
     "get_articles",
     "create_article",
     "update_article",
@@ -55,9 +56,7 @@ __all__ = [
     "create_author",
     "remove_authors",
     "create_tag",
-    "remove_tags",
     "create_rss_feed",
-    "remove_rss_feeds",
     "refresh_rss_feeds",
     "search_query",
     "MetadataParser",

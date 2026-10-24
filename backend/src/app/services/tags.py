@@ -1,6 +1,5 @@
 from app.models import Tag
 from app.services.common import (
-    get_entities_by_ids,
     get_or_create_by_name,
     normalize_name,
 )
@@ -11,14 +10,6 @@ def create_tag(session: DbSession, name: str, user_id: int) -> Tag:
     tag = get_or_create_by_name(session, Tag, name, user_id)
     session.commit()
     return tag
-
-
-def remove_tags(session: DbSession, tag_ids: list[int], user_id: int) -> list[Tag]:
-    tags = list(get_entities_by_ids(session, tag_ids, Tag, user_id))
-    for tag in tags:
-        session.delete(tag)
-    session.commit()
-    return tags
 
 
 def associate_tags(session: DbSession, raw_tags: list[str], user_id: int) -> list[Tag]:

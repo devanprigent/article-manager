@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from app.dependencies import DbSession, UserId
 from app.models import Tag
 from app.schemas import BasicSchema, DeleteResponse, IDSchema, NamedEntityResponse
-from app.services import create_tag, list_owned, remove_tags
+from app.services import create_tag, list_owned, remove_owned
 
 logger = logging.getLogger("article_manager.tags")
 
@@ -34,7 +34,7 @@ def add_tag(
 def delete_tags(
     db: DbSession, payload: IDSchema, user_id: UserId
 ) -> DeleteResponse[NamedEntityResponse]:
-    tags = remove_tags(db, payload.ids, user_id)
+    tags = remove_owned(db, Tag, payload.ids, user_id)
     tags_count = len(tags)
     logger.info(
         "Tags deleted: ids=%s user_id=%d count=%d", payload.ids, user_id, tags_count

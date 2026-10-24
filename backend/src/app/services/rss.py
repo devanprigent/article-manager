@@ -12,7 +12,6 @@ from app.models import RSS, Article, Author
 from app.schemas import RssSchema
 from app.services.common import (
     check_url_uniqueness,
-    get_entities_by_ids,
     get_or_create_by_name,
 )
 from app.services.parser import RssEntry, RssParser
@@ -31,14 +30,6 @@ def create_rss_feed(session: DbSession, data: RssSchema, user_id: int) -> RSS:
     session.add(rss)
     session.commit()
     return rss
-
-
-def remove_rss_feeds(session: DbSession, rss_ids: list[int], user_id: int) -> list[RSS]:
-    rss_feeds = list(get_entities_by_ids(session, rss_ids, RSS, user_id))
-    for rss in rss_feeds:
-        session.delete(rss)
-    session.commit()
-    return rss_feeds
 
 
 async def fetch_new_entries(rss: RSS) -> RssParser | None:

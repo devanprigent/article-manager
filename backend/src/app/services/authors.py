@@ -4,7 +4,7 @@ from sqlalchemy import Row, func, select
 
 from app.exceptions import EntityInUseError
 from app.models import Article, Author
-from app.services.common import get_entities_by_ids, get_or_create_by_name
+from app.services.common import get_or_create_by_name, remove_owned
 from app.types import DbSession
 
 
@@ -32,18 +32,16 @@ def create_author(session: DbSession, name: str, user_id: int) -> Author:
 def remove_authors(
     session: DbSession, author_ids: list[int], user_id: int
 ) -> Sequence[Author]:
-    stmt = select(Article.author_id).where(
-        Article.user_id == user_id,
-        Article.author_id.in_(author_ids),
+    stmt = (
+        select(Author.name)
+        .join(Article, Article.author_id == Author.id)
+        .where(Author.user_id == user_id, Author.id.in_(author_ids))
+        .distinct()
     )
-    authors_with_articles = set(session.execute(stmt).scalars().all())
-
-    authors = list(get_entities_by_ids(session, author_ids, Author, user_id))
-    for author in authors:
-        if author.id in authors_with_articles:
-            raise EntityInUseError(
-                f"Author {author.name!r} has associated articles and cannot be deleted."
-            )
-        session.delete(author)
-    session.commit()
-    return authors
+    blocked = session.execute(stmt).scalars().all()
+    if blocked:
+        names = ", ".join(repr(name) for name in blocked)
+        raise EntityInUseError(
+            f"Authors with associated articles cannot be deleted: {names}"
+        )
+    return remove_owned(session, Author, author_ids, user_id)

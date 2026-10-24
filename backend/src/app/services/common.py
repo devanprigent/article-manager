@@ -58,6 +58,16 @@ def list_owned[T: UserScoped](
     return session.execute(stmt).scalars().all()
 
 
+def remove_owned[T: UserScoped](
+    session: DbSession, model: type[T], ids: Sequence[int], user_id: int
+) -> list[T]:
+    entities = list(get_entities_by_ids(session, ids, model, user_id))
+    for entity in entities:
+        session.delete(entity)
+    session.commit()
+    return entities
+
+
 @overload
 def get_entity[T: HasPrimaryKey](
     session: DbSession, entity_id: int, model: type[T], user_id: None = None

@@ -15,7 +15,7 @@ from app.services import (
     create_rss_feed,
     list_owned,
     refresh_rss_feeds,
-    remove_rss_feeds,
+    remove_owned,
 )
 
 logger = logging.getLogger("article_manager.rss")
@@ -55,7 +55,7 @@ async def refresh_feeds(db: DbSession, user_id: UserId) -> list[ArticleResponse]
 def delete_rss_feeds(
     db: DbSession, payload: IDSchema, user_id: UserId
 ) -> DeleteResponse[RssResponse]:
-    rss_feeds = remove_rss_feeds(db, payload.ids, user_id)
+    rss_feeds = remove_owned(db, RSS, payload.ids, user_id)
     rss_count = len(rss_feeds)
     logger.info(
         "RSS feeds deleted: ids=%s user_id=%d count=%d",
