@@ -11,7 +11,6 @@ from app.services.articles import (
 from app.services.auth import login_user, register_user
 from app.services.authors import (
     create_author,
-    get_articles_by_author,
     get_authors,
     get_top_authors,
     remove_authors,
@@ -45,7 +44,6 @@ __all__ = [
     "update_rank",
     "remove_articles",
     "get_metadata",
-    "get_articles_by_author",
     "get_entities_by_ids",
     "get_entity",
     "get_or_create_by_name",

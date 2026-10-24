@@ -124,7 +124,7 @@ def register_error_handlers(app: FastAPI, logger: logging.Logger) -> None:
         )
 
     @app.exception_handler(EntityInUseError)
-    def handle_entity_in_use_exception(request: Request, error: HTTPException):
+    def handle_entity_in_use_exception(request: Request, error: EntityInUseError):
         logger.warning(
             "Entity cannot be deleted on %s %s: %s",
             request.method,

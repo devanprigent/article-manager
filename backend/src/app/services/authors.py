@@ -35,28 +35,20 @@ def create_author(session: DbSession, name: str, user_id: int) -> Author:
     return author
 
 
-def get_articles_by_author(
-    session: DbSession, author_id: int, user_id: int
-) -> Sequence[Article]:
-    stmt = select(Article).where(
-        Article.author_id == author_id, Article.user_id == user_id
-    )
-    articles = session.execute(stmt).scalars().all()
-    return articles
-
-
 def remove_authors(
     session: DbSession, author_ids: list[int], user_id: int
 ) -> Sequence[Author]:
+    stmt = select(Article.author_id).where(
+        Article.user_id == user_id,
+        Article.author_id.in_(author_ids),
+    )
+    authors_with_articles = set(session.execute(stmt).scalars().all())
+
     authors = list(get_entities_by_ids(session, author_ids, Author, user_id))
     for author in authors:
-        articles = get_articles_by_author(session, author.id, user_id)
-        if articles:
+        if author.id in authors_with_articles:
             raise EntityInUseError(
-                "Operation blocked because author has associated articles.",
-                user_id,
-                "",
-                author.name,
+                f"Author {author.name!r} has associated articles and cannot be deleted."
             )
         session.delete(author)
     session.commit()

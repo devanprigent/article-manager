@@ -28,9 +28,14 @@ def test_delete_author(auth_client, author):
 
 def test_delete_author_with_article(auth_client, author, mock_article):
     mock_article = {**mock_article, "author": author["name"]}
-    auth_client.post("/articles", json=mock_article)
+    res_article = auth_client.post("/articles", json=mock_article)
+    assert res_article.status_code == 201
+
     res_delete = auth_client.delete("/authors", json={"ids": [author["id"]]})
     assert res_delete.status_code == 400
+
+    authors = call_endpoint(auth_client, "/authors")
+    assert [a["id"] for a in authors] == [author["id"]]
 
 
 @pytest.mark.usefixtures("create_list_authors_articles")
