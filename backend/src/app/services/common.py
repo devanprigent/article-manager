@@ -109,9 +109,10 @@ def get_entities_by_ids[T: HasPrimaryKey](
     session: Session, ids: Sequence[int], model: type[T], user_id: int | None = None
 ) -> Sequence[T]:
     dedup_ids = set(ids)
-    stmt = select(model).where(model.id.in_(dedup_ids))
+    query_model: Any = model
+    stmt = select(model).where(query_model.id.in_(dedup_ids))
     if user_id is not None:
-        stmt = stmt.where(model.user_id == user_id)
+        stmt = stmt.where(query_model.user_id == user_id)
     entities = session.execute(stmt).scalars().all()
 
     if len(entities) == len(dedup_ids):
