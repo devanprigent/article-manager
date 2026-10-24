@@ -50,6 +50,14 @@ def update_model_fields(instance, payload: dict, allowed_fields: set[str]) -> No
             setattr(instance, field, value)
 
 
+def list_owned[T: UserScoped](
+    session: DbSession, model: type[T], user_id: int
+) -> Sequence[T]:
+    query_model: Any = model
+    stmt = select(model).where(query_model.user_id == user_id)
+    return session.execute(stmt).scalars().all()
+
+
 @overload
 def get_entity[T: HasPrimaryKey](
     session: DbSession, entity_id: int, model: type[T], user_id: None = None

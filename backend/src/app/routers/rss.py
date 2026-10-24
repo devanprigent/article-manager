@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter
 
 from app.dependencies import DbSession, UserId
+from app.models import RSS
 from app.schemas import (
     ArticleResponse,
     DeleteResponse,
@@ -12,7 +13,7 @@ from app.schemas import (
 )
 from app.services import (
     create_rss_feed,
-    get_rss_feeds,
+    list_owned,
     refresh_rss_feeds,
     remove_rss_feeds,
 )
@@ -24,7 +25,7 @@ router = APIRouter(prefix="/rss")
 
 @router.get("")
 def list_rss_feeds(db: DbSession, user_id: UserId) -> list[RssResponse]:
-    rss_feeds = get_rss_feeds(db, user_id)
+    rss_feeds = list_owned(db, RSS, user_id)
     logger.debug("Listed %d RSS feeds for user_id=%d", len(rss_feeds), user_id)
     return [RssResponse.model_validate(rss) for rss in rss_feeds]
 

@@ -11,7 +11,6 @@ from app.services.articles import (
 from app.services.auth import login_user, register_user
 from app.services.authors import (
     create_author,
-    get_authors,
     get_top_authors,
     remove_authors,
 )
@@ -21,6 +20,7 @@ from app.services.common import (
     get_entities_by_ids,
     get_entity,
     get_or_create_by_name,
+    list_owned,
     normalize_name,
     post_api,
     update_model_fields,
@@ -28,12 +28,11 @@ from app.services.common import (
 from app.services.parser import MetadataParser, RssParser
 from app.services.rss import (
     create_rss_feed,
-    get_rss_feeds,
     refresh_rss_feeds,
     remove_rss_feeds,
 )
 from app.services.search import search_query
-from app.services.tags import associate_tags, create_tag, get_tags, remove_tags
+from app.services.tags import associate_tags, create_tag, remove_tags
 
 __all__ = [
     "associate_tags",
@@ -47,18 +46,16 @@ __all__ = [
     "get_entities_by_ids",
     "get_entity",
     "get_or_create_by_name",
+    "list_owned",
     "normalize_name",
     "update_model_fields",
     "register_user",
     "login_user",
-    "get_authors",
     "get_top_authors",
     "create_author",
     "remove_authors",
-    "get_tags",
     "create_tag",
     "remove_tags",
-    "get_rss_feeds",
     "create_rss_feed",
     "remove_rss_feeds",
     "refresh_rss_feeds",

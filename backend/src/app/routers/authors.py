@@ -3,6 +3,7 @@ import logging
 from fastapi import APIRouter
 
 from app.dependencies import DbSession, UserId
+from app.models import Author
 from app.schemas import (
     BasicSchema,
     DeleteResponse,
@@ -12,8 +13,8 @@ from app.schemas import (
 )
 from app.services import (
     create_author,
-    get_authors,
     get_top_authors,
+    list_owned,
     remove_authors,
 )
 
@@ -24,7 +25,7 @@ router = APIRouter(prefix="/authors")
 
 @router.get("")
 def list_authors(db: DbSession, user_id: UserId) -> list[NamedEntityResponse]:
-    authors = get_authors(db, user_id)
+    authors = list_owned(db, Author, user_id)
     logger.debug("Listed %d authors for user_id=%d", len(authors), user_id)
     return [NamedEntityResponse.model_validate(author) for author in authors]
 

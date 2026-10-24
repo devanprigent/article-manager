@@ -8,12 +8,6 @@ from app.services.common import get_entities_by_ids, get_or_create_by_name
 from app.types import DbSession
 
 
-def get_authors(session: DbSession, user_id: int) -> Sequence[Author]:
-    stmt = select(Author).where(Author.user_id == user_id)
-    authors = session.execute(stmt).scalars().all()
-    return authors
-
-
 def get_top_authors(
     session: DbSession, user_id: int
 ) -> Sequence[Row[tuple[Author, int]]]:

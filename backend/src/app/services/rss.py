@@ -21,12 +21,6 @@ from app.types import DbSession
 logger = logging.getLogger("article_manager.services.rss")
 
 
-def get_rss_feeds(session: DbSession, user_id: int) -> Sequence[RSS]:
-    stmt = select(RSS).where(RSS.user_id == user_id)
-    rss_feeds = session.execute(stmt).scalars().all()
-    return rss_feeds
-
-
 def create_rss_feed(session: DbSession, data: RssSchema, user_id: int) -> RSS:
     rss = RSS(
         user_id=user_id,

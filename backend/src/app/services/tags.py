@@ -1,7 +1,3 @@
-from collections.abc import Sequence
-
-from sqlalchemy import select
-
 from app.models import Tag
 from app.services.common import (
     get_entities_by_ids,
@@ -9,12 +5,6 @@ from app.services.common import (
     normalize_name,
 )
 from app.types import DbSession
-
-
-def get_tags(session: DbSession, user_id: int) -> Sequence[Tag]:
-    stmt = select(Tag).where(Tag.user_id == user_id)
-    tags = session.execute(stmt).scalars().all()
-    return tags
 
 
 def create_tag(session: DbSession, name: str, user_id: int) -> Tag:

@@ -3,8 +3,9 @@ import logging
 from fastapi import APIRouter
 
 from app.dependencies import DbSession, UserId
+from app.models import Tag
 from app.schemas import BasicSchema, DeleteResponse, IDSchema, NamedEntityResponse
-from app.services import create_tag, get_tags, remove_tags
+from app.services import create_tag, list_owned, remove_tags
 
 logger = logging.getLogger("article_manager.tags")
 
@@ -13,7 +14,7 @@ router = APIRouter(prefix="/tags")
 
 @router.get("")
 def list_tags(db: DbSession, user_id: UserId) -> list[NamedEntityResponse]:
-    tags = get_tags(db, user_id)
+    tags = list_owned(db, Tag, user_id)
     logger.debug("Listed %d tags for user_id=%d", len(tags), user_id)
     return [NamedEntityResponse.model_validate(tag) for tag in tags]
 
