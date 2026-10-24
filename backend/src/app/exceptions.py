@@ -23,6 +23,10 @@ class InvalidCredentialsError(ValueError):
     pass
 
 
+class EntityInUseError(ValueError):
+    pass
+
+
 class ClientInputError(ValueError):
     pass
 

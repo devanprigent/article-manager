@@ -3,7 +3,11 @@ from collections.abc import Sequence
 from sqlalchemy import select
 
 from app.models import Tag
-from app.services.common import get_entities_by_ids, get_or_create_by_name, normalize_name
+from app.services.common import (
+    get_entities_by_ids,
+    get_or_create_by_name,
+    normalize_name,
+)
 from app.types import DbSession
 
 

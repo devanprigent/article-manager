@@ -2,7 +2,7 @@ from collections.abc import Sequence
 
 from sqlalchemy import Row, func, select
 
-from app.exceptions import EntityDuplicatedError
+from app.exceptions import EntityInUseError
 from app.models import Article, Author
 from app.services.common import get_entities_by_ids, get_or_create_by_name
 from app.types import DbSession
@@ -52,7 +52,7 @@ def remove_authors(
     for author in authors:
         articles = get_articles_by_author(session, author.id, user_id)
         if articles:
-            raise EntityDuplicatedError(
+            raise EntityInUseError(
                 "Operation blocked because author has associated articles.",
                 user_id,
                 "",

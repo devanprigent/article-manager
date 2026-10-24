@@ -9,6 +9,7 @@ from app.exceptions import (
     ClientInputError,
     EntitiesNotFoundError,
     EntityDuplicatedError,
+    EntityInUseError,
     InvalidCredentialsError,
     ParsingError,
 )
@@ -122,9 +123,23 @@ def register_error_handlers(app: FastAPI, logger: logging.Logger) -> None:
             content={"detail": error.detail},
         )
 
+    @app.exception_handler(EntityInUseError)
+    def handle_entity_in_use_exception(request: Request, error: HTTPException):
+        logger.warning(
+            "Entity cannot be deleted on %s %s: %s",
+            request.method,
+            request.url.path,
+            str(error),
+        )
+        return JSONResponse(
+            status_code=400,
+            content={"detail": str(error)},
+        )
+
     @app.exception_handler(Exception)
     def handle_unexpected(request: Request, error):
-        logger.exception("Unhandled error on %s %s", request.method, request.url.path)
+        logger.exception("Unhandled error on %s %s",
+                         request.method, request.url.path)
         return JSONResponse(
             status_code=500,
             content={"detail": "Internal server error"},
