@@ -21,13 +21,15 @@ function App() {
     <Routes>
       <Route path="home" element={<HomePage />} />
       <Route element={<ProtectedRoute />}>
-        <Route path="articles" element={<ArticlesPage />} />
-        <Route path="articles/:id" element={<ReadingPage />} />
         <Route path="inbox" element={<InboxPage />} />
-        <Route path="likes" element={<LikesPage />} />
         <Route path="read-later" element={<ReadLaterPage />} />
+        <Route path="likes" element={<LikesPage />} />
+
+        <Route path="articles" element={<ArticlesPage />} />
         <Route path="rss" element={<RssPage />} />
         <Route path="stats" element={<StatsPage />} />
+
+        <Route path="articles/:id" element={<ReadingPage />} />
         <Route path="*" element={<Navigate to="/read-later" replace />} />
       </Route>
     </Routes>
