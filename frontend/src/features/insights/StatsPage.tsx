@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
-import PageHeader from '../../core/components/PageHeader';
+import PageHeader from '../../core/ui/PageHeader';
 import { getReadPerMonth } from '../../helpers/helpers';
 import { useArticles, useTopAuthors } from '../../hooks/queries';
 import StatsGraphWidget from './StatsGraphWidget';

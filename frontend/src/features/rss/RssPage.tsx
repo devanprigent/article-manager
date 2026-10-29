@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { ExternalLink, Plus, Rss, Trash2 } from 'react-feather';
 
 import ConfirmationForm from '../../core/components/ConfirmationForm';
-import PageHeader from '../../core/components/PageHeader';
 import { LoadingIcon } from '../../core/ui/LoadingIcon';
+import PageHeader from '../../core/ui/PageHeader';
 import { useCreateRssFeed, useRemoveRssFeed } from '../../hooks/mutations';
 import { useRssFeeds } from '../../hooks/queries';
 import type { RssFeed } from '../../types/types';

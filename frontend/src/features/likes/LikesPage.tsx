@@ -1,5 +1,5 @@
 import { Feed } from '../../core/components/Feed';
-import PageHeader from '../../core/components/PageHeader';
+import PageHeader from '../../core/ui/PageHeader';
 import { useArticles } from '../../hooks/queries';
 
 const EMPTY_MESSAGE = 'No liked articles yet. Mark articles as liked from the Articles page.';

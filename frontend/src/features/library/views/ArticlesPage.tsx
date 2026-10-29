@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { pageSize } from '../../../constants/constants';
-import PageHeader from '../../../core/components/PageHeader';
+import PageHeader from '../../../core/ui/PageHeader';
 import { useArticles, useSearch } from '../../../hooks/queries';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';

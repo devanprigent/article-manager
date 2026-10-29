@@ -1,5 +1,5 @@
 import { Feed } from '../../core/components/Feed';
-import PageHeader from '../../core/components/PageHeader';
+import PageHeader from '../../core/ui/PageHeader';
 import { useArticles } from '../../hooks/queries';
 
 const EMPTY_MESSAGE = 'Your inbox is empty. New articles from your RSS feeds will show up here.';
