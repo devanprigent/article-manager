@@ -30,7 +30,7 @@ function App() {
         <Route path="stats" element={<StatsPage />} />
 
         <Route path="library/:id" element={<ReadingPage />} />
-        <Route path="*" element={<Navigate to="/read-later" replace />} />
+        <Route path="*" element={<Navigate to="/inbox" replace />} />
       </Route>
     </Routes>
   );

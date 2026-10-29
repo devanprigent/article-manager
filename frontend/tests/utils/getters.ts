@@ -8,8 +8,8 @@ export function getPassword(page: Page): Locator {
   return page.getByTestId('auth-password');
 }
 
-export function getArticlesTab(page: Page): Locator {
-  return page.getByRole('link', { name: 'Articles' });
+export function getLibraryTab(page: Page): Locator {
+  return page.getByRole('link', { name: 'Library' });
 }
 
 export function getLikedTab(page: Page): Locator {

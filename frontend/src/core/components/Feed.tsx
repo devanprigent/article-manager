@@ -11,8 +11,8 @@ import { formatCreatedDate } from '../../helpers/helpers';
 import { useEditArticle, useReorderReadLater } from '../../hooks/mutations';
 import { Article } from '../../types/types';
 import { ErrorMessage } from '../ui/ErrorMessage';
+import { GripIcon } from '../ui/GripIcon';
 import { LoadingIcon } from '../ui/LoadingIcon';
-import { GripIcon } from './GripIcon';
 
 interface FeedItemProps {
   article: Article;
