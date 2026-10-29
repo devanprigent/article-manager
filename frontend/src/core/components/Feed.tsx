@@ -6,7 +6,7 @@ import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalList
 import { CSS } from '@dnd-kit/utilities';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
-import { ArticleLink } from '../../features/articles/components/ArticleLink';
+import { ArticleLink } from '../../features/library/components/ArticleLink';
 import { formatCreatedDate } from '../../helpers/helpers';
 import { useEditArticle, useReorderReadLater } from '../../hooks/mutations';
 import { Article } from '../../types/types';
