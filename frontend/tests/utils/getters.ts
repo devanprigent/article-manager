@@ -36,6 +36,10 @@ export function getArticleLink(page: Page, id: number): Locator {
   return page.getByTestId(`article-link-${id}`);
 }
 
+export function getArticleDetailsLink(page: Page, id: number): Locator {
+  return page.getByTestId(`article-details-link-${id}`);
+}
+
 export function getLoginButton(page: Page): Locator {
   return page.getByTestId('login-btn');
 }

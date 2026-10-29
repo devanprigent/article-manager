@@ -4,9 +4,9 @@ import { Bookmark, XCircle } from 'react-feather';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { ArticleLink } from '../../features/library/components/ArticleLink';
 import { formatCreatedDate } from '../../helpers/helpers';
 import { Article } from '../../types/types';
+import { ArticleLink } from '../ui/ArticleLink';
 import { GripIcon } from '../ui/GripIcon';
 
 interface FeedItemProps {
@@ -81,6 +81,7 @@ export function FeedItem({
               <h2 className={`text-base font-semibold leading-snug ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>
                 <ArticleLink
                   id={article.id}
+                  url={article.url}
                   className={`text-inherit no-underline transition-colors ${isDarkMode ? 'hover:text-indigo-300' : 'hover:text-indigo-600'}`}
                 >
                   {article.title}

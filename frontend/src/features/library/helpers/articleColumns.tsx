@@ -2,8 +2,8 @@ import { Heart } from 'react-feather';
 
 import { GridColDef } from '@mui/x-data-grid';
 
+import { ArticleDetailsLink } from '../../../core/ui/ArticleDetailsLink';
 import StatusIcon from '../../../core/ui/StatusIcon';
-import { ArticleLink } from '../components/ArticleLink';
 import EditButton from '../components/EditButton';
 
 export function getColumnVisibilityModel(isMdUp: boolean) {
@@ -24,13 +24,13 @@ export function getArticleColumns(isMdUp: boolean): GridColDef[] {
       minWidth: isMdUp ? 200 : 140,
       renderHeader: () => <strong className="fs-5">{'Title'}</strong>,
       renderCell: (params) => (
-        <ArticleLink
+        <ArticleDetailsLink
           id={params.row.id}
           style={{ textDecoration: params.row.consulted ? 'line-through' : 'none' }}
           className="text-inherit hover:text-indigo-600 dark:hover:text-indigo-300"
         >
           {params.row.title}
-        </ArticleLink>
+        </ArticleDetailsLink>
       ),
     },
     {
