@@ -38,10 +38,12 @@ export function FeedItem({
   const showActions = isActionVisible || isDragging;
   const actionVisibilityClass = showActions ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0';
   const actionButtonClass = `absolute top-0 z-20 inline-flex h-8 w-8 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
-    isDarkMode
-      ? 'border-slate-500 bg-slate-700 text-violet-300 shadow-md shadow-black/40 hover:bg-violet-900/40 hover:text-violet-200'
-      : 'border-slate-200 bg-white text-violet-500 hover:bg-violet-50 hover:text-violet-600'
+    isDarkMode ? 'border-slate-500 bg-slate-700 shadow-md shadow-black/40' : 'border-slate-200 bg-white'
   } ${actionVisibilityClass}`;
+  const readLaterColorClass = isDarkMode
+    ? 'text-emerald-400 hover:bg-emerald-900/40 hover:text-emerald-300'
+    : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700';
+  const removeColorClass = isDarkMode ? 'text-red-400 hover:bg-red-900/40 hover:text-red-300' : 'text-red-500 hover:bg-red-50 hover:text-red-600';
 
   return (
     <div
@@ -100,7 +102,7 @@ export function FeedItem({
           title="Read later"
           onClick={() => onReadLater(article)}
           disabled={isClearPending}
-          className={`right-10 ${actionButtonClass}`}
+          className={`right-10 ${actionButtonClass} ${readLaterColorClass}`}
         >
           <Bookmark size={16} strokeWidth={2} aria-hidden="true" />
         </button>
@@ -112,7 +114,7 @@ export function FeedItem({
         title="Remove"
         onClick={() => onClear(article)}
         disabled={isClearPending}
-        className={`right-0 ${actionButtonClass}`}
+        className={`right-0 ${actionButtonClass} ${removeColorClass}`}
       >
         <XCircle size={18} strokeWidth={2} aria-hidden="true" />
       </button>
