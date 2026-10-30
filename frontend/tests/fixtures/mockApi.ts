@@ -208,6 +208,18 @@ export async function installMockApi(page: Page): Promise<MockApi> {
       return;
     }
 
+    if (matchesApiPath(route, '/articles') && request.method() === 'DELETE') {
+      const { ids } = request.postDataJSON() as { ids: number[] };
+      const deleted = inboxArticles.filter((a) => ids.includes(a.id));
+      inboxArticles = inboxArticles.filter((a) => !ids.includes(a.id));
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ deleted, count: deleted.length }),
+      });
+      return;
+    }
+
     if (matchesApiPath(route, '/rss') && request.method() === 'GET') {
       await route.fulfill({
         status: 200,

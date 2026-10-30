@@ -1,6 +1,6 @@
 import { sampleArticle, sampleInboxArticle } from './fixtures/mockApi';
 import { expect, test } from './fixtures/test';
-import { getArticleLink, getInboxTab } from './utils/getters';
+import { getArticleDeleteBtn, getArticleLink, getInboxTab } from './utils/getters';
 
 test('inbox page lists the articles imported from rss feeds', async ({ authenticatedPage: page }) => {
   await getInboxTab(page).first().click();
@@ -13,7 +13,9 @@ test('inbox page lists the articles imported from rss feeds', async ({ authentic
 test('inbox page removes an article from the inbox', async ({ authenticatedPage: page }) => {
   await page.goto('/inbox');
   await getArticleLink(page, sampleInboxArticle.id).hover();
-  await page.getByRole('button', { name: `Remove: ${sampleInboxArticle.title}` }).click();
+  const btn = getArticleDeleteBtn(page, sampleInboxArticle.id);
+  await btn.click();
+  await page.getByRole('button', { name: 'Delete', exact: true }).click();
 
   await expect(getArticleLink(page, sampleInboxArticle.id)).toHaveCount(0);
   await expect(page.getByText('Your inbox is empty. New articles from your RSS feeds will show up here.')).toBeVisible();

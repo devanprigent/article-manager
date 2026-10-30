@@ -40,6 +40,10 @@ export function getArticleDetailsLink(page: Page, id: number): Locator {
   return page.getByTestId(`article-details-link-${id}`);
 }
 
+export function getArticleDeleteBtn(page: Page, id: number): Locator {
+  return page.getByTestId(`delete-item-${id}`);
+}
+
 export function getLoginButton(page: Page): Locator {
   return page.getByTestId('login-btn');
 }

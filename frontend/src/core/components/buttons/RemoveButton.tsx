@@ -22,11 +22,12 @@ export function RemoveButton({ itemId, remove, isPending, title }: Readonly<Prop
   return (
     <>
       <button
+        data-testid={`delete-item-${itemId}`}
         className="rounded-lg p-1.5 text-rose-500 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-900/20"
         onClick={toggleModalRemove}
         disabled={isPending}
-        aria-label="Delete article"
-        title="Delete article"
+        aria-label={title}
+        title={title}
       >
         <Trash2 size={18} strokeWidth={2.2} />
       </button>
