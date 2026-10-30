@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 import { pageSize } from '../../../constants/constants';
+import AddButton from '../../../core/components/buttons/AddButton';
 import PageHeader from '../../../core/ui/PageHeader';
 import { useArticles, useSearch } from '../../../hooks/queries';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import AddButton from '../components/AddButton';
 import DataTable from '../components/DataTable';
 import { getArticleColumns, getColumnVisibilityModel } from '../helpers/articleColumns';
 

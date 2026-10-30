@@ -3,7 +3,7 @@ import { Trash2 } from 'react-feather';
 
 import { UseMutateFunction } from '@tanstack/react-query';
 
-import ConfirmationForm from './ConfirmationForm';
+import ConfirmationForm from '../forms/ConfirmationForm';
 
 interface PropsType {
   itemId: number;

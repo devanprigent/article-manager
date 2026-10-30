@@ -5,11 +5,11 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { UseMutateFunction } from '@tanstack/react-query';
 
-import { RemoveButton } from '../../core/components/RemoveButton';
 import { formatCreatedDate } from '../../helpers/helpers';
 import { Article } from '../../types/types';
 import { ArticleLink } from '../ui/ArticleLink';
 import { GripIcon } from '../ui/GripIcon';
+import { RemoveButton } from './buttons/RemoveButton';
 
 interface FeedItemProps {
   article: Article;

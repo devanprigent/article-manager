@@ -3,7 +3,7 @@ import { Edit3 } from 'react-feather';
 
 import { useEditArticle } from '../../../hooks/mutations';
 import { Article } from '../../../types/types';
-import ArticleForm from './ArticleForm';
+import ArticleForm from '../forms/ArticleForm';
 
 interface PropsType {
   activeItem: Article;

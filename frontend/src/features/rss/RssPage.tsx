@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ExternalLink, Plus, Rss } from 'react-feather';
 
-import { RemoveButton } from '../../core/components/RemoveButton';
+import { RemoveButton } from '../../core/components/buttons/RemoveButton';
 import { LoadingIcon } from '../../core/ui/LoadingIcon';
 import PageHeader from '../../core/ui/PageHeader';
 import { useCreateRssFeed, useRemoveRssFeed } from '../../hooks/mutations';

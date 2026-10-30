@@ -7,11 +7,11 @@ import { Input } from 'reactstrap';
 import { buttonSize, buttonStyle } from '../../../constants/constants';
 import { useSettings } from '../../../contexts/SettingsContext';
 import PopupWrapper from '../../../core/components/PopupWrapper';
-import { RemoveButton } from '../../../core/components/RemoveButton';
 import { useRemoveArticle } from '../../../hooks/mutations';
 import { useAuthors } from '../../../hooks/queries';
 import { ArticleSchema } from '../../../types/schema';
 import { ArticleFormProps } from '../../../types/types';
+import { RemoveButton } from '../buttons/RemoveButton';
 import TagsForm from './TagsForm';
 
 type AuthorOption = { value: string; label: string };

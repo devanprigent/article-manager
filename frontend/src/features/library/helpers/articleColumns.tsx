@@ -2,9 +2,9 @@ import { Heart } from 'react-feather';
 
 import { GridColDef } from '@mui/x-data-grid';
 
+import EditButton from '../../../core/components/buttons/EditButton';
 import { ArticleDetailsLink } from '../../../core/ui/ArticleDetailsLink';
 import StatusIcon from '../../../core/ui/StatusIcon';
-import EditButton from '../components/EditButton';
 
 export function getColumnVisibilityModel(isMdUp: boolean) {
   return {
