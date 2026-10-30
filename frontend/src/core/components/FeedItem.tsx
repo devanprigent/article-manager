@@ -3,7 +3,9 @@ import { Bookmark, XCircle } from 'react-feather';
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { UseMutateFunction } from '@tanstack/react-query';
 
+import { RemoveButton } from '../../core/components/RemoveButton';
 import { formatCreatedDate } from '../../helpers/helpers';
 import { Article } from '../../types/types';
 import { ArticleLink } from '../ui/ArticleLink';
@@ -13,7 +15,9 @@ interface FeedItemProps {
   article: Article;
   onClear: (article: Article) => void;
   onReadLater?: (article: Article) => void;
+  onDelete: UseMutateFunction<number, unknown, number[], unknown>;
   isClearPending: boolean;
+  isDeletePending: boolean;
   isDarkMode: boolean;
   reorderable?: boolean;
   dragHandleProps?: HTMLAttributes<HTMLButtonElement>;
@@ -26,7 +30,9 @@ export function FeedItem({
   article,
   onClear,
   onReadLater,
+  onDelete,
   isClearPending,
+  isDeletePending,
   isDarkMode,
   reorderable = false,
   dragHandleProps,
@@ -43,6 +49,9 @@ export function FeedItem({
   const readLaterColorClass = isDarkMode
     ? 'text-emerald-400 hover:bg-emerald-900/40 hover:text-emerald-300'
     : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700';
+  const clearColorClass = isDarkMode
+    ? 'text-blue-400 hover:bg-blue-900/40 hover:text-blue-300'
+    : 'text-blue-600 hover:bg-blue-50 hover:text-blue-700';
   const removeColorClass = isDarkMode ? 'text-red-400 hover:bg-red-900/40 hover:text-red-300' : 'text-red-500 hover:bg-red-50 hover:text-red-600';
 
   return (
@@ -100,10 +109,10 @@ export function FeedItem({
         <button
           type="button"
           aria-label={`Read later: ${article.title}`}
-          title="Read later"
+          title="Mark as read-later"
           onClick={() => onReadLater(article)}
           disabled={isClearPending}
-          className={`right-10 ${actionButtonClass} ${readLaterColorClass}`}
+          className={`right-20 ${actionButtonClass} ${readLaterColorClass}`}
         >
           <Bookmark size={16} strokeWidth={2} aria-hidden="true" />
         </button>
@@ -111,14 +120,18 @@ export function FeedItem({
 
       <button
         type="button"
-        aria-label={`Remove: ${article.title}`}
-        title="Remove"
+        aria-label={`Clear: ${article.title}`}
+        title="Clear article from feed"
         onClick={() => onClear(article)}
         disabled={isClearPending}
-        className={`right-0 ${actionButtonClass} ${removeColorClass}`}
+        className={`right-10 ${actionButtonClass} ${clearColorClass}`}
       >
         <XCircle size={18} strokeWidth={2} aria-hidden="true" />
       </button>
+
+      <div className={`right-0 ${actionButtonClass} ${removeColorClass}`}>
+        <RemoveButton itemId={article.id} remove={onDelete} isPending={isDeletePending} title={'Delete this article?'} />
+      </div>
     </div>
   );
 }
@@ -126,16 +139,20 @@ export function FeedItem({
 export function SortableFeedItem({
   article,
   onClear,
+  onDelete,
   isClearPending,
+  isDeletePending,
   isDarkMode,
-}: Readonly<Pick<FeedItemProps, 'article' | 'onClear' | 'isClearPending' | 'isDarkMode'>>) {
+}: Readonly<Pick<FeedItemProps, 'article' | 'onClear' | 'onDelete' | 'isClearPending' | 'isDeletePending' | 'isDarkMode'>>) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: article.id });
 
   return (
     <FeedItem
       article={article}
       onClear={onClear}
+      onDelete={onDelete}
       isClearPending={isClearPending}
+      isDeletePending={isDeletePending}
       isDarkMode={isDarkMode}
       reorderable
       containerRef={setNodeRef}

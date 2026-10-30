@@ -2,7 +2,7 @@ import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, us
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
-import { useEditArticle, useReorderReadLater } from '../../hooks/mutations';
+import { useEditArticle, useRemoveArticle, useReorderReadLater } from '../../hooks/mutations';
 import { Article } from '../../types/types';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { LoadingIcon } from '../ui/LoadingIcon';
@@ -21,6 +21,7 @@ interface FeedProps {
 export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, readLaterPatch, reorderable = false }: Readonly<FeedProps>) {
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
+  const { mutate: remove, isPending: isDeletePending } = useRemoveArticle();
   const { mutate: reorderReadLater, isPending: isReorderPending } = useReorderReadLater();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -85,7 +86,9 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, rea
             article={article}
             onClear={handleClear}
             onReadLater={handleReadLater}
+            onDelete={remove}
             isClearPending={isEditPending}
+            isDeletePending={isDeletePending}
             isDarkMode={isDarkMode}
           />
         ))}
@@ -98,7 +101,15 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, rea
       <SortableContext items={articles.map((article) => article.id)} strategy={verticalListSortingStrategy}>
         <div className={`mx-auto flex max-w-3xl flex-col gap-3 overflow-visible rounded-2xl pb-2 pl-3 pr-6 ${isReorderPending ? 'opacity-80' : ''}`}>
           {articles.map((article) => (
-            <SortableFeedItem key={article.id} article={article} onClear={handleClear} isClearPending={isEditPending} isDarkMode={isDarkMode} />
+            <SortableFeedItem
+              key={article.id}
+              article={article}
+              onClear={handleClear}
+              onDelete={remove}
+              isClearPending={isEditPending}
+              isDeletePending={isDeletePending}
+              isDarkMode={isDarkMode}
+            />
           ))}
         </div>
       </SortableContext>
