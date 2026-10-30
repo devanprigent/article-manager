@@ -7,15 +7,17 @@ import { Input } from 'reactstrap';
 import { buttonSize, buttonStyle } from '../../../constants/constants';
 import { useSettings } from '../../../contexts/SettingsContext';
 import PopupWrapper from '../../../core/components/PopupWrapper';
+import { RemoveButton } from '../../../core/components/RemoveButton';
+import { useRemoveArticle } from '../../../hooks/mutations';
 import { useAuthors } from '../../../hooks/queries';
 import { ArticleSchema } from '../../../types/schema';
 import { ArticleFormProps } from '../../../types/types';
-import RemoveButton from './RemoveButton';
 import TagsForm from './TagsForm';
 
 type AuthorOption = { value: string; label: string };
 
 function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButton, isPending = false, mode = 'edit' }: Readonly<ArticleFormProps>) {
+  const { mutate: remove, isPending: isPendingRemoving } = useRemoveArticle();
   const isCreateMode = mode === 'create';
   const currentYear = new Date().getFullYear();
   const [item, setItem] = useState(activeItem);
@@ -75,7 +77,9 @@ function ArticleForm({ isOpen, toggle, onSave, title, activeItem, showDeleteButt
         <div className="flex items-start justify-between">
           <div className="w-8" />
           <h1 className="text-center text-3xl font-bold dark:text-white">{title}</h1>
-          <div className="w-8 text-right">{showDeleteButton && <RemoveButton itemId={activeItem.id} />}</div>
+          <div className="w-8 text-right">
+            {showDeleteButton && <RemoveButton itemId={activeItem.id} remove={remove} isPending={isPendingRemoving} title={'Delete this article?'} />}
+          </div>
         </div>
         <form>
           <div className="flex flex-col space-y-2 text-slate-800 dark:text-slate-100">

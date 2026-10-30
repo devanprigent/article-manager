@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { Trash2 } from 'react-feather';
 
-import ConfirmationForm from '../../../core/components/ConfirmationForm';
-import { useRemoveArticle } from '../../../hooks/mutations';
+import { UseMutateFunction } from '@tanstack/react-query';
+
+import ConfirmationForm from './ConfirmationForm';
 
 interface PropsType {
   itemId: number;
+  remove: UseMutateFunction<number, unknown, number[], unknown>;
+  isPending: boolean;
+  title: string;
 }
 
-function RemoveButton({ itemId }: Readonly<PropsType>) {
-  const { mutate: remove, isPending } = useRemoveArticle();
+export function RemoveButton({ itemId, remove, isPending, title }: Readonly<PropsType>) {
   const [modalRemove, setModalRemove] = useState(false);
 
   function toggleModalRemove() {
@@ -28,6 +31,7 @@ function RemoveButton({ itemId }: Readonly<PropsType>) {
         <Trash2 size={18} strokeWidth={2.2} />
       </button>
       <ConfirmationForm
+        title={title}
         isOpen={modalRemove}
         toggle={toggleModalRemove}
         isPending={isPending}
@@ -36,6 +40,3 @@ function RemoveButton({ itemId }: Readonly<PropsType>) {
     </>
   );
 }
-
-// Exportation
-export default RemoveButton;

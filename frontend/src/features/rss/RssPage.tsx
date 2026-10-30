@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ExternalLink, Plus, Rss, Trash2 } from 'react-feather';
+import { ExternalLink, Plus, Rss } from 'react-feather';
 
-import ConfirmationForm from '../../core/components/ConfirmationForm';
+import { RemoveButton } from '../../core/components/RemoveButton';
 import { LoadingIcon } from '../../core/ui/LoadingIcon';
 import PageHeader from '../../core/ui/PageHeader';
 import { useCreateRssFeed, useRemoveRssFeed } from '../../hooks/mutations';
@@ -13,11 +13,6 @@ const EMPTY_MESSAGE = 'No RSS feeds yet. Add one to follow a website.';
 
 function RssFeedRow({ feed }: Readonly<{ feed: RssFeed }>) {
   const { mutate: remove, isPending } = useRemoveRssFeed();
-  const [modalRemove, setModalRemove] = useState(false);
-
-  function toggleModalRemove() {
-    setModalRemove(!modalRemove);
-  }
 
   return (
     <li
@@ -41,22 +36,7 @@ function RssFeedRow({ feed }: Readonly<{ feed: RssFeed }>) {
           <p className="m-0 truncate text-sm text-slate-500 dark:text-slate-400">{feed.site_rss_feed}</p>
         </div>
       </div>
-      <button
-        className="rounded-lg p-1.5 text-rose-500 transition hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-900/20"
-        onClick={toggleModalRemove}
-        disabled={isPending}
-        aria-label={`Delete ${feed.site_name} feed`}
-        title="Delete feed"
-      >
-        <Trash2 size={18} strokeWidth={2.2} />
-      </button>
-      <ConfirmationForm
-        isOpen={modalRemove}
-        toggle={toggleModalRemove}
-        isPending={isPending}
-        title="Delete this RSS feed?"
-        onSave={() => remove([feed.id], { onSuccess: () => setModalRemove(false) })}
-      />
+      <RemoveButton itemId={feed.id} remove={remove} isPending={isPending} title={'Delete this feed?'} />
     </li>
   );
 }
