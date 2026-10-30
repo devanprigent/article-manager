@@ -1,3 +1,4 @@
+import AddButton from '../../core/components/buttons/AddButton';
 import { Feed } from '../../core/components/Feed';
 import PageHeader from '../../core/ui/PageHeader';
 import { useArticles } from '../../hooks/queries';
@@ -16,9 +17,12 @@ function ReadLaterPage() {
   return (
     <div className="space-y-5">
       <PageHeader title="Read Later" description="Articles you plan to revisit. Drag the handle to reorder.">
-        <span className="inline-flex rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-800 dark:bg-violet-900/40 dark:text-violet-200">
-          {total} marked
-        </span>
+        <div className="flex items-center justify-between gap-3">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
+            {total} total
+          </span>
+          <AddButton title={'Add article'} />
+        </div>
       </PageHeader>
 
       <Feed
