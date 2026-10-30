@@ -13,7 +13,7 @@ interface FeedProps {
   emptyMessage: string;
   isLoading: boolean;
   error: Error | null;
-  clearPatch: (article: Article) => Article;
+  clearPatch?: (article: Article) => Article;
   readLaterPatch?: (article: Article) => Article;
   reorderable?: boolean;
 }
@@ -28,9 +28,7 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, rea
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
-  function handleClear(article: Article): void {
-    editArticle(clearPatch(article));
-  }
+  const handleClear = clearPatch ? (article: Article) => editArticle(clearPatch(article)) : undefined;
 
   const handleReadLater = readLaterPatch ? (article: Article) => editArticle(readLaterPatch(article)) : undefined;
 

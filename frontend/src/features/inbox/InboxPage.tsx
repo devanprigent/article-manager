@@ -26,7 +26,6 @@ function InboxPage() {
         emptyMessage={EMPTY_MESSAGE}
         isLoading={isLoading}
         error={error}
-        clearPatch={(article) => ({ ...article, rss: false })}
         readLaterPatch={(article) => ({ ...article, rss: false, read_later: true })}
       />
     </div>

@@ -13,9 +13,9 @@ import { GripIcon } from '../ui/GripIcon';
 
 interface FeedItemProps {
   article: Article;
-  onClear: (article: Article) => void;
+  onClear?: (article: Article) => void;
   onReadLater?: (article: Article) => void;
-  onDelete: UseMutateFunction<number, unknown, number[], unknown>;
+  onDelete?: UseMutateFunction<number, unknown, number[], unknown>;
   isClearPending: boolean;
   isDeletePending: boolean;
   isDarkMode: boolean;
@@ -43,9 +43,9 @@ export function FeedItem({
   const [isActionVisible, setIsActionVisible] = useState(false);
   const showActions = isActionVisible || isDragging;
   const actionVisibilityClass = showActions ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0';
-  const actionButtonClass = `absolute top-0 z-20 inline-flex h-8 w-8 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
+  const actionButtonClass = `inline-flex h-8 w-8 items-center justify-center rounded-full border shadow-sm transition disabled:cursor-not-allowed disabled:opacity-60 ${
     isDarkMode ? 'border-slate-500 bg-slate-700 shadow-md shadow-black/40' : 'border-slate-200 bg-white'
-  } ${actionVisibilityClass}`;
+  }`;
   const readLaterColorClass = isDarkMode
     ? 'text-emerald-400 hover:bg-emerald-900/40 hover:text-emerald-300'
     : 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700';
@@ -105,32 +105,38 @@ export function FeedItem({
         </div>
       </article>
 
-      {onReadLater && (
-        <button
-          type="button"
-          aria-label={`Read later: ${article.title}`}
-          title="Mark as read-later"
-          onClick={() => onReadLater(article)}
-          disabled={isClearPending}
-          className={`right-20 ${actionButtonClass} ${readLaterColorClass}`}
-        >
-          <Bookmark size={16} strokeWidth={2} aria-hidden="true" />
-        </button>
-      )}
+      <div className={`absolute -right-4 top-0 z-20 flex -translate-y-1/2 gap-2 ${actionVisibilityClass}`}>
+        {onReadLater && (
+          <button
+            type="button"
+            aria-label={`Read later: ${article.title}`}
+            title="Mark as read-later"
+            onClick={() => onReadLater(article)}
+            disabled={isClearPending}
+            className={`${actionButtonClass} ${readLaterColorClass}`}
+          >
+            <Bookmark size={16} strokeWidth={2} aria-hidden="true" />
+          </button>
+        )}
 
-      <button
-        type="button"
-        aria-label={`Clear: ${article.title}`}
-        title="Clear article from feed"
-        onClick={() => onClear(article)}
-        disabled={isClearPending}
-        className={`right-10 ${actionButtonClass} ${clearColorClass}`}
-      >
-        <XCircle size={18} strokeWidth={2} aria-hidden="true" />
-      </button>
+        {onClear && (
+          <button
+            type="button"
+            aria-label={`Clear: ${article.title}`}
+            title="Clear article from feed"
+            onClick={() => onClear(article)}
+            disabled={isClearPending}
+            className={`${actionButtonClass} ${clearColorClass}`}
+          >
+            <XCircle size={18} strokeWidth={2} aria-hidden="true" />
+          </button>
+        )}
 
-      <div className={`right-0 ${actionButtonClass} ${removeColorClass}`}>
-        <RemoveButton itemId={article.id} remove={onDelete} isPending={isDeletePending} title={'Delete this article?'} />
+        {onDelete && (
+          <div className={`${actionButtonClass} ${removeColorClass}`}>
+            <RemoveButton itemId={article.id} remove={onDelete} isPending={isDeletePending} title={'Delete this article?'} />
+          </div>
+        )}
       </div>
     </div>
   );
