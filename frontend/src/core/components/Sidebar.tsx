@@ -10,12 +10,12 @@ type SidebarProps = {
 
 const navigationGroups = [
   [
-    { to: '/read-later', label: 'Read Later', accessibleName: 'Read Later', icon: Bookmark },
     { to: '/inbox', label: 'Inbox', accessibleName: 'Inbox', icon: Inbox },
+    { to: '/read-later', label: 'Read Later', accessibleName: 'Read Later', icon: Bookmark },
     { to: '/likes', label: 'Likes', accessibleName: 'Likes', icon: Heart },
   ],
   [
-    { to: '/articles', label: 'Library', accessibleName: 'Articles', icon: Layers },
+    { to: '/library', label: 'Library', accessibleName: 'Library', icon: Layers },
     { to: '/rss', label: 'RSS', accessibleName: 'RSS', icon: Rss },
     { to: '/stats', label: 'Insights', accessibleName: 'Stats', icon: BarChart2 },
   ],

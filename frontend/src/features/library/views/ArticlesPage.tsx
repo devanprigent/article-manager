@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
 import { pageSize } from '../../../constants/constants';
-import PageHeader from '../../../core/components/PageHeader';
+import PageHeader from '../../../core/ui/PageHeader';
 import { useArticles, useSearch } from '../../../hooks/queries';
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
-import AddButton from '../components/AddButton';
 import DataTable from '../components/DataTable';
 import { getArticleColumns, getColumnVisibilityModel } from '../helpers/articleColumns';
 
@@ -31,7 +30,6 @@ export default function ArticlesPage() {
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-700 dark:text-slate-200">
             {total} total
           </span>
-          <AddButton title={'Add article'} />
         </div>
       </PageHeader>
 

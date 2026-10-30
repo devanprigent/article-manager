@@ -34,7 +34,7 @@ test('rss page validates the feed form', async ({ authenticatedPage: page }) => 
 
 test('rss page deletes a feed', async ({ authenticatedPage: page }) => {
   await page.goto('/rss');
-  await page.getByRole('button', { name: `Delete ${sampleRssFeed.site_name} feed` }).click();
+  await page.getByRole('button', { name: `Delete this feed` }).click();
   await page.getByRole('button', { name: 'Delete', exact: true }).click();
 
   await expect(page.getByTestId(`rss-feed-${sampleRssFeed.id}`)).toHaveCount(0);

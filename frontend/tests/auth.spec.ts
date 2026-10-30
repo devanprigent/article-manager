@@ -1,7 +1,7 @@
 import { loginViaUi } from './fixtures/mockApi';
 import { expect, test } from './fixtures/test';
 import {
-  getArticlesTab,
+  getLibraryTab,
   getLikedTab,
   getLoginButton,
   getLogoutButton,
@@ -13,7 +13,7 @@ import {
 
 test('login shows navigation tabs for authenticated users', async ({ page }) => {
   await loginViaUi(page);
-  await expect(page).toHaveURL('/articles');
+  await expect(page).toHaveURL('/inbox');
 
   const loginBtn = getLoginButton(page);
   const registerBtn = getRegisterButton(page);
@@ -22,7 +22,7 @@ test('login shows navigation tabs for authenticated users', async ({ page }) => 
   await expect(registerBtn).not.toBeVisible();
   await expect(userMenu).toBeVisible();
 
-  const articlesTab = getArticlesTab(page);
+  const articlesTab = getLibraryTab(page);
   const likedTab = getLikedTab(page);
   const readTab = getReadLaterTab(page);
   const statsTab = getStatsTab(page);
@@ -34,15 +34,15 @@ test('login shows navigation tabs for authenticated users', async ({ page }) => 
 });
 
 test('protected routes redirect unauthenticated users to home', async ({ page }) => {
-  await page.goto('/articles');
+  await page.goto('/library');
   await expect(page).toHaveURL('/home');
   await expect(page.getByRole('heading', { name: "Never forget an article you've liked again." })).toBeVisible();
 });
 
 test('authenticated users can navigate to all tabs', async ({ authenticatedPage: page }) => {
-  const articlesTab = getArticlesTab(page);
+  const articlesTab = getLibraryTab(page);
   await articlesTab.click();
-  await expect(page).toHaveURL('/articles');
+  await expect(page).toHaveURL('/library');
 
   const likedTab = getLikedTab(page);
   await likedTab.click();

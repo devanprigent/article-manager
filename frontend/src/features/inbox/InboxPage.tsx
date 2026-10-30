@@ -1,5 +1,6 @@
 import { Feed } from '../../core/components/Feed';
-import PageHeader from '../../core/components/PageHeader';
+import PageHeader from '../../core/ui/PageHeader';
+import { useRemoveArticle } from '../../hooks/mutations';
 import { useArticles } from '../../hooks/queries';
 
 const EMPTY_MESSAGE = 'Your inbox is empty. New articles from your RSS feeds will show up here.';
@@ -12,6 +13,7 @@ function InboxPage() {
   } = useArticles(undefined, undefined, undefined, {
     rss: true,
   });
+  const { mutate: remove, isPending: isDeletePending } = useRemoveArticle();
 
   return (
     <div className="space-y-5">
@@ -26,8 +28,9 @@ function InboxPage() {
         emptyMessage={EMPTY_MESSAGE}
         isLoading={isLoading}
         error={error}
-        clearPatch={(article) => ({ ...article, rss: false })}
         readLaterPatch={(article) => ({ ...article, rss: false, read_later: true })}
+        onDelete={remove}
+        isDeletePending={isDeletePending}
       />
     </div>
   );

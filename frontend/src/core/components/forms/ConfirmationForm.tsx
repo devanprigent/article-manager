@@ -1,17 +1,17 @@
 import { AlertTriangle } from 'react-feather';
 
-import { buttonSize, buttonStyle } from '../../constants/constants';
-import PopupWrapper from './PopupWrapper';
+import { buttonSize, buttonStyle } from '../../../constants/constants';
+import PopupWrapper from '../PopupWrapper';
 
 interface FormProps {
   isOpen: boolean;
   toggle: () => void;
   onSave: () => void;
   isPending?: boolean;
-  title?: string;
+  title: string;
 }
 
-function ConfirmationForm({ isOpen, toggle, onSave, isPending = false, title = 'Delete this article?' }: Readonly<FormProps>) {
+function ConfirmationForm({ isOpen, toggle, onSave, isPending = false, title }: Readonly<FormProps>) {
   return (
     <PopupWrapper popup={isOpen} setPopup={toggle} status="error">
       <div className="flex flex-col gap-5">
