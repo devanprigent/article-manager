@@ -1,8 +1,9 @@
 import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { UseMutateFunction } from '@tanstack/react-query';
 
 import { useIsDarkMode } from '../../contexts/ThemeContext';
-import { useEditArticle, useRemoveArticle, useReorderReadLater } from '../../hooks/mutations';
+import { useEditArticle, useReorderReadLater } from '../../hooks/mutations';
 import { Article } from '../../types/types';
 import { ErrorMessage } from '../ui/ErrorMessage';
 import { LoadingIcon } from '../ui/LoadingIcon';
@@ -12,16 +13,27 @@ interface FeedProps {
   articles: Article[];
   emptyMessage: string;
   isLoading: boolean;
+  isDeletePending?: boolean;
   error: Error | null;
+  onDelete?: UseMutateFunction<number, unknown, number[], unknown>;
   clearPatch?: (article: Article) => Article;
   readLaterPatch?: (article: Article) => Article;
   reorderable?: boolean;
 }
 
-export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, readLaterPatch, reorderable = false }: Readonly<FeedProps>) {
+export function Feed({
+  articles,
+  emptyMessage,
+  isLoading,
+  error,
+  onDelete,
+  isDeletePending,
+  clearPatch,
+  readLaterPatch,
+  reorderable = false,
+}: Readonly<FeedProps>) {
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
-  const { mutate: remove, isPending: isDeletePending } = useRemoveArticle();
   const { mutate: reorderReadLater, isPending: isReorderPending } = useReorderReadLater();
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -84,7 +96,7 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, rea
             article={article}
             onClear={handleClear}
             onReadLater={handleReadLater}
-            onDelete={remove}
+            onDelete={onDelete}
             isClearPending={isEditPending}
             isDeletePending={isDeletePending}
             isDarkMode={isDarkMode}
@@ -103,7 +115,7 @@ export function Feed({ articles, emptyMessage, isLoading, error, clearPatch, rea
               key={article.id}
               article={article}
               onClear={handleClear}
-              onDelete={remove}
+              onDelete={onDelete}
               isClearPending={isEditPending}
               isDeletePending={isDeletePending}
               isDarkMode={isDarkMode}

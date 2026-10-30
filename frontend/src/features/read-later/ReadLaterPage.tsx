@@ -1,6 +1,7 @@
 import AddButton from '../../core/components/buttons/AddButton';
 import { Feed } from '../../core/components/Feed';
 import PageHeader from '../../core/ui/PageHeader';
+import { useRemoveArticle } from '../../hooks/mutations';
 import { useArticles } from '../../hooks/queries';
 
 const EMPTY_MESSAGE = 'No read-later articles yet. Newly added articles appear here automatically.';
@@ -13,6 +14,7 @@ function ReadLaterPage() {
   } = useArticles(undefined, undefined, undefined, {
     read_later: true,
   });
+  const { mutate: remove, isPending: isDeletePending } = useRemoveArticle();
 
   return (
     <div className="space-y-5">
@@ -31,6 +33,8 @@ function ReadLaterPage() {
         isLoading={isLoading}
         error={error}
         clearPatch={(article) => ({ ...article, read_later: false })}
+        onDelete={remove}
+        isDeletePending={isDeletePending}
         reorderable
       />
     </div>

@@ -16,8 +16,8 @@ interface FeedItemProps {
   onClear?: (article: Article) => void;
   onReadLater?: (article: Article) => void;
   onDelete?: UseMutateFunction<number, unknown, number[], unknown>;
-  isClearPending: boolean;
-  isDeletePending: boolean;
+  isClearPending?: boolean;
+  isDeletePending?: boolean;
   isDarkMode: boolean;
   reorderable?: boolean;
   dragHandleProps?: HTMLAttributes<HTMLButtonElement>;
@@ -31,8 +31,8 @@ export function FeedItem({
   onClear,
   onReadLater,
   onDelete,
-  isClearPending,
-  isDeletePending,
+  isClearPending = false,
+  isDeletePending = false,
   isDarkMode,
   reorderable = false,
   dragHandleProps,
