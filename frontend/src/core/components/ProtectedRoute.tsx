@@ -21,6 +21,7 @@ export function ProtectedRoute() {
       >
         <LoadingIcon width={40} height={40} />
         <p className="text-sm font-medium">Currently fetching your session…</p>
+        <p className="text-sm font-medium">Server might take up to a minute before responding</p>
       </div>
     );
   }
