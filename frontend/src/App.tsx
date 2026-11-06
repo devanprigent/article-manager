@@ -6,6 +6,7 @@ import { useIsDarkMode } from './contexts/ThemeContext';
 import { HealthPoller } from './core/components/HealthPoller';
 import HomePage from './core/components/HomePage';
 import { ProtectedRoute } from './core/components/ProtectedRoute';
+import HistoryPage from './features/history/HistoryPage';
 import InboxPage from './features/inbox/InboxPage';
 import StatsPage from './features/insights/StatsPage';
 import ReadingPage from './features/library/components/ReadingPage';
@@ -24,6 +25,7 @@ function App() {
         <Route path="inbox" element={<InboxPage />} />
         <Route path="read-later" element={<ReadLaterPage />} />
         <Route path="likes" element={<LikesPage />} />
+        <Route path="history" element={<HistoryPage />} />
 
         <Route path="library" element={<ArticlesPage />} />
         <Route path="rss" element={<RssPage />} />

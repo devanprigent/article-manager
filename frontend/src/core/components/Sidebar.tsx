@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { BarChart2, Bookmark, BookOpen, Heart, Inbox, Layers, Rss } from 'react-feather';
+import { BarChart2, Bookmark, BookOpen, Clock, Heart, Inbox, Layers, Rss } from 'react-feather';
 import { NavLink } from 'react-router-dom';
 
 import { UserMenu } from './UserMenu';
@@ -13,6 +13,7 @@ const navigationGroups = [
     { to: '/inbox', label: 'Inbox', accessibleName: 'Inbox', icon: Inbox },
     { to: '/read-later', label: 'Read Later', accessibleName: 'Read Later', icon: Bookmark },
     { to: '/likes', label: 'Likes', accessibleName: 'Likes', icon: Heart },
+    { to: '/history', label: 'History', accessibleName: 'History', icon: Clock },
   ],
   [
     { to: '/library', label: 'Library', accessibleName: 'Library', icon: Layers },
