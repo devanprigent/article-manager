@@ -19,6 +19,7 @@ interface FeedProps {
   clearPatch?: (article: Article) => Article;
   readLaterPatch?: (article: Article) => Article;
   reorderable?: boolean;
+  likeable?: boolean;
 }
 
 export function Feed({
@@ -31,6 +32,7 @@ export function Feed({
   clearPatch,
   readLaterPatch,
   reorderable = false,
+  likeable = false,
 }: Readonly<FeedProps>) {
   const isDarkMode = useIsDarkMode();
   const { mutate: editArticle, isPending: isEditPending } = useEditArticle();
@@ -41,6 +43,8 @@ export function Feed({
   );
 
   const handleClear = clearPatch ? (article: Article) => editArticle(clearPatch(article)) : undefined;
+
+  const handleLike = likeable ? (article: Article) => editArticle({ ...article, liked: !article.liked }) : undefined;
 
   const handleReadLater = readLaterPatch ? (article: Article) => editArticle(readLaterPatch(article)) : undefined;
 
@@ -96,6 +100,7 @@ export function Feed({
             article={article}
             onClear={handleClear}
             onReadLater={handleReadLater}
+            onLike={handleLike}
             onDelete={onDelete}
             isClearPending={isEditPending}
             isDeletePending={isDeletePending}
@@ -115,6 +120,7 @@ export function Feed({
               key={article.id}
               article={article}
               onClear={handleClear}
+              onLike={handleLike}
               onDelete={onDelete}
               isClearPending={isEditPending}
               isDeletePending={isDeletePending}

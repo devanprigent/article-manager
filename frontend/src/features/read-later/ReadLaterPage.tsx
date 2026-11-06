@@ -36,6 +36,7 @@ function ReadLaterPage() {
         onDelete={remove}
         isDeletePending={isDeletePending}
         reorderable
+        likeable
       />
     </div>
   );

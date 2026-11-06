@@ -1,5 +1,5 @@
 import { useState, type CSSProperties, type HTMLAttributes } from 'react';
-import { Bookmark, XCircle } from 'react-feather';
+import { Bookmark, Heart, XCircle } from 'react-feather';
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -15,6 +15,7 @@ interface FeedItemProps {
   article: Article;
   onClear?: (article: Article) => void;
   onReadLater?: (article: Article) => void;
+  onLike?: (article: Article) => void;
   onDelete?: UseMutateFunction<number, unknown, number[], unknown>;
   isClearPending?: boolean;
   isDeletePending?: boolean;
@@ -30,6 +31,7 @@ export function FeedItem({
   article,
   onClear,
   onReadLater,
+  onLike,
   onDelete,
   isClearPending = false,
   isDeletePending = false,
@@ -52,6 +54,7 @@ export function FeedItem({
   const clearColorClass = isDarkMode
     ? 'text-blue-400 hover:bg-blue-900/40 hover:text-blue-300'
     : 'text-blue-600 hover:bg-blue-50 hover:text-blue-700';
+  const likeColorClass = isDarkMode ? 'text-rose-400 hover:bg-rose-900/40 hover:text-rose-300' : 'text-rose-500 hover:bg-rose-50 hover:text-rose-600';
   const removeColorClass = isDarkMode ? 'text-red-400 hover:bg-red-900/40 hover:text-red-300' : 'text-red-500 hover:bg-red-50 hover:text-red-600';
 
   return (
@@ -119,6 +122,20 @@ export function FeedItem({
           </button>
         )}
 
+        {onLike && (
+          <button
+            type="button"
+            aria-label={`${article.liked ? 'Unlike' : 'Like'}: ${article.title}`}
+            aria-pressed={article.liked}
+            title={article.liked ? 'Remove from likes' : 'Like this article'}
+            onClick={() => onLike(article)}
+            disabled={isClearPending}
+            className={`${actionButtonClass} ${likeColorClass}`}
+          >
+            <Heart size={16} strokeWidth={2} fill={article.liked ? 'currentColor' : 'none'} aria-hidden="true" />
+          </button>
+        )}
+
         {onClear && (
           <button
             type="button"
@@ -145,17 +162,19 @@ export function FeedItem({
 export function SortableFeedItem({
   article,
   onClear,
+  onLike,
   onDelete,
   isClearPending,
   isDeletePending,
   isDarkMode,
-}: Readonly<Pick<FeedItemProps, 'article' | 'onClear' | 'onDelete' | 'isClearPending' | 'isDeletePending' | 'isDarkMode'>>) {
+}: Readonly<Pick<FeedItemProps, 'article' | 'onClear' | 'onLike' | 'onDelete' | 'isClearPending' | 'isDeletePending' | 'isDarkMode'>>) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: article.id });
 
   return (
     <FeedItem
       article={article}
       onClear={onClear}
+      onLike={onLike}
       onDelete={onDelete}
       isClearPending={isClearPending}
       isDeletePending={isDeletePending}
